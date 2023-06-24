@@ -17,7 +17,7 @@ function AuthPage() {
         } `}
         onMouseEnter={() => setViewLoginMoveText(true)}
         onMouseLeave={() => setViewLoginMoveText(false)}
-        href="/auth/signin"
+        href="/auth/login"
       >
         로그인
         {viewLoginMoveText && (
