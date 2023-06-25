@@ -63,7 +63,7 @@ export const Input = ({
           setIsBlur(false)
           setIsFocus(true)
         }}
-        className={`${style} w-[400px] outline-none py-[4px] pl-[8px] border-b-2 ${
+        className={`${style}  outline-none py-[4px] pl-[8px] border-b-2 ${
           isFocus ? 'border-main' : 'border-[#d596f0]'
         } text-2xl`}
         type={type}

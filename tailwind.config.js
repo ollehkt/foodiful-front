@@ -16,8 +16,20 @@ module.exports = {
           '0%, 100%': { transform: 'translateX(100)' },
         },
       },
-      animations: {
+      keyframes: {
+        toast: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0%)' },
+        },
+        drop: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0%)' },
+        },
+      },
+      animation: {
         ease: 'easeInOut 1s ease-in-out',
+        toast: 'toast .6s ease-in-out',
+        drop: 'drop .6s ease-in-out',
       },
     },
   },

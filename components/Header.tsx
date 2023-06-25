@@ -30,7 +30,7 @@ function Header({ isHeaderOpen }: PropsType) {
         </div>
         <div className="w-[60px]">logo</div>
         <div className="w-[800px]">navigation</div>
-        <Link className="text-xl no-underline text-[#666] hover:text-[#000]" href="auth">
+        <Link className="text-xl no-underline text-[#666] hover:text-[#000]" href="/auth">
           로그인
         </Link>
         <button

@@ -1,8 +1,13 @@
 import { atom } from 'jotai'
-import { ToastProps } from '../components/hooks/useToast'
 
-export const toast = atom<{ content: string; type: string; timer: number }>({
-  type: '',
-  content: '',
-  timer: 0,
-})
+type ToastType = 'warning' | 'failed' | 'success'
+
+export interface Toast {
+  id: string
+  type: ToastType
+  timer: number
+  message: string
+  position: 'top' | 'bottom'
+}
+
+export const toast = atom<Toast[]>([])

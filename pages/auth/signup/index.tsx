@@ -7,7 +7,10 @@ import { httpRequest } from '../../../components/lib/httpRequest'
 import { api } from '../../../components/axios/axiosInstance'
 import axios, { AxiosError } from 'axios'
 import { emailValidate, passwordValidate } from '../../../components/hooks/useValidate'
+import useToast from '../../../components/hooks/useToast'
+
 function SignUp() {
+  const { fireToast } = useToast()
   const { value: email, setValue: setEmail } = useInput('')
   const { value: name, setValue: setName } = useInput('')
   const { value: password, setValue: setPassword } = useInput('')
@@ -31,7 +34,6 @@ function SignUp() {
           verifyCode: verify,
         },
       })
-      console.log(res)
       setVerifiedPhone(true)
       setIsClickedVerifyPhone(false)
       setIsPhoneInputDisabled(true)
@@ -42,13 +44,18 @@ function SignUp() {
 
   const onChangeverifyPhone = async (phone: string) => {
     try {
-      if (phone.length === 11) {
-        const res = await api.get(`/auth/checkphone/exists?phone=${phone}`, {})
-        if (res) setIsExistPhoneNumber(true)
-        setPhoneCheckErrorMsg('')
-      }
+      const res = await api.get(`/auth/checkphone/exists?phone=${phone}`, {})
+      if (res) setIsExistPhoneNumber(true)
+      setPhoneCheckErrorMsg('')
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        fireToast({
+          id: '존재하는 휴대폰 번호입니다',
+          type: 'success',
+          message: error?.response?.data.message,
+          position: 'bottom',
+          timer: 1000,
+        })
         if (error?.response?.status === 409) {
           setPhoneCheckErrorMsg(error.response.data.message)
         }
@@ -69,13 +76,27 @@ function SignUp() {
     }
   }
   const onClickSignUpBtn = async () => {
-    const res = await httpRequest('/auth/signup')('POST', {
-      email,
-      name,
-      password,
-      phone,
-    })('회원가입에 실패했습니다.')()
-    console.log(res)
+    try {
+      const res = await api.post('/auth/signup', {
+        data: {
+          email,
+          name,
+          password,
+          phone,
+        },
+      })
+
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        fireToast({
+          id: '회원가입 에러',
+          type: 'failed',
+          position: 'bottom',
+          message: '회원가입에 실패했습니다. 다시 시도해주세요.',
+          timer: 1500,
+        })
+      }
+    }
   }
 
   // timer 로직
@@ -100,21 +121,20 @@ function SignUp() {
   }, [time])
 
   useEffect(() => {
-    onChangeverifyPhone(phone)
-    if (phone.length <= 11) {
+    if (phone.length === 11) {
+      onChangeverifyPhone(phone)
+    } else {
       setIsExistPhoneNumber(false)
     }
   }, [phone])
-
-  // 0초가 됐을 때 알림
 
   return (
     <div className="w-[900px] mx-auto mt-[200px] py-[100px] flex flex-col items-center text-3xl border-2 border-main rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>회원가입
       <Input
-        style=" ml-[38px]"
+        style=" ml-[38px] w-[300px]"
         name="이메일"
-        type="email"
+        type="text"
         value={email}
         setValue={setEmail}
         validate={emailValidate}
@@ -122,7 +142,7 @@ function SignUp() {
         errorText="이메일 형식에 맞춰 작성해주세요"
       />
       <Input
-        style="ml-[64px]"
+        style="ml-[64px] w-[300px]"
         name="이름"
         type="text"
         minLength={3}
@@ -132,7 +152,7 @@ function SignUp() {
         placeholder="이름을 입력해주세요"
       />
       <Input
-        style="ml-[24px]"
+        style="ml-[24px] w-[300px]"
         name="패스워드"
         type="password"
         minLength={6}
@@ -145,7 +165,7 @@ function SignUp() {
       />
       <div className="relative">
         <Input
-          style="ml-[38px] mt-[30px]"
+          style="ml-[38px] w-[300px] mt-[30px]"
           isPhoneInputDisabled={isPhoneInputDisabled}
           name="휴대폰"
           type="tel"
@@ -174,7 +194,7 @@ function SignUp() {
         {isClickedVerifyPhone && !verifyExpiredTxt ? (
           <>
             <Input
-              style="mx-[30px] w-[120px] text-xl"
+              style="mx-[30px] w-[160px] text-xl"
               type="tel"
               minLength={3}
               maxLength={10}

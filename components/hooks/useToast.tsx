@@ -1,25 +1,20 @@
-import { useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
-import { toast } from '../../store/toastState'
-import ToastItem from '../common/toast/toastItem'
+import { useAtom } from 'jotai'
+import { Toast, toast } from '../../store/toastState'
+import { getRandomId } from '../util/getRandomId'
 
-export interface ToastProps {
-  timer: number
-  content: string
-  type: string
-}
+const useToast = () => {
+  const [toastValue, setToastValue] = useAtom(toast)
 
-const useToast = ({ timer, content, type }: ToastProps) => {
-  
-  const setToastValue = useSetAtom(toast)
-  setToastValue({ content, type, timer })
-
-  const removeToast = () => {}
-  const fireToast = (toast: ToastProps) => {
-
+  const removeToast = (toastId: Toast['id']) => {
+    setToastValue((prev) => prev.filter((toast) => toast.id === toastId))
   }
 
-  return {}
+  const fireToast = (toast: Toast) => {
+    setToastValue((prev) => [...prev, { ...toast, id: getRandomId() }])
+    setTimeout(() => removeToast(toast.id), 600 + (toast.timer ?? 1000))
+  }
+
+  return { toastValue, fireToast }
 }
 
 export default useToast

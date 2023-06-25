@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Input } from '../../../components/common/Input'
 import { useInput } from '../../../components/hooks/useInput'
 import { httpRequest } from '../../../components/lib/httpRequest'
+import { setStoreToken } from '../../../components/util/userStorage'
 
 function SignIn() {
   const { value: userId, setValue: setUserId } = useInput('')
@@ -17,7 +18,7 @@ function SignIn() {
         userId,
       })('로그인에 실패했습니다.')()
       console.log(res)
-      await localStorage.setItem('jwt', res.data.token)
+      setStoreToken(res.data.token)
     } catch (error) {
       console.log(error)
     } finally {
