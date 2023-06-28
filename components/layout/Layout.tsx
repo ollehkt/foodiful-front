@@ -4,9 +4,10 @@ import Header from '../Header'
 
 const Layout = ({ children }: { children: ReactElement }) => {
   const [isHeaderOpen, setIsHeaderOpen] = useState(true)
+
   const router = useRouter()
   let prevScroll = 0
-  console.log('123')
+
   const handleScroll = () => {
     const scrollY = window.scrollY
     let nextScroll = scrollY || 0
@@ -33,6 +34,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
     //   window.removeEventListener('scroll', handleScroll)
     // }
   }, [])
+
   return (
     <>
       <Header isHeaderOpen={isHeaderOpen} />

@@ -1,24 +1,26 @@
 'use client'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { api } from '../../../components/axios/axiosInstance'
 import { Input } from '../../../components/common/Input'
-import { useInput } from '../../../components/hooks/useInput'
+import { useInput } from '../../../components/common/hooks/useInput'
+import { emailValidate, passwordValidate } from '../../../components/auth/hooks/useValidate'
 import { httpRequest } from '../../../components/lib/httpRequest'
-import { setStoreToken } from '../../../components/util/userStorage'
+import { setStoreUser } from '../../../components/util/userStorage'
 
 function SignIn() {
-  const { value: userId, setValue: setUserId } = useInput('')
+  const { value: email, setValue: setEmail } = useInput('')
   const { value: password, setValue: setPassword } = useInput('')
 
   const router = useRouter()
   const onClickSignInBtn = async () => {
     try {
-      const res = await httpRequest('/auth/login')('POST', {
+      const res = await api.post('/auth/login', {
+        email,
         password,
-        userId,
-      })('로그인에 실패했습니다.')()
-      console.log(res)
-      setStoreToken(res.data.token)
+      })
+
+      setStoreUser(res.data.user)
     } catch (error) {
       console.log(error)
     } finally {
@@ -30,25 +32,25 @@ function SignIn() {
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>로그인
       <Input
         style="ml-[38px]"
-        name="아이디"
+        name="이메일"
         type="text"
-        minLength={3}
-        maxLength={10}
-        value={userId}
-        setValue={setUserId}
-        placeholder="아이디를 입력해주세요"
-        errorText="아이디를 3자 이상 10자 이하로 입력해주세요"
+        value={email}
+        setValue={setEmail}
+        validate={emailValidate}
+        placeholder="이메일을 입력해주세요"
+        errorText="이메일 형식에 맞춰 입력해주세요"
       />
       <Input
         style="ml-[12px]"
         name="패스워드"
         type="password"
-        minLength={3}
-        maxLength={10}
+        minLength={6}
+        maxLength={12}
         value={password}
         setValue={setPassword}
+        validate={passwordValidate}
         placeholder="패스워드를 입력해주세요"
-        errorText="패스워드를 3자 이상 10자 이하로 입력해주세요"
+        errorText="패스워드를 6자 이상 12자 이하로 입력해주세요"
       />
       <button onClick={onClickSignInBtn} className="mt-[40px]">
         로그인

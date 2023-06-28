@@ -1,23 +1,44 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useAuth } from './auth/hooks/react-query/useAuth'
+import { useUser } from './auth/hooks/useUser'
+import { LOCALSTORAGE_KEY } from './constants/localStorageKey'
 import { httpRequest } from './lib/httpRequest'
+import { getStoredUser } from './util/userStorage'
 
 interface PropsType {
   isHeaderOpen: boolean
 }
 
 function Header({ isHeaderOpen }: PropsType) {
-  const clickLogout = useCallback(async () => {
-    const res = await httpRequest('auth/logout')('POST')('로그아웃 실패')()
-    console.log(res)
-  }, [])
+  const [userName, setUserName] = useState('')
+  const { signOut } = useAuth()
   const router = useRouter()
+
+  const clickLogout = useCallback(async () => {
+    signOut()
+    router.reload()
+  }, [])
 
   const onClickLogo = useCallback(() => {
     router.push('/')
   }, [router])
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const user = getStoredUser()
+      if (user) setUserName(user.name)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => router.events.off('routeChangeComplete', handleRouteChange)
+  }, [])
+
+  useEffect(() => {
+    const user = getStoredUser()
+    if (user) setUserName(user.name)
+    else setUserName('')
+  }, [])
   return (
     <div className={`w-full sticky top-0 z-[99999] bg-gradient-to-tl from-[#fbc0ff] to-[#fff]`}>
       <div
@@ -30,15 +51,23 @@ function Header({ isHeaderOpen }: PropsType) {
         </div>
         <div className="w-[60px]">logo</div>
         <div className="w-[800px]">navigation</div>
-        <Link className="text-xl no-underline text-[#666] hover:text-[#000]" href="/auth">
-          로그인
-        </Link>
-        <button
-          onClick={clickLogout}
-          className="text-xl no-underline text-[#666] hover:text-[#000]"
-        >
-          로그아웃
-        </button>
+        {userName ? (
+          <>
+            <Link className="text-xl " href="/mypage">
+              <span className="text-main hover:text-[#c81dd4] font-extrabold">{userName}</span> 님
+            </Link>
+            <button
+              onClick={clickLogout}
+              className="text-xl no-underline text-[#666] hover:text-[#000]"
+            >
+              로그아웃
+            </button>
+          </>
+        ) : (
+          <Link className="text-xl no-underline text-[#666] hover:text-[#000]" href="/auth">
+            로그인
+          </Link>
+        )}
       </div>
     </div>
   )

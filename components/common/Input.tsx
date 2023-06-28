@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { emailValidate } from '../hooks/useValidate'
+import { emailValidate } from '../auth/hooks/useValidate'
 
 interface PropsType {
   style?: string

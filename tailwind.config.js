@@ -25,11 +25,16 @@ module.exports = {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(0%)' },
         },
+        left: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
       },
       animation: {
         ease: 'easeInOut 1s ease-in-out',
         toast: 'toast .6s ease-in-out',
         drop: 'drop .6s ease-in-out',
+        left: 'left .6s ease',
       },
     },
   },

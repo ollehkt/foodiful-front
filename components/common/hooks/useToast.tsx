@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai'
-import { Toast, toast } from '../../store/toastState'
-import { getRandomId } from '../util/getRandomId'
+import { Toast, toast } from '../../../store/toastState'
+import { getRandomId } from '../../util/getRandomId'
 
 const useToast = () => {
   const [toastValue, setToastValue] = useAtom(toast)

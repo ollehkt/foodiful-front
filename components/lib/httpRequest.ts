@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { api } from '../axios/axiosInstance'
-import { tryCatch } from '../hooks/tryCatch'
+import { tryCatch } from '../auth/hooks/tryCatch'
 export const httpRequest =
   (url: string) =>
   (method: string = 'GET', data: any = {}) =>

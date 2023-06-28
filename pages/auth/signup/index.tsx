@@ -1,13 +1,13 @@
 'use client'
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { Input } from '../../../components/common/Input'
-import { useInput } from '../../../components/hooks/useInput'
-import { useUser } from '../../../components/hooks/useUser'
+import { useInput } from '../../../components/common/hooks/useInput'
+import { useUser } from '../../../components/auth/hooks/useUser'
 import { httpRequest } from '../../../components/lib/httpRequest'
 import { api } from '../../../components/axios/axiosInstance'
 import axios, { AxiosError } from 'axios'
-import { emailValidate, passwordValidate } from '../../../components/hooks/useValidate'
-import useToast from '../../../components/hooks/useToast'
+import { emailValidate, passwordValidate } from '../../../components/auth/hooks/useValidate'
+import useToast from '../../../components/common/hooks/useToast'
 
 function SignUp() {
   const { fireToast } = useToast()
@@ -78,14 +78,12 @@ function SignUp() {
   const onClickSignUpBtn = async () => {
     try {
       const res = await api.post('/auth/signup', {
-        data: {
-          email,
-          name,
-          password,
-          phone,
-        },
+        email,
+        name,
+        password,
+        phone,
       })
-
+      console.log(res)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         fireToast({
@@ -96,6 +94,7 @@ function SignUp() {
           timer: 1500,
         })
       }
+      console.error(error)
     }
   }
 
