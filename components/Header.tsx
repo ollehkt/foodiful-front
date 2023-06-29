@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth } from './auth/hooks/react-query/useAuth'
+import { useAuth } from './auth/hooks/useAuth'
 import { useUser } from './auth/hooks/useUser'
 import { LOCALSTORAGE_KEY } from './constants/localStorageKey'
 import { httpRequest } from './lib/httpRequest'
@@ -15,11 +15,6 @@ function Header({ isHeaderOpen }: PropsType) {
   const [userName, setUserName] = useState('')
   const { signOut } = useAuth()
   const router = useRouter()
-
-  const clickLogout = useCallback(async () => {
-    signOut()
-    router.reload()
-  }, [])
 
   const onClickLogo = useCallback(() => {
     router.push('/')
@@ -57,14 +52,14 @@ function Header({ isHeaderOpen }: PropsType) {
               <span className="text-main hover:text-[#c81dd4] font-extrabold">{userName}</span> 님
             </Link>
             <button
-              onClick={clickLogout}
+              onClick={signOut}
               className="text-xl no-underline text-[#666] hover:text-[#000]"
             >
               로그아웃
             </button>
           </>
         ) : (
-          <Link className="text-xl no-underline text-[#666] hover:text-[#000]" href="/auth">
+          <Link className="text-xl no-underline text-[#000] hover:text-[#E851EB]" href="/auth">
             로그인
           </Link>
         )}

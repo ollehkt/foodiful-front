@@ -8,9 +8,11 @@ import { api } from '../../../components/axios/axiosInstance'
 import axios, { AxiosError } from 'axios'
 import { emailValidate, passwordValidate } from '../../../components/auth/hooks/useValidate'
 import useToast from '../../../components/common/hooks/useToast'
+import { useAuth } from '../../../components/auth/hooks/useAuth'
+import usePhoneVerfiy from '../../../components/auth/hooks/usePhoneVerify'
 
 function SignUp() {
-  const { fireToast } = useToast()
+  const { signUp } = useAuth()
   const { value: email, setValue: setEmail } = useInput('')
   const { value: name, setValue: setName } = useInput('')
   const { value: password, setValue: setPassword } = useInput('')
@@ -25,77 +27,10 @@ function SignUp() {
   // 핸드폰 인증 확인
   const [verifiedPhone, setVerifiedPhone] = useState(false)
 
-  const onClickReqVerifyNum = async (phone: any, verify: any) => {
-    // 검증 됐을 때 로직
-    try {
-      const res = await api.post('/auth/checkphone/verify', {
-        data: {
-          phoneNumber: phone,
-          verifyCode: verify,
-        },
-      })
-      setVerifiedPhone(true)
-      setIsClickedVerifyPhone(false)
-      setIsPhoneInputDisabled(true)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { sendVerifySms, checkVerifySms, checkExistPhone } = usePhoneVerfiy()
 
-  const onChangeverifyPhone = async (phone: string) => {
-    try {
-      const res = await api.get(`/auth/checkphone/exists?phone=${phone}`, {})
-      if (res) setIsExistPhoneNumber(true)
-      setPhoneCheckErrorMsg('')
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        fireToast({
-          id: '존재하는 휴대폰 번호입니다',
-          type: 'success',
-          message: error?.response?.data.message,
-          position: 'bottom',
-          timer: 1000,
-        })
-        if (error?.response?.status === 409) {
-          setPhoneCheckErrorMsg(error.response.data.message)
-        }
-      }
-    }
-  }
-
-  const onClickVerifyphone = async (phone: string | number) => {
-    try {
-      const res = await api.post('/auth/checkphone', {
-        phoneNumber: phone,
-      })
-      setTime(180)
-      setVerifyExpiredTxt('')
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
   const onClickSignUpBtn = async () => {
-    try {
-      const res = await api.post('/auth/signup', {
-        email,
-        name,
-        password,
-        phone,
-      })
-      console.log(res)
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        fireToast({
-          id: '회원가입 에러',
-          type: 'failed',
-          position: 'bottom',
-          message: '회원가입에 실패했습니다. 다시 시도해주세요.',
-          timer: 1500,
-        })
-      }
-      console.error(error)
-    }
+    await signUp({ email, name, password, phone })
   }
 
   // timer 로직
@@ -121,7 +56,7 @@ function SignUp() {
 
   useEffect(() => {
     if (phone.length === 11) {
-      onChangeverifyPhone(phone)
+      checkExistPhone(phone, setIsExistPhoneNumber, setPhoneCheckErrorMsg)
     } else {
       setIsExistPhoneNumber(false)
     }
@@ -182,7 +117,8 @@ function SignUp() {
             className="absolute text-xl w-[80px] right-0 bottom-[8px] hover:text-main disabled:text-[#999] "
             onClick={() => {
               setIsClickedVerifyPhone(true)
-              onClickVerifyphone(phone)
+              sendVerifySms(phone, setTime, setVerifyExpiredTxt)
+              setIsPhoneInputDisabled(true)
             }}
           >
             인증
@@ -206,13 +142,23 @@ function SignUp() {
             </span>
             <button
               className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
-              onClick={() => onClickReqVerifyNum(phone, verify)}
+              onClick={() =>
+                checkVerifySms(
+                  phone,
+                  verify,
+                  setVerifiedPhone,
+                  setIsClickedVerifyPhone,
+                  setIsPhoneInputDisabled,
+                  setVerify,
+                  setVerifyExpiredTxt
+                )
+              }
             >
               확인
             </button>
           </>
         ) : (
-          <span className="text-main text-2xl mt-[20px]">{verifyExpiredTxt}</span>
+          <span className="text-main text-xl mt-[20px]">{verifyExpiredTxt}</span>
         )}
       </div>
       <button

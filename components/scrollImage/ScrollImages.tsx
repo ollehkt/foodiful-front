@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import ScrollImageItem from './ScrollImageItem'
 
-const arr = ['/photo0.jpeg', '/photo1.jpeg', '/photo2.jpeg', '/photo3.jpeg']
+const arr = ['/photo0.jpeg']
 
 const ScrollImageLists = () => {
   return (

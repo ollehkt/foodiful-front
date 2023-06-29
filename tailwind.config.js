@@ -9,6 +9,11 @@ module.exports = {
     colors: {
       main: '#711b98',
       link: '#000000',
+      primary: '#F777FA',
+      hover: '#E851EB',
+      active: '#B33CB6',
+      disabled: '#E0DCE0',
+      textDisabled: '#605D5D',
     },
     extend: {
       keyframes: {

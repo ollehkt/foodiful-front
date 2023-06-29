@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { api } from '../../../axios/axiosInstance'
-import useToast from '../../../common/hooks/useToast'
-import { removeStoredUser } from '../../../util/userStorage'
-import { SignInType, SignUpType } from '../../types/user'
-import { useUser } from '../useUser'
+import { useRouter } from 'next/router'
+import { api } from '../../axios/axiosInstance'
+import useToast from '../../common/hooks/useToast'
+import { removeStoredUser, setStoreUser } from '../../util/userStorage'
+import { SignInType, SignUpType } from '../types/user'
+import { useUser } from './useUser'
 
 interface UseAuth {
   signIn: (param: SignInType) => void
@@ -13,10 +14,11 @@ interface UseAuth {
 
 export const useAuth = (): UseAuth => {
   const { fireToast } = useToast()
+  const router = useRouter()
 
   const signIn = async ({ email, password }: SignInType) => {
     try {
-      const res = await api.post('/auth/signin', {
+      const res = await api.post('/auth/login', {
         email,
         password,
       })
@@ -28,6 +30,8 @@ export const useAuth = (): UseAuth => {
           message: '로그인이 완료되었습니다.',
           timer: 1000,
         })
+        setStoreUser(res.data.user)
+        router.push('/')
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -53,8 +57,8 @@ export const useAuth = (): UseAuth => {
   }
   const signUp = async ({ email, password, phone, name }: SignUpType) => {
     try {
-      const res = await api.post('/auth/signup', { email: email, password: password, phone })
-      if (res)
+      const res = await api.post('/auth/signup', { email, name, password, phone })
+      if (res) {
         fireToast({
           id: '회원가입 완료',
           type: 'success',
@@ -62,6 +66,8 @@ export const useAuth = (): UseAuth => {
           message: '회원가입이 완료되었습니다. 로그인 해주세요.',
           timer: 2000,
         })
+        router.push('/auth/login')
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 409) {
@@ -93,6 +99,7 @@ export const useAuth = (): UseAuth => {
       message: '로그아웃이 완료되었습니다.',
       timer: 2000,
     })
+    router.reload()
   }
 
   return { signIn, signUp, signOut }
