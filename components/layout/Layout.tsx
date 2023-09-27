@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import Header from '../Header'
+import Header from '../header/Header'
 
 const Layout = ({ children }: { children: ReactElement }) => {
   const [isHeaderOpen, setIsHeaderOpen] = useState(true)
@@ -22,7 +22,6 @@ const Layout = ({ children }: { children: ReactElement }) => {
     if (prevScroll < nextScroll) {
       let timer
       timer = setTimeout(() => {
-        console.log(prevScroll, nextScroll)
         timer = null
         window.scroll({ top: nextScroll + 1210, left: 0, behavior: 'smooth' })
       }, 500)
@@ -38,8 +37,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
   return (
     <>
       <Header isHeaderOpen={isHeaderOpen} />
-
-      {children}
+      <div className="w-full mx-auto">{children}</div>
     </>
   )
 }

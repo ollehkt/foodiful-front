@@ -10,11 +10,12 @@ export const Button = ({ title, style, size, disabled, onClick }: PropsType) => 
   return (
     <button
       disabled={disabled}
-      title={title}
-      className={`${style} h-[40px] ${
+      className={`${style} h-[60px] rounded-md ${
         size == 'lg' ? 'w-[200px]' : size == 'md' ? 'w-[140px]' : 'w-[100px]'
-      } disabled:bg-disabled disabled:text-textDisabled`}
+      } hover:bg-hover disabled:bg-disabled disabled:text-textDisabled`}
       onClick={onClick}
-    />
+    >
+      {title}
+    </button>
   )
 }

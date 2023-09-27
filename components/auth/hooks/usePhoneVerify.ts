@@ -11,7 +11,7 @@ const usePhoneVerfiy = () => {
     setPhoneCheckErrorMsg: (p: string) => void
   ) => {
     try {
-      const res = await api.get(`/auth/checkphone/exists?phone=${phone}`, {})
+      const res = await api.get(`/auth/checkphone/exists?phone=${phone}`)
       if (res) setIsExistPhoneNumber(true)
       setPhoneCheckErrorMsg('')
     } catch (error) {
@@ -98,11 +98,11 @@ const usePhoneVerfiy = () => {
           setVerify('')
           setIsPhoneInputDisabled(false)
           setVerifyExpiredTxt('인증번호 오류입니다. 다시 시도해주세요')
-        } else {
+        } else if (error?.response?.status === 404) {
           fireToast({
-            id: '서버 에러',
+            id: '인증번호 만료',
             type: 'failed',
-            message: '서버 에러입니다. 잠시 후 다시 시도해주세요.',
+            message: '인증번호가 만료되었습니다.',
             position: 'bottom',
             timer: 2000,
           })
@@ -110,7 +110,7 @@ const usePhoneVerfiy = () => {
           setIsClickedVerifyPhone(false)
           setVerify('')
           setIsPhoneInputDisabled(false)
-          setVerifyExpiredTxt('서버 에러입니다. 잠시 후 다시 시도해주세요')
+          setVerifyExpiredTxt('인증번호가 만료되었습니다.')
         }
       }
     }

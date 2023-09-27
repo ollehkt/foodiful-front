@@ -36,8 +36,8 @@ export const useUser = (): any => {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
           try {
-            const res = await api.post('/auth/refresh')
-            setStoreUser(res.data.refreshUser)
+            const refreshData = await api.post('/auth/refresh')
+            setStoreUser(refreshData.data.refreshUser)
             // router.reload()
             fireToast({
               id: '재 로그인',
@@ -46,17 +46,17 @@ export const useUser = (): any => {
               position: 'bottom',
               timer: 2000,
             })
-            return res.data
+            return refreshData.data
           } catch (error) {
             if (axios.isAxiosError(error)) {
               if (error?.response?.status === 401) {
                 removeStoredUser()
                 alert('다시 로그인 해주세요')
-                router.reload()
+                // router.reload()
               } else if (error?.response?.status === 404) {
                 removeStoredUser()
                 alert('다시 로그인 해주세요')
-                router.reload()
+                // router.reload()
               }
             }
           }

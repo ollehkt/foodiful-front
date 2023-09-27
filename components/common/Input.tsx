@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { emailValidate } from '../auth/hooks/useValidate'
+import { useValidate } from '../auth/hooks/useValidate'
 
 interface PropsType {
   style?: string
@@ -39,6 +39,7 @@ export const Input = ({
     if (minLength && maxLength) {
       if (String(value).length >= minLength && String(value).length <= maxLength) {
         setIsValid(true)
+        console.log(value)
       } else {
         setIsValid(false)
       }
@@ -47,7 +48,7 @@ export const Input = ({
 
   useEffect(() => {
     if (validate && validate(value)) setIsValid(true)
-    else {
+    else if (validate && !validate(value)) {
       setIsValid(false)
     }
   }, [value])

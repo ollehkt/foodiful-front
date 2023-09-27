@@ -1,11 +1,12 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth } from './auth/hooks/useAuth'
-import { useUser } from './auth/hooks/useUser'
-import { LOCALSTORAGE_KEY } from './constants/localStorageKey'
-import { httpRequest } from './lib/httpRequest'
-import { getStoredUser } from './util/userStorage'
+import { useAuth } from '../auth/hooks/useAuth'
+import { useUser } from '../auth/hooks/useUser'
+import { LOCALSTORAGE_KEY } from '../constants/localStorageKey'
+import { getStoredUser } from '../util/userStorage'
+import HeaderNav from './HeaderNav'
 
 interface PropsType {
   isHeaderOpen: boolean
@@ -20,32 +21,42 @@ function Header({ isHeaderOpen }: PropsType) {
     router.push('/')
   }, [router])
 
+  const handleRouteChange = useCallback(() => {
+    const user = getStoredUser()
+    if (user) setUserName(user.name)
+  }, [])
+
   useEffect(() => {
-    const handleRouteChange = () => {
-      const user = getStoredUser()
-      if (user) setUserName(user.name)
+    // window undefined가 나오기 때문에 user useEffect문 내부에서 호출
+    const user = getStoredUser()
+    if (user) {
+      setUserName(user.name)
+    } else {
+      setUserName('')
     }
+
     router.events.on('routeChangeComplete', handleRouteChange)
     return () => router.events.off('routeChangeComplete', handleRouteChange)
   }, [])
 
-  useEffect(() => {
-    const user = getStoredUser()
-    if (user) setUserName(user.name)
-    else setUserName('')
-  }, [])
+  useEffect(() => {}, [])
   return (
     <div className={`w-full sticky top-0 z-[99999] bg-gradient-to-tl from-[#fbc0ff] to-[#fff]`}>
       <div
-        className={`w-[1280px]  ${
+        className={`w-[90%]  ${
           isHeaderOpen ? 'h-[100px]' : 'h-[60px]'
-        } mx-auto flex justify-between items-center`}
+        } mx-auto flex justify-between items-center animate-ease transition-[height]`}
       >
-        <div className="font-bold text-3xl text-main cursor-pointer" onClick={onClickLogo}>
-          Foodiful
+        <div className="cursor-pointer mx-[25px] rounded-md overflow-hidden" onClick={onClickLogo}>
+          <Image
+            src="/foodiful.jpeg"
+            alt="logo"
+            width={`${isHeaderOpen ? 72 : 46}`}
+            height={`${isHeaderOpen ? 72 : 46}`}
+            priority
+          />
         </div>
-        <div className="w-[60px]">logo</div>
-        <div className="w-[800px]">navigation</div>
+        <HeaderNav isHeaderOpen={isHeaderOpen} />
         {userName ? (
           <>
             <Link className="text-xl " href="/mypage">
@@ -59,7 +70,12 @@ function Header({ isHeaderOpen }: PropsType) {
             </button>
           </>
         ) : (
-          <Link className="text-xl no-underline text-[#000] hover:text-[#E851EB]" href="/auth">
+          <Link
+            className={` ${
+              isHeaderOpen ? 'text-xl' : 'text-lg'
+            } no-underline text-[#000] hover:text-[#E851EB]`}
+            href="/auth"
+          >
             로그인
           </Link>
         )}

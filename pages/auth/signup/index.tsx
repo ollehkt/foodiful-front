@@ -6,10 +6,11 @@ import { useUser } from '../../../components/auth/hooks/useUser'
 import { httpRequest } from '../../../components/lib/httpRequest'
 import { api } from '../../../components/axios/axiosInstance'
 import axios, { AxiosError } from 'axios'
-import { emailValidate, passwordValidate } from '../../../components/auth/hooks/useValidate'
+import { useValidate } from '../../../components/auth/hooks/useValidate'
 import useToast from '../../../components/common/hooks/useToast'
 import { useAuth } from '../../../components/auth/hooks/useAuth'
 import usePhoneVerfiy from '../../../components/auth/hooks/usePhoneVerify'
+import { Button } from '../../../components/common/Button'
 
 function SignUp() {
   const { signUp } = useAuth()
@@ -28,6 +29,7 @@ function SignUp() {
   const [verifiedPhone, setVerifiedPhone] = useState(false)
 
   const { sendVerifySms, checkVerifySms, checkExistPhone } = usePhoneVerfiy()
+  const { emailValidate, passwordValidate } = useValidate()
 
   const onClickSignUpBtn = async () => {
     await signUp({ email, name, password, phone })
@@ -63,7 +65,7 @@ function SignUp() {
   }, [phone])
 
   return (
-    <div className="w-[900px] mx-auto mt-[200px] py-[100px] flex flex-col items-center text-3xl border-2 border-main rounded-md">
+    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>회원가입
       <Input
         style=" ml-[38px] w-[300px]"
@@ -79,11 +81,12 @@ function SignUp() {
         style="ml-[64px] w-[300px]"
         name="이름"
         type="text"
-        minLength={3}
+        minLength={2}
         maxLength={10}
         value={name}
         setValue={setName}
         placeholder="이름을 입력해주세요"
+        errorText="2자 이상 10자 이하로 입력해주세요"
       />
       <Input
         style="ml-[24px] w-[300px]"
@@ -161,13 +164,13 @@ function SignUp() {
           <span className="text-main text-xl mt-[20px]">{verifyExpiredTxt}</span>
         )}
       </div>
-      <button
+      <Button
         disabled={!verifiedPhone}
-        className="mt-[40px] border-2 border-main rounded-md text-3xl p-2 disabled:bg-[#999] disabled:text-[#666] disabled:border-0"
+        style="mt-[40px] bg-primary text-[#fff] "
+        title="회원가입"
+        size="md"
         onClick={onClickSignUpBtn}
-      >
-        회원가입
-      </button>
+      />
     </div>
   )
 }
