@@ -38,7 +38,7 @@ export const headerTitle = [
     ],
   },
   {
-    title: '예약 상담',
+    title: '예약 하기',
     url: '/reservation',
   },
 ]

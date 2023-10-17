@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 
-type ToastType = 'warning' | 'failed' | 'success'
+type ToastType = 'warning' | 'failed' | 'success' | 'notice'
 
 export interface Toast {
   id: string

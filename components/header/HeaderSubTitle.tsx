@@ -22,7 +22,7 @@ const HeaderSubTitle = ({ subTitle, activeIdx, setActiveIdx, pathName }: PropsTy
         subTitle.map(({ title, url }) => (
           <Link
             key={`${title}-${url}`}
-            className={`flex items-center w-[200px] h-[36px] hover:text-main hover:bg-[#eee] text-left ${
+            className={`flex items-center w-[200px] h-[36px] hover:text-active hover:bg-[#eee] text-left ${
               pathName.includes(url) ? 'text-main bg-[#fafafa]' : ''
             }`}
             href={url}

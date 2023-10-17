@@ -32,16 +32,14 @@ const HeaderNav = ({ isHeaderOpen }: { isHeaderOpen: boolean }) => {
     <ul className="mx-auto flex justify-between">
       {headerTitle.map(({ title, url, subTitle }, idx) => (
         <div
-          className={`relative h-full px-[30px] flex justify-center items-center ${
-            isHeaderOpen ? 'text-[18px]' : 'text-[15px]'
-          } font-[400]  cursor-pointer`}
+          className={`relative h-full px-[30px] flex justify-center items-center text-[18px] font-[400]  cursor-pointer`}
           key={`${title}-${url}`}
           onMouseEnter={() => handleActiveIdxOnMouseOver(idx)}
           onMouseLeave={() => handleActiveIdxOnMouseLeave()}
         >
           <div
             className={`${activeIdx === idx && 'text-main'} ${
-              pathName?.startsWith(url) ? 'text-main' : 'text-[black]'
+              pathName?.startsWith(url) ? 'text-active' : 'text-[black]'
             }`}
           >
             <Link href={url}>{title}</Link>

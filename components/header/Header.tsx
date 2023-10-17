@@ -41,26 +41,16 @@ function Header({ isHeaderOpen }: PropsType) {
 
   useEffect(() => {}, [])
   return (
-    <div className={`w-full sticky top-0 z-[99999] bg-gradient-to-tl from-[#fbc0ff] to-[#fff]`}>
-      <div
-        className={`w-[90%]  ${
-          isHeaderOpen ? 'h-[100px]' : 'h-[60px]'
-        } mx-auto flex justify-between items-center animate-ease transition-[height]`}
-      >
+    <div className={`w-full sticky top-0 z-[99999] bg-[white] shadow-md`}>
+      <div className={`w-[90%] h-[100px] mx-auto flex justify-between items-center  `}>
         <div className="cursor-pointer mx-[25px] rounded-md overflow-hidden" onClick={onClickLogo}>
-          <Image
-            src="/foodiful.jpeg"
-            alt="logo"
-            width={`${isHeaderOpen ? 72 : 46}`}
-            height={`${isHeaderOpen ? 72 : 46}`}
-            priority
-          />
+          <Image src="/foodiful.jpeg" alt="logo" width={72} height={72} priority />
         </div>
         <HeaderNav isHeaderOpen={isHeaderOpen} />
         {userName ? (
           <>
-            <Link className="text-xl " href="/mypage">
-              <span className="text-main hover:text-[#c81dd4] font-extrabold">{userName}</span> 님
+            <Link className="text-xl" href="/mypage">
+              <span className="text-main hover:text-hover font-extrabold">{userName}</span> 님
             </Link>
             <button
               onClick={signOut}

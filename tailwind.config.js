@@ -16,6 +16,9 @@ module.exports = {
       textDisabled: '#605D5D',
     },
     extend: {
+      boxShadow: {
+        basic: '0 0 8px 0 rgba(0, 0, 0, 0.18)',
+      },
       keyframes: {
         easeInOut: {
           '0%, 100%': { transform: 'translateX(100)' },
@@ -38,6 +41,14 @@ module.exports = {
           '0%': { transform: 'translateY(15px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '100' },
         },
+        translateY100: {
+          '0%': { transform: 'translateY(100px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '100' },
+        },
+        translateYDown: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(100px)' },
+        },
       },
       animation: {
         ease: 'easeInOut 1s ease-in-out',
@@ -45,6 +56,8 @@ module.exports = {
         drop: 'drop .6s ease-in-out',
         left: 'left .6s ease',
         translateUp: 'translateY10 1s ease-in-out',
+        translateUp100: 'translateY100 1s ease-in-out',
+        translateYDown: 'translateDown 1s ease-in-out',
       },
     },
   },

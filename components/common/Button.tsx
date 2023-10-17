@@ -10,9 +10,13 @@ export const Button = ({ title, style, size, disabled, onClick }: PropsType) => 
   return (
     <button
       disabled={disabled}
-      className={`${style} h-[60px] rounded-md ${
-        size == 'lg' ? 'w-[200px]' : size == 'md' ? 'w-[140px]' : 'w-[100px]'
-      } hover:bg-hover disabled:bg-disabled disabled:text-textDisabled`}
+      className={`${style} rounded-md ${
+        size == 'lg'
+          ? 'w-[200px] h-[60px]'
+          : size == 'md'
+          ? 'w-[140px] h-[40px]'
+          : 'w-[100px] h-[30px]'
+      } hover:bg-active disabled:bg-disabled disabled:text-textDisabled`}
       onClick={onClick}
     >
       {title}

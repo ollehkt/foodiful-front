@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
-import { BsFillCircleFill, BsCircle } from 'react-icons/bs'
 
 const MainSlider = ({ imgs }: { imgs: string[] }) => {
   const total = imgs.length - 1
@@ -24,7 +23,7 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
   )
 
   const scrollPrev = () => {
-    if (index <= 0) setIndex((currentIdx) => (currentIdx = total))
+    if (index <= 0) setIndex(total)
     else setIndex((currentIdx) => (currentIdx -= 1))
   }
   const scrollNext = () => {
@@ -49,7 +48,7 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
   }, [index, total])
 
   return (
-    <div className={`flex w-full h-[600px] relative`}>
+    <div className={`flex w-[90%] mx-auto border-[white] rounded-md h-[600px] relative`}>
       <Image src={imgs[index]} alt="img" fill />
 
       <button

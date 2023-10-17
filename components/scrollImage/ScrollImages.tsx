@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { api } from '../axios/axiosInstance'
 import { useGetProducts } from '../product/hooks/useProduct'
-import { ProductReturnType, ProductType } from '../util/types/productTypes'
+import { ProductReturnType, ProductType } from '../../types/productTypes'
 
 import ScrollImageItem from './ScrollImageItem'
 

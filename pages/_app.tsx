@@ -34,7 +34,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <div className="w-full mx-auto">{page}</div>
           </Layout>
         </Provider>
-        <ReactQueryDevtools initialIsOpen={true} />
       </QueryClientProvider>
     ))
 

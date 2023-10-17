@@ -5,9 +5,12 @@ import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { Button } from '../../components/common/Button'
 import { useGetProducts } from '../../components/product/hooks/useProduct'
-import { ProductReturnType, ProductType } from '../../components/util/types/productTypes'
+import { ProductReturnType, ProductType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 
+export const getStaticProps = async () => {
+  return { props: {} }
+}
 /**
  * TODO: getStaticPaths & getStaticProps로 id에 대한 파일 및 id 경로 만들어줘야함.
  */
@@ -30,6 +33,7 @@ function ProductPage() {
     data: { data: products },
     isFetching,
   } = useGetProducts()
+  console.log(products)
 
   return (
     <div>

@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../../../components/common/Button'
-import { VALID_IMAGE_FILE_TYPES } from '../../../components/util/types/fileTypes'
+import { VALID_IMAGE_FILE_TYPES } from '../../../types/fileTypes'
 
 import { api } from '../../../components/axios/axiosInstance'
 import { PRODUCT_CATEGORIES } from '../../../components/constants/product'
-import { CategoryType, ProductType } from '../../../components/util/types/productTypes'
+import { CategoryType, ProductType } from '../../../types/productTypes'
 import getPresignedUrl from '../../../components/common/hooks/usePresignedUrl'
 import axios, { AxiosResponse } from 'axios'
 import useToast from '../../../components/common/hooks/useToast'
@@ -31,7 +31,7 @@ function ProductAddPage() {
     deliver: deliverState,
   })
 
-  const selectCategoryHandler = (clickedTitle: string) => {
+  const onSelectCategory = (clickedTitle: string) => {
     const updateOption = category.map((category) =>
       category.title === clickedTitle
         ? { ...category, isClicked: category.isClicked ? false : true }
@@ -51,7 +51,7 @@ function ProductAddPage() {
     })
   }, [category])
 
-  const changeProductOptionHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeProductOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
     setProduct({ ...product, [name]: value })
   }
@@ -70,7 +70,7 @@ function ProductAddPage() {
         })
 
         const presignedData = await getPresignedUrl(fileTypes, 'product')
-        // console.log(presignedData)
+
         await Promise.all(
           files.map(async (file, idx) => {
             // url을 split을 통해 뽑아낸다
@@ -115,7 +115,7 @@ function ProductAddPage() {
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                   <input
                     type="text"
-                    onChange={(e) => changeProductOptionHandler(e)}
+                    onChange={(e) => onChangeProductOption(e)}
                     name="name"
                     id="product-name"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -135,7 +135,7 @@ function ProductAddPage() {
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                   <input
                     type="number"
-                    onChange={(e) => changeProductOptionHandler(e)}
+                    onChange={(e) => onChangeProductOption(e)}
                     name="price"
                     id="product-name"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -155,7 +155,7 @@ function ProductAddPage() {
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                   <input
                     type="number"
-                    onChange={(e) => changeProductOptionHandler(e)}
+                    onChange={(e) => onChangeProductOption(e)}
                     name="discount"
                     id="product-name"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
@@ -174,7 +174,7 @@ function ProductAddPage() {
               <div className="mt-2">
                 <input
                   type="text"
-                  onChange={(e) => changeProductOptionHandler(e)}
+                  onChange={(e) => onChangeProductOption(e)}
                   name="description"
                   id="product-description"
                   placeholder="상품 설명을 입력해주세요."
@@ -197,7 +197,7 @@ function ProductAddPage() {
                       className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer ${
                         isClicked ? 'bg-main text-[white]' : ''
                       }`}
-                      onClick={() => selectCategoryHandler(title)}
+                      onClick={() => onSelectCategory(title)}
                     >
                       {title}
                     </span>

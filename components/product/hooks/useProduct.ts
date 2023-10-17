@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
-import { ProductType } from '../../util/types/productTypes'
+import { ProductType } from '../../../types/productTypes'
 import { getStoredUser } from '../../util/userStorage'
 
 type ProductInfo = ReturnType<typeof useGetProducts>

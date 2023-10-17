@@ -28,7 +28,7 @@ export const Input = ({
   isPhoneInputDisabled,
   validate,
 }: PropsType) => {
-  const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
   }
   const [isValid, setIsValid] = useState(false)
@@ -39,12 +39,11 @@ export const Input = ({
     if (minLength && maxLength) {
       if (String(value).length >= minLength && String(value).length <= maxLength) {
         setIsValid(true)
-        console.log(value)
       } else {
         setIsValid(false)
       }
     }
-  }, [value])
+  }, [minLength, maxLength, value])
 
   useEffect(() => {
     if (validate && validate(value)) setIsValid(true)
@@ -73,7 +72,7 @@ export const Input = ({
         maxLength={maxLength}
         value={value}
         disabled={isPhoneInputDisabled}
-        onChange={(e) => changeInputHandler(e)}
+        onChange={(e) => onChangeInput(e)}
       />
       {isBlur && !isValid ? (
         <div className="text-[#f00] text-lg absolute right-0">{errorText}</div>

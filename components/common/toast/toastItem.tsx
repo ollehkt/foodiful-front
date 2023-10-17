@@ -63,6 +63,20 @@ const ToastItem = ({ message, type, timer, position }: Toast) => {
           <div className="p-3 break-words text-[white] text-center">{message}</div>
         </div>
       )}
+      {viewToast && type == 'notice' && (
+        <div
+          className={`w-60 mx-auto text-sm bg-main rounded-md   
+          ${position === 'bottom' && 'animate-toast'}
+          ${position === 'top' && 'animate-drop'}`}
+        >
+          <div className=" flex justify-center items-cente">
+            <IoWarningOutline size={25} color="white" />
+            <p className="text-[white] opacity-90 text-lg mx-2">NOTICE!</p>
+          </div>
+
+          <div className="p-3 break-words text-[white] text-center">{message}</div>
+        </div>
+      )}
     </div>
   )
 }
