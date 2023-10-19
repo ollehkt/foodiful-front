@@ -1,20 +1,35 @@
 import { AxiosResponse } from 'axios'
-import dayjs from 'dayjs'
-import { useAtom } from 'jotai'
-import React, { useEffect, useState } from 'react'
+import { InferGetServerSidePropsType } from 'next'
+import React, { useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
 import Container from '../../components/common/Container'
-import useToast from '../../components/common/hooks/useToast'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
 import { ClassType } from '../../types/classTypes'
+import { ReservationTypes } from '../../types/reservationTypes'
 
-const Reservation = () => {
+// class 및 예약 내역 서버사이드 프롭으로 받아오기
+
+export const getServerSideProps = async () => {
+  const {
+    data: { data: classes },
+  } = await api<AxiosResponse<ClassType[]>>('/class')
+  const {
+    data: { data: reservations },
+  } = await api<AxiosResponse<ReservationTypes[]>>('/reservation/all')
+  const reservedTimes = reservations.flatMap((reserve) => reserve.reserveDate)
+  return {
+    props: { classes, reservedTimes },
+  }
+}
+
+const Reservation = ({
+  classes,
+  reservedTimes,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isClassSelectModalOpen, setIsClassSelectModalOpen] = useState(false)
   const [isTimeTableModalOpen, setIsTimeTableModalOpen] = useState(false)
-  const { fireToast } = useToast()
-  const [classes, setClasses] = useState<{ id: number; name: string; classDuration: number }[]>([])
   const [selectedClass, setSelectedClass] = useState<{
     id: number
     name: string
@@ -24,52 +39,6 @@ const Reservation = () => {
     name: '',
     classDuration: 0,
   })
-
-  const [reservedTimes, setReservedTimes] = useState<string[]>([])
-
-  const getReservationByClassId = async (classId: number) => {
-    try {
-      const {
-        data: { data },
-      } = await api<AxiosResponse<ClassType & { reservedData: string[] }>>(
-        `/reservation?class_id=${classId}`
-      )
-      setReservedTimes(data.reservedData)
-    } catch (error) {}
-  }
-
-  const getClasses = async () => {
-    try {
-      const {
-        data: { data },
-      } = await api<AxiosResponse<ClassType[]>>('/class')
-      setClasses(
-        data.map((item: ClassType) => ({
-          id: item.id,
-          name: item.name,
-          classDuration: item.classDuration,
-        }))
-      )
-    } catch (error) {
-      fireToast({
-        id: '클래스 불러오기 실패',
-        position: 'bottom',
-        timer: 1000,
-        type: 'failed',
-        message: '클래스들을 불러오는데 실패했습니다.',
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (selectedClass.id > 0) getReservationByClassId(selectedClass.id)
-
-    // 선택된 클래스로 클래스 예약 정보 호출
-  }, [selectedClass])
-
-  useEffect(() => {
-    getClasses()
-  }, [])
 
   return (
     <div

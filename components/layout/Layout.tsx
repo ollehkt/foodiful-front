@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
-import Header from '../header/Header'
+import Footer from '../common/footer/Footer'
+import Header from '../common/header/Header'
 
 const Layout = ({ children }: { children: ReactElement }) => {
   const [isHeaderOpen, setIsHeaderOpen] = useState(true)
@@ -38,6 +39,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
     <>
       <Header isHeaderOpen={isHeaderOpen} />
       <div className="w-full mx-auto">{children}</div>
+      <Footer />
     </>
   )
 }

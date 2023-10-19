@@ -8,6 +8,7 @@ import Container from '../components/common/Container'
 import { api } from '../components/axios/axiosInstance'
 import { ProductReturnType } from '../types/productTypes'
 import Channel from '../components/main/channel/Channel'
+import ProductList from '../components/product/ProductList'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const {
@@ -23,16 +24,18 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
   useEffect(() => {
     const storedUser = getStoredUser()
     const user = async () => {
-      const res = await getUser(storedUser)
+      await getUser(storedUser)
     }
-    // user()
+    user()
   }, [])
 
   return (
     <>
       <div className="relative w-full">
         <MainSlider imgs={['/photo0.jpeg', '/foodiful.jpeg']} />
-        <Container>{<ScrollImageLists products={data} />}</Container>
+        <Container>
+          <ProductList products={data} />
+        </Container>
         <Channel />
       </div>
     </>

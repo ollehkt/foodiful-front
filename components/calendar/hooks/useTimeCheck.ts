@@ -22,6 +22,7 @@ export const useTimeCheck = () => {
           .subtract(classDuration, 'minutes')
           .format('HH:mm')} 이전 시간으로 예약 해주세요.`,
       })
+      return null
     }
 
     if (dayjs(reservedTime).isBetween(dayjs(time), dayjs(addedTime))) {
@@ -32,6 +33,7 @@ export const useTimeCheck = () => {
         type: 'failed',
         message: '이미 예약 된 시간과 겹칩니다.',
       })
+      return null
     } else return addedTime
   }
   return { reserveTimeCheck }

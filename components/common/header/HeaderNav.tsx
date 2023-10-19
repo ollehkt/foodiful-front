@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useGetUrlParams } from '../common/hooks/useGetUrlParams'
-import useMouseState from '../common/hooks/useMouseState'
-import { headerTitle } from '../constants/headerTitle'
+import { useGetUrlParams } from '../hooks/useGetUrlParams'
+import useMouseState from '../hooks/useMouseState'
+import { headerTitle } from '../../constants/headerTitle'
 import HeaderSubTitle from './HeaderSubTitle'
 
 const HeaderNav = ({ isHeaderOpen }: { isHeaderOpen: boolean }) => {

@@ -10,7 +10,7 @@ dayjs.extend(isSameOrBefore)
 interface PropsType {
   isTimeTableModalOpen: boolean
   setIsTimeTableModalOpen: Dispatch<SetStateAction<boolean>>
-  reservedTimes: string[]
+  reservedTimes: string[] | []
   selectedClass: { id: number; name: string; classDuration: number }
 }
 

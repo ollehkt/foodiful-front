@@ -30,7 +30,7 @@ export const useAuth = (): UseAuth => {
           message: '로그인이 완료되었습니다.',
           timer: 1000,
         })
-        setStoreUser(res.data.user)
+        setStoreUser(res.data.data.user)
         router.push('/')
       }
     } catch (error) {

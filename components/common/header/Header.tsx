@@ -2,10 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth } from '../auth/hooks/useAuth'
-import { useUser } from '../auth/hooks/useUser'
-import { LOCALSTORAGE_KEY } from '../constants/localStorageKey'
-import { getStoredUser } from '../util/userStorage'
+import { useAuth } from '../../auth/hooks/useAuth'
+import { useUser } from '../../auth/hooks/useUser'
+import { LOCALSTORAGE_KEY } from '../../constants/localStorageKey'
+import { getStoredUser } from '../../util/userStorage'
 import HeaderNav from './HeaderNav'
 
 interface PropsType {
@@ -24,6 +24,7 @@ function Header({ isHeaderOpen }: PropsType) {
   const handleRouteChange = useCallback(() => {
     const user = getStoredUser()
     if (user) setUserName(user.name)
+    else setUserName('')
   }, [])
 
   useEffect(() => {

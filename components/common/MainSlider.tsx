@@ -48,8 +48,8 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
   }, [index, total])
 
   return (
-    <div className={`flex w-[90%] mx-auto border-[white] rounded-md h-[600px] relative`}>
-      <Image src={imgs[index]} alt="img" fill />
+    <div className={`flex w-[90%] mb-[100px] mx-auto border-[white] rounded-md h-[600px] relative`}>
+      <Image src={imgs[index]} alt="slider-image" fill />
 
       <button
         name="left"

@@ -1,19 +1,12 @@
-import { InferGetStaticPropsType } from 'next'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { api } from '../axios/axiosInstance'
-import { useGetProducts } from '../product/hooks/useProduct'
-import { ProductReturnType, ProductType } from '../../types/productTypes'
+import { ProductReturnType } from '../../types/productTypes'
 
 import ScrollImageItem from './ScrollImageItem'
 
 const arr = ['/photo0.jpeg']
 
 const ScrollImageLists = ({ products }: { products: ProductReturnType[] }) => {
-  console.log(products)
-
   return (
-    <div className="my-[80px] grid xl:grid-cols-3 sm:grid-cols-2 gap-8">
+    <div className="my-[80px] grid xl:grid-cols-4 sm:grid-cols-2 gap-8">
       {products &&
         products.map(({ categories, name, descImg, price, discount, id }: ProductReturnType) => (
           <ScrollImageItem

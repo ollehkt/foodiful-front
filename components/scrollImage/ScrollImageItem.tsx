@@ -21,7 +21,7 @@ const ScrollImageItem = ({ src, name, categories, price, discount, id }: PropsTy
           src={src}
           alt="image"
           layout="fill"
-          objectFit="cover" /**cover 쓸지 contain 쓸지 or 사진 사이즈를 지정해서 사진이 깨지지 않게 할지? */
+          objectFit="contain" /**cover 쓸지 contain 쓸지 or 사진 사이즈를 지정해서 사진이 깨지지 않게 할지? */
         />
       </div>
       <div className="flex flex-col">

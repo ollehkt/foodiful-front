@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { SubTitle } from '../constants/headerTitle'
+import { SubTitle } from '../../constants/headerTitle'
 
 interface PropsType {
   subTitle: SubTitle[]
@@ -16,7 +16,7 @@ const HeaderSubTitle = ({ subTitle, activeIdx, setActiveIdx, pathName }: PropsTy
     <ul
       className={`absolute top-[40px] ${
         activeIdx === 3 ? 'right-[-80px]' : 'left-0'
-      }  w-[240px] p-[20px] flex flex-col border-[1px] bg-[white] border-[##eeeeee] shadow-[0_6px_28px_rgba(0,0,0,.08)] rounded-[10px]`}
+      }  w-[240px] p-[20px] flex flex-col  bg-[white] shadow-basic rounded-[10px]`}
     >
       {subTitle &&
         subTitle.map(({ title, url }) => (

@@ -6,6 +6,7 @@ export interface ClassType {
   classDuration: number
   descImg: string[]
   id: number
+  regular: boolean
 }
 
 export type ClassReturnType = {

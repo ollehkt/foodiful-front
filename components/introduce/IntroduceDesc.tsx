@@ -13,7 +13,10 @@ const IntroduceDesc = ({ descs }: PropsType) => {
       {descs.map(
         ({ title, desc, img }: { title: string; desc: string; img: string }, idx: number) => (
           <>
-            <div className={`${(idx + 1) % 2 === 0 && 'order-last'}`} key={`${title}-${img}`}>
+            <div
+              className={`${(idx + 1) % 2 === 0 && 'order-last'}`}
+              key={`${title}-${img}-${idx}`}
+            >
               <StrongTitle title={title} style="my-[20px]" />
               <div className="font-semibold text-xl">{desc}</div>
             </div>
