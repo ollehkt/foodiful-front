@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -9,7 +10,7 @@ interface PropsType {
 }
 
 const ProductItem = ({ product, idx }: PropsType) => {
-  const { name, id, descImg, price, discount } = product
+  const { name, id, descImg, price, discount, quantity, description, subTitle } = product
   return (
     <>
       <Link key={`${name}-${idx}`} className="flex flex-col cursor-pointer" href={`/product/${id}`}>

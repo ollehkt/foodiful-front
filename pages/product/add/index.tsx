@@ -4,7 +4,6 @@ import { PRODUCT_CATEGORIES } from '../../../components/constants/product'
 import { CategoryType, ProductType } from '../../../types/productTypes'
 
 import { useAddProduct } from '../../../components/product/hooks/useProduct'
-import ToastEditor from '../../../components/common/editor/ToastEditor'
 import dynamic from 'next/dynamic'
 import { useGetPresignedUrl } from '../../../components/common/hooks/useGetPresignedUrl'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
