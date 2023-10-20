@@ -5,9 +5,11 @@ export interface CategoryType {
 
 export interface ProductType {
   name: string
+  subTitle: string
   description: string
   price: number
   discount: number
+  quantity: number
   descImg: string[]
   categories: CategoryType[] | string[]
   deliver: boolean

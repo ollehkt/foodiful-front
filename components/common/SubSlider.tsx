@@ -38,13 +38,13 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
 
   return (
     <div className="flex relative ml-[30px] justify-between">
-      <div className="my-[10px] mx-auto overflow-hidden relative rounded-md ">
+      <div className="my-[10px] mx-auto overflow-hidden relative">
         <Image
           src={items[currentSlide]}
           alt="메인 사진"
-          width={400}
+          width={450}
           height={400}
-          className="w-[400px] h-[400px] object-contain"
+          className="w-[450px] h-[400px] rounded-md"
         />
         <div className="w-[450px] h-[120px] mt-2">
           <ul ref={ulRef} className="flex absolute overflow-x-scroll gap-2">
@@ -74,12 +74,12 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
           <BsFillArrowLeftCircleFill
             size={btnSize}
             onClick={onClickLeftBtn}
-            className="text-main absolute z-[99999] bottom-[60px] left-[-25px] cursor-pointer"
+            className="text-main absolute z-[99999] bottom-[60px] left-[-25px] cursor-pointer hover:text-active"
           />
           <BsFillArrowRightCircleFill
             size={btnSize}
             onClick={onClickRightBtn}
-            className="text-main absolute z-[99999] bottom-[60px] right-[-25px] cursor-pointer"
+            className="text-main absolute z-[99999] bottom-[60px] right-[-25px] cursor-pointer hover:text-active"
           />
         </>
       )}

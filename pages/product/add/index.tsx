@@ -1,31 +1,37 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Button } from '../../../components/common/Button'
-import { VALID_IMAGE_FILE_TYPES } from '../../../types/fileTypes'
-
-import { api } from '../../../components/axios/axiosInstance'
 import { PRODUCT_CATEGORIES } from '../../../components/constants/product'
 import { CategoryType, ProductType } from '../../../types/productTypes'
-import getPresignedUrl from '../../../components/common/hooks/usePresignedUrl'
-import axios, { AxiosResponse } from 'axios'
-import useToast from '../../../components/common/hooks/useToast'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
-import Image from 'next/image'
+
 import { useAddProduct } from '../../../components/product/hooks/useProduct'
+import ToastEditor from '../../../components/common/editor/ToastEditor'
+import dynamic from 'next/dynamic'
+import { useGetPresignedUrl } from '../../../components/common/hooks/useGetPresignedUrl'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { VALID_IMAGE_FILE_TYPES } from '../../../types/fileTypes'
+import Image from 'next/image'
+import { Button } from '../../../components/common/Button'
+const DynamicEditor = dynamic(() => import('../../../components/common/editor/ToastEditor'), {
+  ssr: false,
+})
 
 function ProductAddPage() {
   const [files, setFiles] = useState<File[]>()
+
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [deliverState, setDeliverState] = useState(false)
-  const { fireToast } = useToast()
+
+  const { getPresignedUrlByFiles } = useGetPresignedUrl()
 
   const { addProductMutate, isLoading: isAddProductLoading } = useAddProduct()
 
   const [product, setProduct] = useState<ProductType>({
     name: '',
+    subTitle: '',
     description: '',
     price: 0,
     discount: 0,
+    quantity: 0,
     descImg: [],
     categories: [],
     deliver: deliverState,
@@ -62,41 +68,14 @@ function ProductAddPage() {
     }
   }
 
-  const getPresignedUrlByFiles = async () => {
-    try {
-      if (files) {
-        const fileTypes = files.map((file) => {
-          return file.type
-        })
-
-        const presignedData = await getPresignedUrl(fileTypes, 'product')
-
-        await Promise.all(
-          files.map(async (file, idx) => {
-            // url을 split을 통해 뽑아낸다
-            const url = presignedData[idx].split('?')[0]
-            await axios.put(url, file, {
-              headers: { 'Content-Type': file.type },
-            })
-            return url
-          })
-        ).then((urls) => {
-          setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-        })
-      }
-    } catch (error) {
-      fireToast({
-        id: 'presign url',
-        type: 'failed',
-        position: 'bottom',
-        message: '사진을 다시 업로드 해주세요.',
-        timer: 2000,
-      })
-    }
-  }
-
   useEffect(() => {
-    getPresignedUrlByFiles()
+    const getPresignedUrls = async () => {
+      if (files) {
+        const urls = await getPresignedUrlByFiles(files, 'product')
+        if (urls) setProduct({ ...product, descImg: [...product.descImg, ...urls] })
+      }
+    }
+    getPresignedUrls()
   }, [files])
 
   return (
@@ -126,7 +105,7 @@ function ProductAddPage() {
             </div>
             <div className="sm:col-span-4">
               <label
-                htmlFor="product-name"
+                htmlFor="product-price"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 상품 가격
@@ -137,16 +116,16 @@ function ProductAddPage() {
                     type="number"
                     onChange={(e) => onChangeProductOption(e)}
                     name="price"
-                    id="product-name"
+                    id="product-price"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 이름을 입력해주세요."
+                    placeholder="상품 가격을 숫자로 입력해주세요."
                   />
                 </div>
               </div>
             </div>
             <div className="sm:col-span-4">
               <label
-                htmlFor="product-name"
+                htmlFor="product-discount"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 할인율
@@ -157,27 +136,47 @@ function ProductAddPage() {
                     type="number"
                     onChange={(e) => onChangeProductOption(e)}
                     name="discount"
-                    id="product-name"
+                    id="product-discount"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 이름을 입력해주세요."
+                    placeholder="상품 할인율을 숫자로 입력해주세요."
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <label
+                htmlFor="product-quantity"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                상품 수량
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="number"
+                    onChange={(e) => onChangeProductOption(e)}
+                    name="quantity"
+                    id="product-quantity"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="상품 수량을 숫자로 입력해주세요."
                   />
                 </div>
               </div>
             </div>
             <div className="col-span-full">
               <label
-                htmlFor="product-description"
+                htmlFor="product-sub-title"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                상품 설명
+                상품 간단 설명
               </label>
               <div className="mt-2">
                 <input
                   type="text"
                   onChange={(e) => onChangeProductOption(e)}
-                  name="description"
-                  id="product-description"
-                  placeholder="상품 설명을 입력해주세요."
+                  name="subTitle"
+                  id="product-sub-title"
+                  placeholder="상품의 간단한 설명을 입력해주세요."
                   className="block w-full rounded-md border-0 pl-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -216,14 +215,14 @@ function ProductAddPage() {
                 <div className="flex">
                   <span
                     onClick={() => setDeliverState(true)}
-                    className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer 
+                    className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
                          ${deliverState ? 'bg-main text-[white]' : ''}`}
                   >
                     배달 가능
                   </span>
                   <span
                     onClick={() => setDeliverState(false)}
-                    className={`mx-2 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer 
+                    className={`mx-2 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
                     ${!deliverState ? 'bg-main text-[white]' : ''}`}
                   >
                     배달 불가능
@@ -237,7 +236,7 @@ function ProductAddPage() {
                 htmlFor="cover-photo"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                이미지
+                상품 이미지
               </label>
               <div className="mt-2 flex justify-start">
                 <label
@@ -274,6 +273,15 @@ function ProductAddPage() {
                 </div>
               )}
             </div>
+            <div className="col-span-full">
+              <label
+                htmlFor="cover-photo"
+                className="block text-sm font-medium leading-6 text-gray-900 mb-4"
+              >
+                상품 상세 설명
+              </label>
+              <DynamicEditor product={product} setProduct={setProduct} />
+            </div>
           </div>
         </div>
       </div>
@@ -288,7 +296,7 @@ function ProductAddPage() {
         <Button
           onClick={() => {}}
           title="취소"
-          style="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          style="rounded-md bg-indigo-600 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         />
       </div>
     </div>

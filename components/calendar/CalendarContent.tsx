@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
@@ -63,7 +63,6 @@ const CalendarContent = ({
         reserveDate: selectedTimes,
         userEmail: userData.email,
       })
-
     } catch (error) {
       fireToast({
         id: '예약 실패',
