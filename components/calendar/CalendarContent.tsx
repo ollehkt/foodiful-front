@@ -63,6 +63,17 @@ const CalendarContent = ({
         reserveDate: selectedTimes,
         userEmail: userData.email,
       })
+
+      if (data) {
+        fireToast({
+          id: '예약 성공',
+          position: 'bottom',
+          timer: 1000,
+          message: '예약이 성공적으로 이루어졌습니다.',
+          type: 'success',
+        })
+        router.push('/')
+      }
     } catch (error) {
       fireToast({
         id: '예약 실패',

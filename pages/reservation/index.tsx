@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { InferGetServerSidePropsType } from 'next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
 import Container from '../../components/common/Container'
@@ -30,6 +30,7 @@ const Reservation = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isClassSelectModalOpen, setIsClassSelectModalOpen] = useState(false)
   const [isTimeTableModalOpen, setIsTimeTableModalOpen] = useState(false)
+  const [selectedClassName, setSelectedClassName] = useState('')
   const [selectedClass, setSelectedClass] = useState<{
     id: number
     name: string
@@ -40,10 +41,21 @@ const Reservation = ({
     classDuration: 0,
   })
 
+  useEffect(() => {
+    if (selectedClassName) {
+      const filteredClass = classes
+        .filter((item) => item.name === selectedClassName)
+        .map((item) => {
+          return { id: item.id, name: item.name, classDuration: item.classDuration }
+        })
+      setSelectedClass(filteredClass[0])
+    }
+  }, [selectedClassName])
+
   return (
     <div
       className="w-full h-screen"
-      onClick={(e) => {
+      onClick={() => {
         isClassSelectModalOpen && setIsClassSelectModalOpen(false)
       }}
     >
@@ -58,10 +70,10 @@ const Reservation = ({
         >
           <div className="text-2xl font-bold">클래스 선택하기</div>
           {classes.length > 0 && (
-            <Select
-              options={classes}
-              selected={selectedClass}
-              setSelected={setSelectedClass}
+            <Select<string>
+              options={classes.map((item) => item.name)}
+              selected={selectedClassName}
+              setSelected={setSelectedClassName}
               isSelectedModalOpen={isClassSelectModalOpen}
               setIsSelectedModalOpen={setIsClassSelectModalOpen}
             />
