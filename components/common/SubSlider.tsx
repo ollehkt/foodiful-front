@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs'
 
 interface PropsType {
   items: string[]
@@ -47,7 +47,7 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
           className="w-[450px] h-[400px] rounded-md"
         />
         <div className="w-[450px] h-[120px] mt-2">
-          <ul ref={ulRef} className="flex absolute overflow-x-scroll gap-2">
+          <ul ref={ulRef} className="flex absolute overflow-hidden gap-[10px]">
             {items.length > 0 &&
               items.map((item, idx) => (
                 <li
@@ -71,15 +71,15 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
       </div>
       {btn && (
         <>
-          <BsFillArrowLeftCircleFill
+          <BsFillArrowLeftSquareFill
             size={btnSize}
             onClick={onClickLeftBtn}
-            className="text-main absolute z-[99999] bottom-[60px] left-[-25px] cursor-pointer hover:text-active"
+            className="text-main absolute z-[99999] top-[460px] left-[-30px] cursor-pointer hover:text-active"
           />
-          <BsFillArrowRightCircleFill
+          <BsFillArrowRightSquareFill
             size={btnSize}
             onClick={onClickRightBtn}
-            className="text-main absolute z-[99999] bottom-[60px] right-[-25px] cursor-pointer hover:text-active"
+            className="text-main absolute z-[99999] top-[460px] right-[-30px] cursor-pointer hover:text-active"
           />
         </>
       )}

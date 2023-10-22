@@ -47,6 +47,7 @@ const AmountCounter = ({ amount, setAmount, limit }: PropsType) => {
     }
     setAmount((amount) => amount + 1)
   }
+
   const onClickMinus = () => {
     if (amount <= 1) return
     setAmount((amount) => amount - 1)
@@ -88,8 +89,10 @@ const AmountCounter = ({ amount, setAmount, limit }: PropsType) => {
         />
       </div>
       <div
-        className={`w-[34px] h-[34px] border rounded-md cursor-pointer flex justify-center items-center ${
-          amount === limit ? 'cursor-not-allowed' : ' hover:text-[white] hover:bg-main'
+        className={`w-[34px] h-[34px] border rounded-md flex justify-center items-center ${
+          amount === limit
+            ? 'cursor-not-allowed'
+            : 'cursor-pointer hover:text-[white] hover:bg-main'
         }`}
         onClick={onClickPlus}
       >

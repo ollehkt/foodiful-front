@@ -76,6 +76,7 @@ const Reservation = ({
               setSelected={setSelectedClassName}
               isSelectedModalOpen={isClassSelectModalOpen}
               setIsSelectedModalOpen={setIsClassSelectModalOpen}
+              toastMsg="아래로 스크롤 해 모든 클래스를 보실 수 있습니다."
             />
           )}
         </div>

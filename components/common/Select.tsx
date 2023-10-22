@@ -9,6 +9,7 @@ interface PropsType<T> {
   setSelected: Dispatch<SetStateAction<T>>
   isSelectedModalOpen: boolean
   setIsSelectedModalOpen: Dispatch<SetStateAction<boolean>>
+  toastMsg?: string
 }
 
 const Select = <T extends string | number>({
@@ -17,6 +18,7 @@ const Select = <T extends string | number>({
   setSelected,
   isSelectedModalOpen,
   setIsSelectedModalOpen,
+  toastMsg,
 }: PropsType<T>) => {
   const onSelectOption = (option: T) => {
     setSelected(option)
@@ -28,13 +30,14 @@ const Select = <T extends string | number>({
       <div
         className="h-full flex justify-between items-center mx-[10px] text-main font-bold cursor-pointer hover:text-active"
         onClick={() => {
-          fireToast({
-            id: '클래스 선택 모달 오픈',
-            position: 'bottom',
-            timer: 3000,
-            message: '아래로 스크롤 해서 모든 클래스를 보실 수 있습니다.',
-            type: 'notice',
-          })
+          toastMsg &&
+            fireToast({
+              id: `${toastMsg} 모달 오픈`,
+              position: 'bottom',
+              timer: 3000,
+              message: toastMsg,
+              type: 'notice',
+            })
           setIsSelectedModalOpen((prev: boolean) => !prev)
         }}
       >
