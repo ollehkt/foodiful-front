@@ -32,6 +32,14 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
       if (data) setProduct({ ...product, description: data })
     }, 1500)
   }
+  const changeATag = () => {
+    if (editorRef.current) {
+      const html = editorRef.current?.getInstance().getEditorElements()
+      const aTags = html.wwEditor.querySelectorAll('a')
+      aTags.forEach((tag) => tag.setAttribute('target', '_blank'))
+    }
+  }
+
   return (
     <Editor
       ref={editorRef}
@@ -44,6 +52,7 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
       onChange={onChangeText}
       language="ko-KR"
       hooks={{ addImageBlobHook: onUploadImage }}
+      onBlur={changeATag}
     />
   )
 }

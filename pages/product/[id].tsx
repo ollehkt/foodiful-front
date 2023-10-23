@@ -23,7 +23,7 @@ const ProductDetailPage = ({ product }: InferGetServerSidePropsType<typeof getSe
 
   return (
     <div
-      className="mt-8 flex flex-col items-center xl:w-[1080px] mx-auto"
+      className="mt-8 flex flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
       onClick={() => {
         isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
       }}

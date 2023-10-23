@@ -15,12 +15,49 @@ const DynamicEditor = dynamic(() => import('../../../components/common/editor/To
 })
 
 function ProductAddPage() {
-  const [files, setFiles] = useState<File[]>()
-
+  const [files, setFiles] = useState<File[]>([])
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [deliverState, setDeliverState] = useState(false)
 
+  const [imagesSrc, setImagesSrc] = useState<ArrayBuffer[]>([])
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filesArr = event.target.files
+    if (filesArr) setFiles([...files, ...Array.from(filesArr)])
+
+    if (filesArr) {
+      let fileReaderPromises = []
+      let newSelectedFiles = []
+      for (let i = 0; i < filesArr.length; i++) {
+        newSelectedFiles.push(filesArr[i])
+        fileReaderPromises.push(readAsDataURL(filesArr[i]))
+      }
+
+      Promise.all(fileReaderPromises).then((newImagesSrc: any) => {
+        setImagesSrc([...imagesSrc, ...newImagesSrc])
+      })
+    } else {
+      setImagesSrc([])
+    }
+  }
+
+  function readAsDataURL(file: Blob) {
+    return new Promise((resolve, reject) => {
+      var reader = new FileReader()
+      reader.onload = function (event) {
+        resolve(event?.target?.result)
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
+  const setPresignedUrl = async () => {
+    if (files) {
+      const urls = await getPresignedUrlByFiles(files, 'product')
+      if (urls) setProduct({ ...product, descImg: [...product.descImg, ...urls] })
+    }
+  }
 
   const { addProductMutate, isLoading: isAddProductLoading } = useAddProduct()
 
@@ -61,21 +98,16 @@ function ProductAddPage() {
     setProduct({ ...product, [name]: value })
   }
 
-  const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(Array.from(e.target.files))
-    }
-  }
-
-  useEffect(() => {
-    const getPresignedUrls = async () => {
-      if (files) {
-        const urls = await getPresignedUrlByFiles(files, 'product')
-        if (urls) setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-      }
-    }
-    getPresignedUrls()
-  }, [files])
+  console.log(imagesSrc)
+  // useEffect(() => {
+  //   const getPresignedUrls = async () => {
+  //     if (files) {
+  //       const urls = await getPresignedUrlByFiles(files, 'product')
+  //       if (urls) setProduct({ ...product, descImg: [...product.descImg, ...urls] })
+  //     }
+  //   }
+  //   getPresignedUrls()
+  // }, [files])
 
   return (
     <div className="mx-4">
@@ -254,7 +286,7 @@ function ProductAddPage() {
                   />
                 </label>
               </div>
-              {product.descImg.length > 0 && (
+              {/* {product.descImg.length > 0 && (
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
                   <div className="p-2 flex justify-between overflow-x-scroll">
                     {product.descImg.length > 0 &&
@@ -268,6 +300,22 @@ function ProductAddPage() {
                           className="mx-4 rounded-md"
                         />
                       ))}
+                  </div>
+                </div>
+              )} */}
+              {imagesSrc.length > 0 && (
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                  <div className="p-2 flex justify-between overflow-x-scroll">
+                    {imagesSrc.map((img, idx) => (
+                      <img
+                        key={`${img}-${idx}`}
+                        src={img.toString()}
+                        alt="사진 이미지"
+                        width={400}
+                        height={400}
+                        className="mx-4 rounded-md"
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -287,7 +335,10 @@ function ProductAddPage() {
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Button
-          onClick={() => addProductMutate(product)}
+          onClick={async () => {
+            await setPresignedUrl()
+            addProductMutate(product)
+          }}
           style="text-sm font-semibold leading-6 text-gray-900"
           title="올리기"
         />

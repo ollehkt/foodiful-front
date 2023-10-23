@@ -4,10 +4,8 @@ import { ProductReturnType } from '../../types/productTypes'
 import AmountCounter from '../common/AmountCounter'
 import Select from '../common/Select'
 import SubSlider from '../common/SubSlider'
-
-const DynamicViewer = dynamic(() => import('../common/editor/ToastViewer'), {
-  ssr: false,
-})
+import ProductDetailDesc from './ProductDetailDesc'
+import ProductDetailReview from './ProductDetailReview'
 
 interface PropsType {
   product: ProductReturnType
@@ -29,9 +27,11 @@ const ProductDetail = ({
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
 
   const [totalPrice, setTotalPrice] = useState(0)
+
+  const [viewDescTab, setViewDescTab] = useState(0)
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
-  }, [isAdditionalSelected, productQuantities])
+  }, [isAdditionalSelected, productQuantities, price])
 
   useEffect(() => {
     setTotalPrice(displayPrice + additionalQuantities * 5000)
@@ -121,8 +121,30 @@ const ProductDetail = ({
           </div>
         </div>
       </div>
-
-      <DynamicViewer content={description} />
+      {/** tab */}
+      <div className="w-full h-[80px] flex justify-center items-center my-[40px]">
+        <div
+          className={`w-[50%] flex justify-center cursor-pointer ${
+            viewDescTab === 0
+              ? 'border-b-main border-b-2 text-main font-bold'
+              : 'border-b-disabled border-b-[1px] text-textDisabled'
+          }`}
+          onClick={() => setViewDescTab(0)}
+        >
+          <span className="text-xl py-2">상품 상세 설명</span>
+        </div>
+        <div
+          className={`w-[50%] flex justify-center cursor-pointer ${
+            viewDescTab === 1
+              ? 'border-b-main border-b-2 text-main font-bold'
+              : 'border-b-disabled border-b-[1px] text-textDisabled'
+          }`}
+          onClick={() => setViewDescTab(1)}
+        >
+          <span className="text-xl py-2"> 상품 리뷰</span>
+        </div>
+      </div>
+      {!!viewDescTab ? <ProductDetailReview name={name}/> : <ProductDetailDesc description={description} />}
     </>
   )
 }
