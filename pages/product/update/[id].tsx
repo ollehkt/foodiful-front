@@ -1,12 +1,62 @@
+import { AxiosResponse } from 'axios'
+import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
-import { ProductReturnType } from '../../../types/productTypes'
+import { api } from '../../../components/axios/axiosInstance'
+import useToast from '../../../components/common/hooks/useToast'
+import ProductForm from '../../../components/product/ProductForm'
+import { ProductReturnType, ProductType } from '../../../types/productTypes'
 
 interface PropsType {
   product: ProductReturnType
 }
 
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const {
+    query: { id },
+  } = context
+  const {
+    data: { data: product },
+  } = await api<AxiosResponse<ProductReturnType>>(`/product/${id}`)
+
+  return {
+    props: { product },
+  }
+}
+
 const UpdateProductPage = ({ product }: PropsType) => {
-  return <div>UpdateProductPage</div>
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const updateProduct = async (product: ProductType, id?: number) => {
+    try {
+      const {
+        data: { data },
+      } = await api.patch(`/product/${id}`, {
+        ...product,
+      })
+      fireToast({
+        id: '상품 업데이트 성공',
+        type: 'success',
+        position: 'bottom',
+        message: '상품 업데이트에 성공했습니다.',
+        timer: 2000,
+      })
+      router.push(`/product/${id}`)
+    } catch (error) {
+      fireToast({
+        id: '상품 추가 실패',
+        type: 'failed',
+        position: 'bottom',
+        message: '상품 업데이트에 실패했습니다.',
+        timer: 2000,
+      })
+    }
+  }
+  return (
+    <>
+      <ProductForm productForUpdate={product} onSubmit={updateProduct} />
+    </>
+  )
 }
 
 export default UpdateProductPage

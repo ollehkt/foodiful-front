@@ -43,7 +43,9 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
   return (
     <Editor
       ref={editorRef}
-      initialValue="여기에 사진을 포함한 상품 설명을 입력하면 됩니다."
+      initialValue={`${
+        product ? product.description : '여기에 사진을 포함한 상품 설명을 입력하면 됩니다.'
+      }`}
       previewStyle="vertical"
       height="600px"
       initialEditType="wysiwyg"
