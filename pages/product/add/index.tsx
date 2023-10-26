@@ -10,16 +10,28 @@ import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../../types/fileTypes'
 import Image from 'next/image'
 import { Button } from '../../../components/common/Button'
+
+import { AiFillCloseCircle } from 'react-icons/ai'
+import { useUser } from '../../../components/auth/hooks/useUser'
+import { getStoredUser } from '../../../components/util/userStorage'
+import { useRouter } from 'next/router'
+
 const DynamicEditor = dynamic(() => import('../../../components/common/editor/ToastEditor'), {
   ssr: false,
 })
 
 function ProductAddPage() {
+  const { getUser } = useUser()
+  const router = useRouter()
   const [files, setFiles] = useState<File[]>([])
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [deliverState, setDeliverState] = useState(false)
 
   const [imagesSrc, setImagesSrc] = useState<ArrayBuffer[]>([])
+
+  const onClickDeleteFile = (img: string) => {
+    setImagesSrc(imagesSrc.filter((image) => image.toString() !== img))
+  }
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const filesArr = event.target.files
@@ -92,6 +104,17 @@ function ProductAddPage() {
         .map((category) => category.title),
     })
   }, [category])
+
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    ;(async () => {
+      const fetchedUserData = await getUser(storedUser)
+      if (fetchedUserData && fetchedUserData.role !== 'ADMIN') {
+        alert('접근 불가능 합니다.')
+        router.push('/')
+      }
+    })()
+  }, [])
 
   const onChangeProductOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
@@ -307,14 +330,22 @@ function ProductAddPage() {
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
                   <div className="p-2 flex justify-between overflow-x-scroll">
                     {imagesSrc.map((img, idx) => (
-                      <img
-                        key={`${img}-${idx}`}
-                        src={img.toString()}
-                        alt="사진 이미지"
-                        width={400}
-                        height={400}
-                        className="mx-4 rounded-md"
-                      />
+                      <>
+                        <Image
+                          key={`${img}-${idx}`}
+                          src={img.toString()}
+                          alt="사진 이미지"
+                          width={400}
+                          height={400}
+                          className="mx-4 rounded-md"
+                        />
+                        <span
+                          className="cursor-pointer text-main hover:text-[white]"
+                          onClick={() => onClickDeleteFile(img.toString())}
+                        >
+                          <AiFillCloseCircle />
+                        </span>
+                      </>
                     ))}
                   </div>
                 </div>

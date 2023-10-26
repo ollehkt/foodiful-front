@@ -8,6 +8,7 @@ import { useGetProducts } from '../../components/product/hooks/useProduct'
 import { ProductReturnType, ProductType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 export const getStaticProps = async () => {
   return { props: {} }
@@ -17,6 +18,7 @@ export const getStaticProps = async () => {
  */
 
 function ProductPage() {
+  const { getUser } = useUser()
   const [user, setUser] = useState<User | null>(null)
   // const [products, setProducts] = useState([])
   const router = useRouter()
@@ -26,8 +28,11 @@ function ProductPage() {
   }
 
   useEffect(() => {
-    const getUser = getStoredUser()
-    setUser(getUser)
+    const storedUser = getStoredUser()
+    ;(async () => {
+      const fetchedUserData = await getUser(storedUser)
+      setUser(fetchedUserData)
+    })()
   }, [])
 
   const {
@@ -41,11 +46,10 @@ function ProductPage() {
       {/**
        * @Todo: role을 Admin으로 바꿔야함
        */}
-      {user && user.role === 'PUBLIC' && (
+      {user && user.role === 'ADMIN' && (
         <Button style="text-xl" title="Add" onClick={onClickAddBtn} />
       )}
       <div className="bg-white">
-        
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <ProductList products={products} />
         </div>

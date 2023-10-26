@@ -45,17 +45,17 @@ const ProductDetail = ({
           <div className="font-semibold text-3xl">{name}</div>
           <div className="text-textDisabled text-md pb-4 border-b-2 border-main">{subTitle}</div>
           <div className="mt-[10px] flex justify-end items-center gap-x-4">
-            {!discount ? (
+            {discount ? (
               <>
                 <div className="text-textDisabled line-through text-xl">
                   {price.toLocaleString()}원
                 </div>
                 <div className="text-2xl text-main font-bold">
-                  {(price - price / 10).toLocaleString()}원
+                  {(price - price / discount).toLocaleString()}원
                 </div>
               </>
             ) : (
-              <div className="text-2xl">{price.toLocaleString()}원</div>
+              <div className="text-2xl text-main font-bold">{price.toLocaleString()}원</div>
             )}
           </div>
 
@@ -144,7 +144,11 @@ const ProductDetail = ({
           <span className="text-xl py-2"> 상품 리뷰</span>
         </div>
       </div>
-      {!!viewDescTab ? <ProductDetailReview name={name}/> : <ProductDetailDesc description={description} />}
+      {!!viewDescTab ? (
+        <ProductDetailReview name={name} />
+      ) : (
+        <ProductDetailDesc description={description} />
+      )}
     </>
   )
 }

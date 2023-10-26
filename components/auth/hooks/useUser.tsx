@@ -23,6 +23,7 @@ export const useUser = (): any => {
   if (typeof window !== 'undefined') {
     storedUser = getStoredUser()
   }
+  console.log(storedUser)
   const { fireToast } = useToast()
   const getUser = async (storedUser: StoredUser | null) => {
     // user가 없을 경우 return
