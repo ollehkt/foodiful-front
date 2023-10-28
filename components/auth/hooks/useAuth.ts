@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { removeStoredUser, setStoreUser } from '../../util/userStorage'
-import { SignInType, SignUpType } from '../types/user'
+import { PromiseUserType, SignInType, SignUpType } from '../types/user'
 import { useUser } from './useUser'
 
 interface UseAuth {
@@ -18,11 +18,13 @@ export const useAuth = (): UseAuth => {
 
   const signIn = async ({ email, password }: SignInType) => {
     try {
-      const res = await api.post('/auth/login', {
+      const {
+        data: { data, success },
+      } = await api.post<PromiseUserType>('/auth/login', {
         email,
         password,
       })
-      if (res) {
+      if (success) {
         fireToast({
           id: '로그인',
           type: 'success',
@@ -30,7 +32,7 @@ export const useAuth = (): UseAuth => {
           message: '로그인이 완료되었습니다.',
           timer: 1000,
         })
-        setStoreUser(res.data.data.user)
+        setStoreUser(data.user)
         router.push('/')
       }
     } catch (error) {
@@ -92,14 +94,19 @@ export const useAuth = (): UseAuth => {
   }
   const signOut = async () => {
     removeStoredUser()
-    fireToast({
-      id: '로그아웃',
-      type: 'success',
-      position: 'bottom',
-      message: '로그아웃이 완료되었습니다.',
-      timer: 2000,
-    })
-    router.reload()
+    const {
+      data: { success },
+    } = await api.post('/auth/logout')
+    if (success) {
+      fireToast({
+        id: '로그아웃',
+        type: 'success',
+        position: 'bottom',
+        message: '로그아웃이 완료되었습니다.',
+        timer: 2000,
+      })
+      router.reload()
+    }
   }
 
   return { signIn, signUp, signOut }

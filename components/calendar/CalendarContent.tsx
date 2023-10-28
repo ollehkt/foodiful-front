@@ -1,13 +1,13 @@
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { PostReservationType } from '../../types/reservationTypes'
 import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import useToast from '../common/hooks/useToast'
 import { date } from '../constants/date'
-import { LOCALSTORAGE_KEY } from '../constants/localStorageKey'
 import { getStoredUser } from '../util/userStorage'
 import CalendarDatesRender from './CalendarDatesRender'
 import CalendarTimeRender from './CalendarTimeRender'
@@ -58,13 +58,14 @@ const CalendarContent = ({
       return
     }
     try {
-      const { data } = await api.post('/reservation', {
+      const {
+        data: { data, success },
+      } = await api.post<PostReservationType>('/reservation', {
         classId: selectedClass.id,
         reserveDate: selectedTimes,
         userEmail: userData.email,
       })
-
-      if (data) {
+      if (success) {
         fireToast({
           id: '예약 성공',
           position: 'bottom',

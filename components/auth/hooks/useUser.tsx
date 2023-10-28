@@ -23,19 +23,18 @@ export const useUser = (): any => {
   if (typeof window !== 'undefined') {
     storedUser = getStoredUser()
   }
-  console.log(storedUser)
+
   const { fireToast } = useToast()
   const getUser = async (storedUser: StoredUser | null) => {
     // user가 없을 경우 return
     try {
       if (!storedUser) return null
       const {
-        data: { data },
-      }: AxiosResponse<{ data: { user: StoredUser } }> = await api.get('/auth/authenticate', {
+        data: { data: user },
+      }: AxiosResponse<{ data: StoredUser }> = await api.get('/auth/authenticate', {
         headers: { Authorization: `Bearer ${storedUser.token}` },
       })
-
-      return data.user
+      return user
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {

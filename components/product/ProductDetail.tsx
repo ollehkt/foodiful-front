@@ -81,7 +81,7 @@ const ProductDetail = ({
               상품 수량만큼만 주문하실 수 있습니다.
             </span>
             <Select<string>
-              options={['보자기 + 노리개']}
+              options={['선택 안함', '보자기 + 노리개']}
               selected={isAdditionalSelected}
               setSelected={setIsAdditionalSelected}
               isSelectedModalOpen={isAdditionalSelectModalOpen}
@@ -101,19 +101,21 @@ const ProductDetail = ({
               </div>
               <div className="text-xl text-main font-bold">{displayPrice.toLocaleString()}원</div>
             </div>
-            <div className="my-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
-              <div className="flex flex-col justify-center flex-2">
-                <span className="text-base font-bold">추가 상품</span>
-                <AmountCounter
-                  amount={additionalQuantities}
-                  setAmount={setAdditionalQuantities}
-                  limit={productQuantities}
-                />
+            {isAdditionalSelected !== ('선택 안함' || '') && (
+              <div className="my-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
+                <div className="flex flex-col justify-center flex-2">
+                  <span className="text-base font-bold">추가 상품</span>
+                  <AmountCounter
+                    amount={additionalQuantities}
+                    setAmount={setAdditionalQuantities}
+                    limit={productQuantities}
+                  />
+                </div>
+                <div className="text-xl text-textDisabled font-bold">
+                  {(additionalQuantities * 5000).toLocaleString()}원
+                </div>
               </div>
-              <div className="text-xl text-textDisabled font-bold">
-                {(additionalQuantities * 5000).toLocaleString()}원
-              </div>
-            </div>
+            )}
             <div className="flex justify-between items-center mx-[20px] my-[40px]">
               <span className="text-xl font-bold">총 가격</span>
               <span className="text-2xl text-main font-bold">{totalPrice.toLocaleString()}원</span>

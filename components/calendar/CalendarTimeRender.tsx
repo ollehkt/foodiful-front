@@ -1,7 +1,6 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import dayjs from 'dayjs'
 import { Button } from '../common/Button'
-import { api } from '../axios/axiosInstance'
 import { useTimeCheck } from './hooks/useTimeCheck'
 
 interface PropsType {

@@ -1,8 +1,11 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import React from 'react'
 import { api } from '../../components/axios/axiosInstance'
+import { ClassType } from '../../types/classTypes'
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+): Promise<{ props: { classData: ClassType[] } }> => {
   const {
     query: { id },
   } = context

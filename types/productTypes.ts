@@ -18,3 +18,8 @@ export interface ProductType {
 export interface ProductReturnType extends ProductType {
   id: number
 }
+
+export interface PromiseProductType {
+  data: ProductReturnType
+  success: boolean
+}

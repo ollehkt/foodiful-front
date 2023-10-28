@@ -1,12 +1,9 @@
 'use client'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { api } from '../../../components/axios/axiosInstance'
 import { Input } from '../../../components/common/Input'
 import { useInput } from '../../../components/common/hooks/useInput'
 import { useValidate } from '../../../components/auth/hooks/useValidate'
-import { httpRequest } from '../../../components/lib/httpRequest'
-import { setStoreUser } from '../../../components/util/userStorage'
 import { useAuth } from '../../../components/auth/hooks/useAuth'
 import { Button } from '../../../components/common/Button'
 

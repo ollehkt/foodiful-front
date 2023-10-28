@@ -15,3 +15,10 @@ export interface SignUpType extends SignInType {
   phone: string
   name: string
 }
+
+export interface PromiseUserType {
+  data: {
+    user: User
+  }
+  success: boolean
+}

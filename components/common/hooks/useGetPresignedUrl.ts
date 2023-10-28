@@ -41,15 +41,5 @@ export const useGetPresignedUrl = () => {
     }
   }
 
-  // const getPresignedUrlByFile = async (file: File, bucket: string) => {
-  //   try {
-  //     if (file) {
-  //       const fileTypes = Array.from(file).map()
-  //       const {
-  //         data: { data },
-  //       } = await api.post('/aws/presignedurl')
-  //     }
-  //   } catch (error) {}
-  // }
   return { getPresignedUrlByFiles }
 }

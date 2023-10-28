@@ -8,7 +8,6 @@ import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
 import { PRODUCT_CATEGORIES } from '../constants/product'
-import { useAddProduct } from './hooks/useProduct'
 
 const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
   ssr: false,
@@ -45,14 +44,6 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
   )
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
 
-  const setPresignedUrl = async () => {
-    
-    if (files) {
-      const urls = await getPresignedUrlByFiles(files, 'product')
-      if (urls) setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-    }
-  }
-
   const onSelectCategory = (clickedTitle: string) => {
     const updateOption = category.map((category) =>
       category.title === clickedTitle
@@ -63,7 +54,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
   }
 
   const onClickDeleteFile = async (img: string) => {
-    if (img.includes('s3')) {
+    if (img.includes('kt-first-bucket')) {
       await api.delete(`/product/image/${productForUpdate && productForUpdate.id}`, {
         data: {
           img,
@@ -343,8 +334,12 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Button
           onClick={async () => {
-            await setPresignedUrl()
-            onSubmit(product, productForUpdate && productForUpdate.id)
+            const urls = await getPresignedUrlByFiles(files, 'product')
+            if (urls) {
+              const updatedProduct = { ...product, descImg: [...product.descImg, ...urls] }
+              setProduct({ ...product, descImg: [...product.descImg, ...urls] })
+              onSubmit(updatedProduct, productForUpdate && productForUpdate.id)
+            }
           }}
           style="text-sm font-semibold leading-6 text-gray-900"
           title="올리기"

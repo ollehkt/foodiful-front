@@ -7,8 +7,6 @@ import useToast from '../../common/hooks/useToast'
 import { ProductType } from '../../../types/productTypes'
 import { getStoredUser } from '../../util/userStorage'
 
-type ProductInfo = ReturnType<typeof useGetProducts>
-
 const addProduct = async (product: ProductType) => {
   const user = getStoredUser()
   const res = await api.post(
