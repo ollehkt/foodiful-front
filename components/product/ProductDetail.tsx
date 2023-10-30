@@ -21,7 +21,8 @@ const ProductDetail = ({
 }: PropsType) => {
   const { name, id, descImg, price, discount, quantity, description, subTitle, deliver } = product
   const [productQuantities, setProductQuantities] = useState<number>(1)
-  const [isAdditionalSelected, setIsAdditionalSelected] = useState('')
+  const [additionalSelect, setadditionalSelect] = useState('')
+  console.log(additionalSelect)
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
 
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
@@ -31,7 +32,7 @@ const ProductDetail = ({
   const [viewDescTab, setViewDescTab] = useState(0)
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
-  }, [isAdditionalSelected, productQuantities, price])
+  }, [additionalSelect, productQuantities, price])
 
   useEffect(() => {
     setTotalPrice(displayPrice + additionalQuantities * 5000)
@@ -82,8 +83,8 @@ const ProductDetail = ({
             </span>
             <Select<string>
               options={['선택 안함', '보자기 + 노리개']}
-              selected={isAdditionalSelected}
-              setSelected={setIsAdditionalSelected}
+              selected={additionalSelect}
+              setSelected={setadditionalSelect}
               isSelectedModalOpen={isAdditionalSelectModalOpen}
               setIsSelectedModalOpen={setIsAdditionalSelectModalOpen}
             />
@@ -101,21 +102,22 @@ const ProductDetail = ({
               </div>
               <div className="text-xl text-main font-bold">{displayPrice.toLocaleString()}원</div>
             </div>
-            {isAdditionalSelected !== ('선택 안함' || '') && (
-              <div className="my-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
-                <div className="flex flex-col justify-center flex-2">
-                  <span className="text-base font-bold">추가 상품</span>
-                  <AmountCounter
-                    amount={additionalQuantities}
-                    setAmount={setAdditionalQuantities}
-                    limit={productQuantities}
-                  />
+            {!additionalSelect ||
+              (additionalSelect !== '선택 안함' && (
+                <div className="my-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
+                  <div className="flex flex-col justify-center flex-2">
+                    <span className="text-base font-bold">추가 상품</span>
+                    <AmountCounter
+                      amount={additionalQuantities}
+                      setAmount={setAdditionalQuantities}
+                      limit={productQuantities}
+                    />
+                  </div>
+                  <div className="text-xl text-textDisabled font-bold">
+                    {(additionalQuantities * 5000).toLocaleString()}원
+                  </div>
                 </div>
-                <div className="text-xl text-textDisabled font-bold">
-                  {(additionalQuantities * 5000).toLocaleString()}원
-                </div>
-              </div>
-            )}
+              ))}
             <div className="flex justify-between items-center mx-[20px] my-[40px]">
               <span className="text-xl font-bold">총 가격</span>
               <span className="text-2xl text-main font-bold">{totalPrice.toLocaleString()}원</span>

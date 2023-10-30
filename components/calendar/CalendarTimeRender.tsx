@@ -36,6 +36,7 @@ const CalendarTimeRender = ({
       setConfirmSelectedTime('')
       return
     }
+
     const filteredSameDates = reservedTimes.filter((date) => dayjs(date).isSame(time, 'D'))
     const addedTime = reserveTimeCheck(time, filteredSameDates[0], selectedClass.classDuration)
     if (addedTime) {

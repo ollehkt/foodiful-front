@@ -1,6 +1,5 @@
 import type { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
-import ScrollImageLists from '../components/scrollImage/ScrollImages'
 import { useUser } from '../components/auth/hooks/useUser'
 import { getStoredUser } from '../components/util/userStorage'
 import MainSlider from '../components/common/MainSlider'
@@ -18,6 +17,7 @@ export const getServerSideProps = async (): Promise<{ props: { data: ProductRetu
   return { props: { data } }
 }
 
+// const Home = () => {
 const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { getUser } = useUser()
 
