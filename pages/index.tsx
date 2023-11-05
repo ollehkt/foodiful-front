@@ -18,7 +18,7 @@ export const getServerSideProps = async (): Promise<{ props: { data: ProductRetu
 }
 
 // const Home = () => {
-const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { getUser } = useUser()
 
   useEffect(() => {
@@ -33,9 +33,11 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
     <>
       <div className="relative w-full">
         <MainSlider imgs={['/photo0.jpeg', '/foodiful.jpeg']} />
-        <Container>
-          <ProductList products={data} />
-        </Container>
+
+        <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24  lg:px-8">
+          <ProductList products={products} />
+        </div>
+
         <Channel />
       </div>
     </>

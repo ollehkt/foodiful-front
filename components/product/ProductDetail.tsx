@@ -22,7 +22,6 @@ const ProductDetail = ({
   const { name, id, descImg, price, discount, quantity, description, subTitle, deliver } = product
   const [productQuantities, setProductQuantities] = useState<number>(1)
   const [additionalSelect, setadditionalSelect] = useState('')
-  console.log(additionalSelect)
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
 
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
@@ -35,8 +34,8 @@ const ProductDetail = ({
   }, [additionalSelect, productQuantities, price])
 
   useEffect(() => {
-    setTotalPrice(displayPrice + additionalQuantities * 5000)
-  }, [displayPrice, additionalQuantities])
+    setTotalPrice(additionalSelect ? additionalQuantities * 5000 + displayPrice : displayPrice)
+  }, [displayPrice, additionalQuantities, additionalSelect])
   return (
     <>
       <div className="flex  rounded-md w-full">

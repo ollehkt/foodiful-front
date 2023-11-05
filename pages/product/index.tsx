@@ -9,18 +9,22 @@ import { ProductReturnType, ProductType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
 import { useUser } from '../../components/auth/hooks/useUser'
+import { api } from '../../components/axios/axiosInstance'
+import { InferGetServerSidePropsType } from 'next'
 
-export const getStaticProps = async () => {
-  return { props: {} }
+export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
+  const {
+    data: { data },
+  } = await api('/product/all')
+
+  return { props: { data } }
 }
-/**
- * TODO: getStaticPaths & getStaticProps로 id에 대한 파일 및 id 경로 만들어줘야함.
- */
 
-function ProductPage() {
+function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+// function ProductPage() {
   const { getUser } = useUser()
   const [user, setUser] = useState<User | null>(null)
-  // const [products, setProducts] = useState([])
+
   const router = useRouter()
 
   const onClickAddBtn = () => {
@@ -35,24 +39,14 @@ function ProductPage() {
     })()
   }, [])
 
-  const {
-    data: { data: products },
-    isFetching,
-  } = useGetProducts()
-  console.log(products)
-
   return (
     <div>
-      {/**
-       * @Todo: role을 Admin으로 바꿔야함
-       */}
       {user && user.role === 'ADMIN' && (
         <Button style="text-xl" title="Add" onClick={onClickAddBtn} />
       )}
-      <div className="bg-white">
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <ProductList products={products} />
-        </div>
+
+      <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <ProductList products={products} />
       </div>
     </div>
   )

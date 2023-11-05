@@ -36,7 +36,10 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
     if (editorRef.current) {
       const html = editorRef.current?.getInstance().getEditorElements()
       const aTags = html.wwEditor.querySelectorAll('a')
-      aTags.forEach((tag) => tag.setAttribute('target', '_blank'))
+      aTags.forEach((tag) => {
+        tag.setAttribute('rel', 'noReferrer')
+        tag.setAttribute('target', '_blank')
+      })
     }
   }
 
