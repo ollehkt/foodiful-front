@@ -144,11 +144,11 @@ const ProductDetail = ({
           }`}
           onClick={() => setViewDescTab(1)}
         >
-          <span className="text-xl py-2"> 상품 리뷰</span>
+          <span className="text-xl py-2"> 상품 후기</span>
         </div>
       </div>
       {!!viewDescTab ? (
-        <ProductDetailReview name={name} />
+        <ProductDetailReview productName={name} productId={id} />
       ) : (
         <ProductDetailDesc description={description} />
       )}

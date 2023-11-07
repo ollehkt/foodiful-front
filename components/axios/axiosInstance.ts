@@ -10,3 +10,7 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
   withCredentials: true,
 })
+
+api.interceptors.response.use((response) => {
+  return response.data
+})

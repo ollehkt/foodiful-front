@@ -58,14 +58,12 @@ const CalendarContent = ({
       return
     }
     try {
-      const {
-        data: { data, success },
-      } = await api.post<PostReservationType>('/reservation', {
+      const { data } = await api.post('/reservation', {
         classId: selectedClass.id,
         reserveDate: selectedTimes,
         userEmail: userData.email,
       })
-      if (success) {
+      if (data) {
         fireToast({
           id: '예약 성공',
           position: 'bottom',

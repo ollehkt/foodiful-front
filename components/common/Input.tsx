@@ -9,10 +9,10 @@ interface PropsType {
   maxLength?: number
   value: string | number
   placeholder: string
-  setValue: (value: string | number) => void
+  setValue: (value: number | string) => void
   errorText?: string
   isPhoneInputDisabled?: boolean
-  validate?: (value: any) => boolean
+  validate?: (value: string) => boolean
 }
 
 export const Input = ({
@@ -46,8 +46,8 @@ export const Input = ({
   }, [minLength, maxLength, value])
 
   useEffect(() => {
-    if (validate && validate(value)) setIsValid(true)
-    else if (validate && !validate(value)) {
+    if (validate && validate(value as string)) setIsValid(true)
+    else if (validate && !validate(value as string)) {
       setIsValid(false)
     }
   }, [value])

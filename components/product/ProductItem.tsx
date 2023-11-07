@@ -13,7 +13,11 @@ const ProductItem = ({ product, idx }: PropsType) => {
   const { name, id, descImg, price, discount, quantity, description, subTitle } = product
   return (
     <>
-      <Link key={`${name}-${idx}`} className="flex flex-col cursor-pointer" href={`/product/${id}`}>
+      <Link
+        key={`${name}-${idx}`}
+        className="flex flex-col cursor-pointer w-[300px]"
+        href={`/product/${id}`}
+      >
         <Image
           key={descImg[0]}
           src={descImg[0]}

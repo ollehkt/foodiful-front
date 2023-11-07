@@ -11,14 +11,15 @@ import { ReservationTypes } from '../../types/reservationTypes'
 
 // class 및 예약 내역 서버사이드 프롭으로 받아오기
 
-export const getServerSideProps = async () => {
-  const {
-    data: { data: classes },
-  } = await api<AxiosResponse<ClassType[]>>('/class')
-  const {
-    data: { data: reservations },
-  } = await api<AxiosResponse<ReservationTypes[]>>('/reservation/all')
-  const reservedTimes = reservations.flatMap((reserve) => reserve.reserveDate)
+export const getServerSideProps = async (): Promise<{
+  props: { classes: ClassType[]; reservedTimes: string[] }
+}> => {
+  const { data: classes } = await api('/class')
+  const { data: reservations } = await api('/reservation/all')
+
+  const reservedTimes: string[] = reservations.flatMap(
+    (reserve: ReservationTypes) => reserve.reserveDate
+  )
   return {
     props: { classes, reservedTimes },
   }

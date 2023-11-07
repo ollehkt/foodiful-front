@@ -12,9 +12,8 @@ export const getServerSideProps = async (
   const {
     query: { id },
   } = context
-  const {
-    data: { data: product },
-  } = await api(`/product/${id}`)
+  const { data: product } = await api(`/product/${id}`)
+  console.log(product)
 
   return {
     props: { product },

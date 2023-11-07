@@ -7,6 +7,7 @@ import { CategoryType, ProductReturnType, ProductType } from '../../types/produc
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
+import { useRenderImages } from '../common/hooks/useRenderImages'
 import { PRODUCT_CATEGORIES } from '../constants/product'
 
 const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
@@ -19,6 +20,7 @@ interface PropsType {
 }
 
 const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
+  const { onChangeRenderImgs } = useRenderImages()
   const [files, setFiles] = useState<File[]>([])
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [imagesSrc, setImagesSrc] = useState<string[]>(
@@ -62,36 +64,6 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
       })
     }
     setImagesSrc(imagesSrc.filter((image) => image !== img))
-  }
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const filesArr = event.target.files
-    if (filesArr) setFiles([...files, ...Array.from(filesArr)])
-
-    if (filesArr) {
-      let fileReaderPromises: any[] = []
-      let newSelectedFiles = []
-      for (let i = 0; i < filesArr.length; i++) {
-        newSelectedFiles.push(filesArr[i])
-        fileReaderPromises.push(readAsDataURL(filesArr[i]))
-      }
-
-      Promise.all(fileReaderPromises).then((newImagesSrc: ArrayBuffer[]) => {
-        const newImg = newImagesSrc.map((img: ArrayBuffer) => img.toString())
-        setImagesSrc([...imagesSrc, ...newImg])
-      })
-    } else {
-      setImagesSrc([])
-    }
-  }
-
-  function readAsDataURL(file: Blob) {
-    return new Promise((resolve, reject) => {
-      var reader = new FileReader()
-      reader.onload = function ({ target }) {
-        resolve(target?.result)
-      }
-      reader.readAsDataURL(file)
-    })
   }
 
   const onChangeProductOption = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -283,7 +255,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
                   <AiOutlinePlusCircle size={30} />
                   <input
                     id="file-upload"
-                    onChange={(e) => onChangeFile(e)}
+                    onChange={(e) => onChangeRenderImgs(e, setFiles, setImagesSrc)}
                     name="fileUpload"
                     type="file"
                     multiple

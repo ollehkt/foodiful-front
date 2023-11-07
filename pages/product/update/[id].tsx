@@ -17,9 +17,7 @@ export const getServerSideProps = async (
   const {
     query: { id },
   } = context
-  const {
-    data: { data: product },
-  } = await api(`/product/${id}`)
+  const { data: product } = await api(`/product/${id}`)
 
   return {
     props: { product },
@@ -31,12 +29,10 @@ const UpdateProductPage = ({ product }: PropsType) => {
   const router = useRouter()
   const updateProduct = async (productForUpdate: ProductType, id?: number) => {
     try {
-      const {
-        data: { data, success },
-      } = await api.patch<PromiseProductType>(`/product/${id}`, {
+      const { data } = await api.patch<PromiseProductType>(`/product/${id}`, {
         ...productForUpdate,
       })
-      if (success)
+      if (data)
         fireToast({
           id: '상품 업데이트 성공',
           type: 'success',

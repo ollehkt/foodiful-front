@@ -7,6 +7,7 @@ export const useValidate = () => {
     const regExp = /^[A-Za-z0-9]{6,12}$/
     return regExp.test(password)
   }
+
   return { emailValidate, passwordValidate }
 }
 

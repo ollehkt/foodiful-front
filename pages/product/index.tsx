@@ -13,15 +13,13 @@ import { api } from '../../components/axios/axiosInstance'
 import { InferGetServerSidePropsType } from 'next'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  const {
-    data: { data },
-  } = await api('/product/all')
+  const { data } = await api('/product/all')
 
   return { props: { data } }
 }
 
 function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-// function ProductPage() {
+  // function ProductPage() {
   const { getUser } = useUser()
   const [user, setUser] = useState<User | null>(null)
 

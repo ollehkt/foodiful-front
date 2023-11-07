@@ -12,9 +12,7 @@ export const useGetPresignedUrl = () => {
       const fileTypes = files.map((file) => {
         return file.type
       })
-      const {
-        data: { data: presignedData },
-      } = await api.post('/aws/presignedurl', {
+      const { data: presignedData } = await api.post('/aws/presignedurl', {
         types: fileTypes,
         bucket,
       })

@@ -1,13 +1,8 @@
 'use client'
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '../../../components/common/Input'
 import { useInput } from '../../../components/common/hooks/useInput'
-import { useUser } from '../../../components/auth/hooks/useUser'
-import { httpRequest } from '../../../components/lib/httpRequest'
-import { api } from '../../../components/axios/axiosInstance'
-import axios, { AxiosError } from 'axios'
 import { useValidate } from '../../../components/auth/hooks/useValidate'
-import useToast from '../../../components/common/hooks/useToast'
 import { useAuth } from '../../../components/auth/hooks/useAuth'
 import usePhoneVerfiy from '../../../components/auth/hooks/usePhoneVerify'
 import { Button } from '../../../components/common/Button'
@@ -81,12 +76,12 @@ function SignUp() {
         style="ml-[64px] w-[300px]"
         name="이름"
         type="text"
-        minLength={2}
+        minLength={3}
         maxLength={10}
         value={name}
         setValue={setName}
         placeholder="이름을 입력해주세요"
-        errorText="2자 이상 10자 이하로 입력해주세요"
+        errorText="3자 이상 10자 이하로 입력해주세요"
       />
       <Input
         style="ml-[24px] w-[300px]"

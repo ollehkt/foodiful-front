@@ -4,6 +4,7 @@ export interface User {
   phone: string
   token: string
   role: string
+  id: number
 }
 
 export interface SignInType {
@@ -17,8 +18,5 @@ export interface SignUpType extends SignInType {
 }
 
 export interface PromiseUserType {
-  data: {
-    user: User
-  }
-  success: boolean
+  user: User
 }

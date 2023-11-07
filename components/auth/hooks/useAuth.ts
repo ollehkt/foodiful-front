@@ -18,13 +18,11 @@ export const useAuth = (): UseAuth => {
 
   const signIn = async ({ email, password }: SignInType) => {
     try {
-      const {
-        data: { data, success },
-      } = await api.post<PromiseUserType>('/auth/login', {
+      const { data } = await api.post<PromiseUserType>('/auth/login', {
         email,
         password,
       })
-      if (success) {
+      if (data) {
         fireToast({
           id: '로그인',
           type: 'success',
@@ -94,10 +92,8 @@ export const useAuth = (): UseAuth => {
   }
   const signOut = async () => {
     removeStoredUser()
-    const {
-      data: { success },
-    } = await api.post('/auth/logout')
-    if (success) {
+    const { data } = await api.post('/auth/logout')
+    if (data) {
       fireToast({
         id: '로그아웃',
         type: 'success',

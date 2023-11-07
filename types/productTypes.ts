@@ -21,5 +21,4 @@ export interface ProductReturnType extends ProductType {
 
 export interface PromiseProductType {
   data: ProductReturnType
-  success: boolean
 }

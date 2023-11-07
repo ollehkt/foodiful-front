@@ -29,9 +29,7 @@ export const useUser = (): any => {
     // user가 없을 경우 return
     try {
       if (!storedUser) return null
-      const {
-        data: { data: user },
-      }: AxiosResponse<{ data: StoredUser }> = await api.get('/auth/authenticate', {
+      const { data: user } = await api('/auth/authenticate', {
         headers: { Authorization: `Bearer ${storedUser.token}` },
       })
       return user
@@ -39,9 +37,9 @@ export const useUser = (): any => {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
           try {
-            const { data } = await api.post('/auth/refresh')
+            const { refreshUser }: { refreshUser: User } = await api.post('/auth/refresh')
 
-            setStoreUser(data.refreshUser)
+            setStoreUser(refreshUser)
             // router.reload()
             fireToast({
               id: '재 로그인',
@@ -50,7 +48,7 @@ export const useUser = (): any => {
               position: 'bottom',
               timer: 2000,
             })
-            return data
+            return refreshUser
           } catch (error) {
             if (axios.isAxiosError(error)) {
               if (error?.response?.status === 401) {
@@ -59,6 +57,7 @@ export const useUser = (): any => {
               } else if (error?.response?.status === 404) {
                 removeStoredUser()
                 alert('다시 로그인 해주세요')
+                router.reload()
               }
             }
           }

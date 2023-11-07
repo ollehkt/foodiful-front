@@ -10,9 +10,7 @@ import Channel from '../components/main/channel/Channel'
 import ProductList from '../components/product/ProductList'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  const {
-    data: { data },
-  } = await api('/product/all')
+  const { data } = await api('/product/all')
 
   return { props: { data } }
 }
@@ -34,7 +32,7 @@ const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSi
       <div className="relative w-full">
         <MainSlider imgs={['/photo0.jpeg', '/foodiful.jpeg']} />
 
-        <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24  lg:px-8">
+        <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
           <ProductList products={products} />
         </div>
 

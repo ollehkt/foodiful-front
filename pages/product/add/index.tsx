@@ -14,9 +14,7 @@ function ProductAddPage() {
   const [user, setUser] = useState<User>()
   const addProduct = async (product: ProductType, id?: number) => {
     try {
-      const {
-        data: { data, success },
-      } = await api.post<PromiseProductType>(
+      const { data } = await api.post<PromiseProductType>(
         '/product',
         {
           ...product,
@@ -25,7 +23,7 @@ function ProductAddPage() {
           headers: { Authorization: `Bearer ${user?.token}` },
         }
       )
-      if (success)
+      if (data)
         fireToast({
           id: '상품 추가 성공',
           type: 'success',
