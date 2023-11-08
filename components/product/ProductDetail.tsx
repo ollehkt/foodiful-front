@@ -23,12 +23,10 @@ const ProductDetail = ({
   const [productQuantities, setProductQuantities] = useState<number>(1)
   const [additionalSelect, setadditionalSelect] = useState('')
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
-
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
-
   const [totalPrice, setTotalPrice] = useState(0)
+  const [viewDescTab, setViewDescTab] = useState(1)
 
-  const [viewDescTab, setViewDescTab] = useState(0)
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
   }, [additionalSelect, productQuantities, price])

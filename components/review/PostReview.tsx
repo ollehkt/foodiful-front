@@ -16,7 +16,7 @@ interface PropsType {
   userId: number
 }
 
-const PostReview = ({ productName, productId, userId }: PropsType) => {
+const ReviewForm = ({ productName, productId, userId }: PropsType) => {
   const [reviewState, setReviewState] = useState<PostReviewTypes>({
     comment: '',
     rating: 0,
@@ -209,4 +209,4 @@ const PostReview = ({ productName, productId, userId }: PropsType) => {
   )
 }
 
-export default PostReview
+export default ReviewForm
