@@ -32,7 +32,6 @@ const ReviewForm = ({
       : {
           comment: '',
           rating: 0,
-          isSecret: false,
           reviewImg: '',
         }
   )
@@ -108,7 +107,7 @@ const ReviewForm = ({
         <label htmlFor="cover-photo" className="block text-lg font-medium leading-6 text-gray-900">
           {userReviewed ? '후기 이미지 수정하기' : '후기 이미지 추가하기'}
         </label>
-        <div className="mt-2 flex justify-start">
+        <div className="my-2 flex justify-start">
           <label
             className="p-12 rounded-md border-2 border-dashed border-gray-900/25 cursor-pointer h-[130px]"
             htmlFor="file-upload"
@@ -130,16 +129,7 @@ const ReviewForm = ({
         </div>
       </div>
 
-      <div className="flex flex-row-reverse  justify-between items-center text-2xl ">
-        <div className="text-xl mr-[140px] flex items-center">
-          비밀글
-          <input
-            className="mx-2 w-[16px] h-[16px] cursor-pointer"
-            type="checkbox"
-            onChange={() => setReviewState({ ...reviewState, isSecret: !reviewState.isSecret })}
-            checked={reviewState.isSecret}
-          />
-        </div>
+      <div className="flex  justify-between items-center text-2xl ">
         <div className="flex flex-row-reverse ">
           <input
             type="radio"

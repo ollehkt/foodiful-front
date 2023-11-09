@@ -9,7 +9,6 @@ export interface ProductReviewTypes {
   productId: number
   id: number
   deleted: boolean
-  isSecret: boolean
   rating: number
   reviewImg?: string
   product: ProductReturnType
@@ -18,6 +17,5 @@ export interface ProductReviewTypes {
 export interface PostReviewTypes {
   comment: string
   rating: number
-  isSecret: boolean
   reviewImg?: string
 }
