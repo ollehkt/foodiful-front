@@ -1,3 +1,6 @@
+import { User } from '../components/auth/types/user'
+import { ProductReturnType } from './productTypes'
+
 export interface ProductReviewTypes {
   createdAt: string
   updatedAt: string
@@ -8,5 +11,13 @@ export interface ProductReviewTypes {
   deleted: boolean
   isSecret: boolean
   rating: number
-  reviewImg: string[]
+  reviewImg?: string
+  product: ProductReturnType
+  user: User
+}
+export interface PostReviewTypes {
+  comment: string
+  rating: number
+  isSecret: boolean
+  reviewImg?: string
 }

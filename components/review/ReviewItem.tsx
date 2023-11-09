@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 import Image from 'next/image'
-import React from 'react'
-import { ReviewTypes } from '../../types/reviewState'
+import React, { useState } from 'react'
+import { ProductReviewTypes } from '../../types/productReviewTypes'
 
 interface PropsType {
-  review: ReviewTypes
+  review: ProductReviewTypes
 }
 
 /**
@@ -36,41 +36,69 @@ const ReviewItem = ({ review }: PropsType) => {
     rating,
     reviewImg,
     user,
+    product,
   } = review
+  const [isImageClicked, setIsImageClicked] = useState(false)
   return (
-    <div className="w-full border-2">
-      <div className="">
-        <div
-          style={{
-            backgroundImage:
-              'url(https://static-resource-smartstore.pstatic.net/brandstore/p/static/20231106154503/img/sprite/svg/spIcon_svg.svg)',
-            backgroundSize: '824px 788px',
-            backgroundPosition: '-661px -79px',
-            width: '74px',
-            height: '14px',
-            display: 'inline-block',
-            position: 'relative',
-            verticalAlign: 'top',
-          }}
-        >
+    <>
+      <div
+        className={`w-[90%] cursor-pointer my-[20px] bg-main bg-opacity-10  rounded-md ${
+          isImageClicked ? '' : 'h-[200px] relative flex '
+        }  `}
+        onClick={() => setIsImageClicked((prev) => !prev)}
+      >
+        <div className="p-[4px_0px_4px_4px]">
           <div
             style={{
               backgroundImage:
                 'url(https://static-resource-smartstore.pstatic.net/brandstore/p/static/20231106154503/img/sprite/svg/spIcon_svg.svg)',
               backgroundSize: '824px 788px',
-              backgroundPosition: '-661px -101px',
-              width: `${20 * rating}%`,
+              backgroundPosition: '-661px -79px',
+              width: '74px',
               height: '14px',
-              display: 'block',
+              display: 'inline-block',
+              position: 'relative',
+              verticalAlign: 'top',
             }}
-          ></div>
+          >
+            <div
+              style={{
+                backgroundImage:
+                  'url(https://static-resource-smartstore.pstatic.net/brandstore/p/static/20231106154503/img/sprite/svg/spIcon_svg.svg)',
+                backgroundSize: '824px 788px',
+                backgroundPosition: '-661px -101px',
+                width: `${20 * rating}%`,
+                height: '14px',
+                display: 'block',
+              }}
+            ></div>
+          </div>
+          <div className="flex items-center gap-x-2 text-[#999]">
+            <div className="font-semibold">{user.email.split('@')[0]}</div>
+            <div>
+              {updatedAt
+                ? dayjs(updatedAt).format('YY.MM.DD')
+                : dayjs(createdAt).format('YY.MM.DD')}
+            </div>
+          </div>
+          <div className="h-[30px] flex items-center">
+            <span className="text-[#666] text-[15px] text-center">구매 상품: {product.name}</span>
+          </div>
+          <div className="w-[60%] mt-[20px] text-[#333] font-semibold break-keep ">{comment}</div>
         </div>
-        <div className="flex items-center gap-x-2 text-[#999] ">
-          <div className="font-semibold">{user.email.split('@')[0]}</div>
-          <div>{dayjs(createdAt).format('YY.MM.DD')}</div>
-        </div>
+        {reviewImg && (
+          <Image
+            className={`${
+              isImageClicked ? 'p-1 my-2 rounded-lg' : 'absolute right-0 top-0 w-[200px] h-[200px]'
+            }`}
+            src={reviewImg}
+            alt="리뷰 이미지"
+            width={240}
+            height={200}
+          />
+        )}
       </div>
-    </div>
+    </>
   )
 }
 

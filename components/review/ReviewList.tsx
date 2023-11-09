@@ -1,22 +1,18 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { ProductReviewTypes } from '../../types/productReviewTypes'
-import { ReviewTypes } from '../../types/reviewState'
 import { api } from '../axios/axiosInstance'
 import ReviewItem from './ReviewItem'
 
 interface PropsType {
-  reviewList: ReviewTypes[]
+  reviewList: ProductReviewTypes[]
 }
 
 const ReviewList = ({ reviewList }: PropsType) => {
-  const router = useRouter()
-  const [productReviews, setProductReviews] = useState<ProductReviewTypes[]>([])
-
   return (
     <>
       {reviewList.length > 0 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col justify-center">
           {reviewList.map((review) => (
             <ReviewItem key={`${review.id}`} review={review} />
           ))}

@@ -1,3 +1,5 @@
+import { ProductReviewTypes } from './productReviewTypes'
+
 export interface CategoryType {
   title: string
   isClicked: boolean
