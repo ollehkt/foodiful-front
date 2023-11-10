@@ -14,7 +14,7 @@ interface PropsType {
  * @Todo: 큰 사진 하나 보여주고 작은 사진들 버튼으로 이동 가능하게(이동 했을 때 현재 사진이라면 큰 사진으로 보이게), 터치 누르면 큰 사진으로 보이게,
  */
 
-const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
+const DetailSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const ulRef = useRef<HTMLUListElement | null>(null)
 
@@ -34,7 +34,7 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
   useEffect(() => {
     if (ulRef.current && currentSlide < items.length - 3)
       ulRef.current.style.marginLeft = `${-currentSlide * slidePx}px`
-  }, [currentSlide])
+  }, [currentSlide, items.length, slidePx])
 
   return (
     <div className="flex relative ml-[30px] justify-between">
@@ -87,4 +87,4 @@ const SubSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
   )
 }
 
-export default SubSlider
+export default DetailSlider

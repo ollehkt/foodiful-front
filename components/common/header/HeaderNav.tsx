@@ -5,7 +5,7 @@ import useMouseState from '../hooks/useMouseState'
 import { headerTitle } from '../../constants/headerTitle'
 import HeaderSubTitle from './HeaderSubTitle'
 
-const HeaderNav = ({ isHeaderOpen }: { isHeaderOpen: boolean }) => {
+const HeaderNav = () => {
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
   const pathName = useGetUrlParams()
 
