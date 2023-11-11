@@ -3,9 +3,12 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ProductReturnType } from '../../types/productTypes'
 import AmountCounter from '../common/AmountCounter'
 import Select from '../common/Select'
-import SubSlider from '../common/SubSlider'
+import SubSlider from '../common/DetailSlider'
 import ProductDetailDesc from './ProductDetailDesc'
 import ProductDetailReview from './ProductDetailReview'
+import Image from 'next/image'
+import { useAtomValue } from 'jotai'
+import { checkDisplayState } from '../../store/checkDisplayState'
 
 interface PropsType {
   product: ProductReturnType
@@ -24,6 +27,8 @@ const ProductDetail = ({
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
   const [totalPrice, setTotalPrice] = useState(0)
+  const isMobile = useAtomValue(checkDisplayState)
+  const [thumbnail, setThumbnail] = useState(descImg[0])
 
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
@@ -32,12 +37,39 @@ const ProductDetail = ({
   useEffect(() => {
     setTotalPrice(additionalSelect ? additionalQuantities * 5000 + displayPrice : displayPrice)
   }, [displayPrice, additionalQuantities, additionalSelect])
+
   return (
     <>
-      <div className="flex  rounded-md w-full">
-        <SubSlider items={descImg} btn slidePx={110} btnSize={24} />
+      <div className="grid lg:grid-cols-2 grid-cols-1 justify-center items-center rounded-md lg:w-full">
+        {isMobile ? (
+          <>
+            <div>
+              <Image
+                className="w-full h-[300px] object-contain mx-auto rounded-md my-4"
+                src={thumbnail}
+                alt="대표 이미지"
+                width={300}
+                height={300}
+              />
+              <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
+                {descImg.map((img) => (
+                  <Image
+                    key={img}
+                    src={img}
+                    alt="슬라이더 이미지"
+                    width={100}
+                    height={100}
+                    onClick={() => setThumbnail(img)}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <SubSlider items={descImg} btn slidePx={110} btnSize={24} />
+        )}
 
-        <div className="ml-[100px] my-[10px] w-full ">
+        <div className="lg:ml-[100px] my-[10px] w-full mx-auto">
           <div className="font-semibold text-3xl">{name}</div>
           <div className="text-textDisabled text-md pb-4 border-b-2 border-main">{subTitle}</div>
           <div className="mt-[10px] flex justify-end items-center gap-x-4">

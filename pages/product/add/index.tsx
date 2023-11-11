@@ -43,8 +43,8 @@ function ProductAddPage() {
   }
 
   useEffect(() => {
-    const user = getStoredUser()
-    if (user) setUser(user)
+    const storedUser = getStoredUser()
+    if (storedUser) setUser(storedUser)
   }, [])
 
   return (

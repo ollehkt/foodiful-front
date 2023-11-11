@@ -25,10 +25,10 @@ export const useUser = (): any => {
   }
 
   const { fireToast } = useToast()
-  const getUser = async (storedUser: StoredUser | null) => {
+  const getUser = async (storedUser: StoredUser | null): Promise<User | undefined> => {
     // user가 없을 경우 return
     try {
-      if (!storedUser) return null
+      if (!storedUser) return
       const { data: user } = await api('/auth/authenticate', {
         headers: { Authorization: `Bearer ${storedUser.token}` },
       })

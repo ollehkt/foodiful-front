@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
+import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+
+
 import { PostReservationType } from '../../types/reservationTypes'
 import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
@@ -33,18 +36,17 @@ const CalendarContent = ({
 }: PropsType) => {
   // 날짜 선택하면 예약 되지 않은 시간들 불러와서 DatesRender 컴포넌트로 전달
 
-  const { getUser } = useUser()
   const { fireToast } = useToast()
   const router = useRouter()
   const [times, setTimes] = useState<string[]>([])
   const [isReserveTimeSelected, setIsReserveTimeSelected] = useState(false)
   const [selectedTimes, setSelectedTimes] = useState('')
+  const [user, setUser] = useState<User>()
 
-  const [userData, setUserData] = useState<Partial<User>>({
-    name: '',
-    phone: '',
-    email: '',
-  })
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    if (storedUser) setUser(storedUser)
+  }, [])
 
   const onClickPostReservation = async () => {
     if (!selectedTimes) {
@@ -58,20 +60,22 @@ const CalendarContent = ({
       return
     }
     try {
-      const { data } = await api.post('/reservation', {
-        classId: selectedClass.id,
-        reserveDate: selectedTimes,
-        userEmail: userData.email,
-      })
-      if (data) {
-        fireToast({
-          id: '예약 성공',
-          position: 'bottom',
-          timer: 1000,
-          message: '예약이 성공적으로 이루어졌습니다.',
-          type: 'success',
+      if (user) {
+        const { data } = await api.post('/reservation', {
+          classId: selectedClass.id,
+          reserveDate: selectedTimes,
+          userEmail: user.email,
         })
-        router.push('/')
+        if (data) {
+          fireToast({
+            id: '예약 성공',
+            position: 'bottom',
+            timer: 1000,
+            message: '예약이 성공적으로 이루어졌습니다.',
+            type: 'success',
+          })
+          router.push('/')
+        }
       }
     } catch (error) {
       fireToast({
@@ -85,23 +89,17 @@ const CalendarContent = ({
   }
 
   useEffect(() => {
-    const storedUser = getStoredUser()
-    const user = async () => {
-      const res = await getUser(storedUser)
-      if (!res) {
-        router.push('/auth')
-        fireToast({
-          id: '로그인 필요',
-          position: 'bottom',
-          timer: 1500,
-          message: '예약을 위해 로그인이 필요합니다',
-          type: 'warning',
-        })
-        return
-      }
-      if (storedUser) setUserData(storedUser)
+    if (!user) {
+      router.push('/auth')
+      fireToast({
+        id: '로그인 필요',
+        position: 'bottom',
+        timer: 1500,
+        message: '예약을 위해 로그인이 필요합니다',
+        type: 'warning',
+      })
+      return
     }
-    user()
   }, [])
 
   useEffect(() => {
@@ -135,14 +133,14 @@ const CalendarContent = ({
       />
 
       {/* 선택 눌렀을 때 예약하기 버튼 나오게 만들기 */}
-      {isReserveTimeSelected && userData && (
+      {isReserveTimeSelected && user && (
         <div className="w-full mx-auto flex justify-center">
           <div className="w-[300px] shadow-basic p-2 rounded-md flex flex-col gap-1">
             <div>
-              예약자 성함: <span className="text-lg text-main font-bold">{userData.name}</span>
+              예약자 성함: <span className="text-lg text-main font-bold">{user.name}</span>
             </div>
             <div>
-              연락처: <span className="text-lg text-main font-bold">{userData.phone}</span>
+              연락처: <span className="text-lg text-main font-bold">{user.phone}</span>
             </div>
             <div>
               예약 시간: <span className="text-lg text-main font-bold">{selectedTimes}</span>

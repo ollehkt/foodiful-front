@@ -1,16 +1,14 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { User } from '../../components/auth/types/user'
 import { Button } from '../../components/common/Button'
-import { useGetProducts } from '../../components/product/hooks/useProduct'
+
 import { ProductReturnType, ProductType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
-import { useUser } from '../../components/auth/hooks/useUser'
+
 import { api } from '../../components/axios/axiosInstance'
 import { InferGetServerSidePropsType } from 'next'
+import { useEffect, useState } from 'react'
+import { User } from '../../components/auth/types/user'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const { data } = await api('/product/all')
@@ -20,22 +18,19 @@ export const getServerSideProps = async (): Promise<{ props: { data: ProductRetu
 
 function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   // function ProductPage() {
-  const { getUser } = useUser()
-  const [user, setUser] = useState<User | null>(null)
+
+  const [user, setUser] = useState<User>()
+
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    if (storedUser) setUser(storedUser)
+  }, [])
 
   const router = useRouter()
 
   const onClickAddBtn = () => {
     router.push('/product/add')
   }
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    ;(async () => {
-      const fetchedUserData = await getUser(storedUser)
-      setUser(fetchedUserData)
-    })()
-  }, [])
 
   return (
     <div>

@@ -1,4 +1,6 @@
+import { useAtomValue } from 'jotai'
 import React, { useEffect, useState } from 'react'
+
 import { ProductReviewTypes } from '../../types/productReviewTypes'
 
 import { useUser } from '../auth/hooks/useUser'
@@ -18,26 +20,23 @@ const ProductDetailReview = ({
   productId: number
   reviewList: ProductReviewTypes[]
 }) => {
-  const { getUser } = useUser()
-  const [user, setUser] = useState<User>()
   const [userReviewed, setUserReviewed] = useState<ProductReviewTypes>()
   const [isModifyMode, setIsModifyMode] = useState(false)
+  const [user, setUser] = useState<User>()
 
   useEffect(() => {
     const storedUser = getStoredUser()
-    ;(async () => {
-      const fetchedUserData = await getUser(storedUser)
-      if (fetchedUserData) {
-        setUser(fetchedUserData)
-      }
-      if (reviewList.length > 0) {
-        const userReview = reviewList.find((review: ProductReviewTypes) => {
-          return review.userId === fetchedUserData.id
-        })
+    if (storedUser) setUser(storedUser)
+  }, [])
 
-        setUserReviewed(userReview)
-      }
-    })()
+  useEffect(() => {
+    if (user && reviewList.length > 0) {
+      const userReview = reviewList.find((review: ProductReviewTypes) => {
+        return review.userId === user.id
+      })
+
+      setUserReviewed(userReview)
+    }
   }, [])
 
   return (

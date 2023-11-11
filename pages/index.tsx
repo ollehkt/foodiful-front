@@ -17,16 +17,6 @@ export const getServerSideProps = async (): Promise<{ props: { data: ProductRetu
 
 // const Home = () => {
 const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { getUser } = useUser()
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    const user = async () => {
-      await getUser(storedUser)
-    }
-    user()
-  }, [])
-
   return (
     <>
       <div className="relative w-full">
