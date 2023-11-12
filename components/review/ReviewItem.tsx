@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
+import { useAtomValue } from 'jotai'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
+import { checkDisplayState } from '../../store/checkDisplayState'
 import { ProductReviewTypes } from '../../types/productReviewTypes'
 
 interface PropsType {
@@ -25,25 +28,15 @@ interface PropsType {
  */
 
 const ReviewItem = ({ review }: PropsType) => {
-  const {
-    createdAt,
-    updatedAt,
-    comment,
-    userId,
-    productId,
-    id,
-    isSecret,
-    rating,
-    reviewImg,
-    user,
-    product,
-  } = review
+  const { createdAt, updatedAt, comment, userId, productId, id, rating, reviewImg, user, product } =
+    review
   const [isImageClicked, setIsImageClicked] = useState(false)
+  const isMobile = useAtomValue(checkDisplayState)
   return (
     <>
       <div
-        className={`w-[90%] cursor-pointer my-[20px] bg-main bg-opacity-10  rounded-md ${
-          isImageClicked ? '' : 'h-[200px] relative flex '
+        className={`w-full cursor-pointer py-[12px] my-[20px] bg-main bg-opacity-10  rounded-md ${
+          isImageClicked ? '' : !isMobile && 'flex relative h-[200px]'
         }  `}
         onClick={() => setIsImageClicked((prev) => !prev)}
       >
@@ -74,7 +67,7 @@ const ReviewItem = ({ review }: PropsType) => {
             ></div>
           </div>
           <div className="flex items-center gap-x-2 text-[#999]">
-            <div className="font-semibold">{user.email.split('@')[0]}</div>
+            {/* <div className="font-semibold">{user.email.split('@')[0]}</div> */}
             <div>
               {updatedAt
                 ? dayjs(updatedAt).format('YY.MM.DD')
@@ -82,20 +75,47 @@ const ReviewItem = ({ review }: PropsType) => {
             </div>
           </div>
           <div className="h-[30px] flex items-center">
-            <span className="text-[#666] text-[15px] text-center">구매 상품: {product.name}</span>
+            {/* <span className="text-[#666] text-[15px]">구매 상품: {product.name}</span> */}
           </div>
-          <div className="w-[60%] mt-[20px] text-[#333] font-semibold break-keep ">{comment}</div>
+          <div className="md:w-[60%] w-[80%] mt-[20px] text-[#333] font-semibold break-keep">
+            {comment}
+          </div>
+          {isMobile && !isImageClicked && (
+            <div className="relative h-6">
+              <span className="absolute bottom-0 left-[45%] text-[20px] font-extrabold text-main animate-bounce">
+                <AiOutlineArrowDown />
+              </span>
+            </div>
+          )}
         </div>
-        {reviewImg && (
-          <Image
-            className={`${
-              isImageClicked ? 'p-1 my-2 rounded-lg' : 'absolute right-0 top-0 w-[200px] h-[200px]'
-            }`}
-            src={reviewImg}
-            alt="리뷰 이미지"
-            width={240}
-            height={200}
-          />
+        {reviewImg &&
+          (isMobile ? (
+            <Image
+              className={`${isImageClicked ? 'p-1 my-2 rounded-lg' : 'hidden'}`}
+              src={reviewImg}
+              alt="리뷰 이미지"
+              width={240}
+              height={200}
+            />
+          ) : (
+            <Image
+              className={`${
+                isImageClicked
+                  ? 'p-1 my-2 rounded-lg'
+                  : 'absolute right-0 top-0 w-[200px] h-[200px] rounded-md'
+              }`}
+              src={reviewImg}
+              alt="리뷰 이미지"
+              width={240}
+              height={200}
+            />
+          ))}
+        {isMobile && isImageClicked && (
+          <div className="relative h-6">
+            <span className="absolute bottom-0 left-[45%] text-[20px] font-extrabold text-main animate-bounce">
+              <AiOutlineArrowUp />
+            </span>
+          </div>
         )}
       </div>
     </>

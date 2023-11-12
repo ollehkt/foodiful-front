@@ -92,8 +92,8 @@ export const useAuth = (): UseAuth => {
   }
   const signOut = async () => {
     removeStoredUser()
-    const { data } = await api.post('/auth/logout')
-    if (data) {
+    const res = await api.post('/auth/logout')
+    if (res) {
       fireToast({
         id: '로그아웃',
         type: 'success',

@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import { ProductReviewTypes } from '../../types/productReviewTypes'
 
-import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
-import { api } from '../axios/axiosInstance'
 import ReviewForm from '../review/PostReview'
 import ReviewItem from '../review/ReviewItem'
 import ReviewList from '../review/ReviewList'
@@ -24,15 +22,14 @@ const ProductDetailReview = ({
   const [isModifyMode, setIsModifyMode] = useState(false)
   const [user, setUser] = useState<User>()
 
+  useEffect(() => {}, [])
+
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
-  }, [])
-
-  useEffect(() => {
-    if (user && reviewList.length > 0) {
+    if (storedUser && reviewList.length > 0) {
       const userReview = reviewList.find((review: ProductReviewTypes) => {
-        return review.userId === user.id
+        return review.userId === storedUser.id
       })
 
       setUserReviewed(userReview)
@@ -41,7 +38,7 @@ const ProductDetailReview = ({
 
   return (
     <div className="w-full">
-      {userReviewed && user ? (
+      {user && userReviewed ? (
         isModifyMode ? (
           <>
             <div className="my-[20px] text-3xl font-bold">후기 수정하기</div>

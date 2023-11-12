@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { comment } from 'postcss'
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../types/fileTypes'
@@ -43,9 +45,10 @@ const ReviewForm = ({
   const { onChangeRenderImgs } = useRenderImages()
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const { fireToast } = useToast()
+  const router = useRouter()
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setReviewState({ ...reviewState, comment: e.currentTarget.value.trim() })
+    setReviewState({ ...reviewState, comment: e.currentTarget.value })
   }
 
   const onClickRating = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -71,30 +74,70 @@ const ReviewForm = ({
       })
       return
     }
-    if (reviewState.reviewImg) {
+    if (reviewState.reviewImg !== userReviewed?.reviewImg && reviewState.reviewImg) {
       const urls = await getPresignedUrlByFiles(files, 'product-review')
       if (urls) {
-        const updatedReview = {
+        const postReviewWithImg = {
           ...reviewState,
           reviewImg: urls[0],
         }
-        postReview(updatedReview)
+        userReviewed ? updateReview(postReviewWithImg) : postReview(postReviewWithImg)
       }
-    } else postReview(reviewState)
+    } else userReviewed ? updateReview(reviewState) : postReview(reviewState)
   }
 
-  const postReview = async (updatedReview: PostReviewTypes) => {
+  const postReview = async (postReview: PostReviewTypes) => {
     try {
-      await api.post('/product-review', {
-        ...updatedReview,
+      const res = await api.post('/product-review', {
+        ...postReview,
+        comment: postReview.comment.trim(),
         productId,
         userId,
       })
+      if (res) {
+        fireToast({
+          id: '후기 등록 성공',
+          type: 'success',
+          message: '후기 등록이 완료됐습니다.',
+          timer: 1500,
+          position: 'bottom',
+        })
+        router.push(`/product/${productId}`)
+      }
     } catch (error) {
       fireToast({
         id: '후기 등록 실패',
         type: 'failed',
         message: '후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요..',
+        timer: 1500,
+        position: 'bottom',
+      })
+    }
+  }
+
+  const updateReview = async (updatedReview: PostReviewTypes) => {
+    try {
+      if (userReviewed) {
+        const res = await api.patch(`/product-review/${userReviewed.id}`, {
+          ...updatedReview,
+          comment: updatedReview.comment.trim(),
+        })
+        if (res) {
+          fireToast({
+            id: '후기 업데이트 성공',
+            type: 'success',
+            message: '후기 업데이트가 완료됐습니다.',
+            timer: 1500,
+            position: 'bottom',
+          })
+          router.reload()
+        }
+      }
+    } catch (error) {
+      fireToast({
+        id: '업데이트 실패',
+        type: 'failed',
+        message: '업데이트에 실패했습니다. 다시 시도 해주세요.',
         timer: 1500,
         position: 'bottom',
       })

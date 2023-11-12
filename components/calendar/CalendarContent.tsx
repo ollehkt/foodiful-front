@@ -3,7 +3,6 @@ import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-
 import { PostReservationType } from '../../types/reservationTypes'
 import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
@@ -46,6 +45,17 @@ const CalendarContent = ({
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
+    else {
+      router.push('/auth')
+      fireToast({
+        id: '로그인 필요',
+        position: 'bottom',
+        timer: 1500,
+        message: '예약을 위해 로그인이 필요합니다',
+        type: 'warning',
+      })
+      return
+    }
   }, [])
 
   const onClickPostReservation = async () => {
@@ -87,20 +97,6 @@ const CalendarContent = ({
       })
     }
   }
-
-  useEffect(() => {
-    if (!user) {
-      router.push('/auth')
-      fireToast({
-        id: '로그인 필요',
-        position: 'bottom',
-        timer: 1500,
-        message: '예약을 위해 로그인이 필요합니다',
-        type: 'warning',
-      })
-      return
-    }
-  }, [])
 
   useEffect(() => {
     const timeArr = []

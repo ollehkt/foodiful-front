@@ -29,24 +29,6 @@ const Header = () => {
     if (storedUser) setUser(storedUser)
   }, [])
 
-  // const handleRouteChange = async () => {
-  //   const storedUser = getStoredUser()
-  //   const fetchedUser: User = await getUser(storedUser)
-  //   if (fetchedUser) setUser(fetchedUser)
-  // }
-  // useEffect(() => {
-  //   router.events.on('routeChangeStart', handleRouteChange)
-  //   // window.addEventListener('beforeunload', handleRouteChange)
-  //   window.addEventListener('DOMContentLoaded', handleRouteChange)
-  //   return () => {
-  //     router.events.off('routeChangeStart', handleRouteChange)
-  //     window.removeEventListener('beforeunload', handleRouteChange)
-  //   }
-  // }, [router])
-
-  // useEffect(() => {
-  //   handleRouteChange()
-  // }, [])
   return (
     <div className={`w-full sticky top-0 z-[999999] bg-[white] shadow-md`}>
       <div className={`w-[90%] h-[100px] mx-auto flex justify-between items-center  `}>
