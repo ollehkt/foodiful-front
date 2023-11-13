@@ -23,6 +23,8 @@ export const useAuth = (): UseAuth => {
         password,
       })
       if (data) {
+        router.push('/')
+        setStoreUser(data.user)
         fireToast({
           id: '로그인',
           type: 'success',
@@ -30,8 +32,6 @@ export const useAuth = (): UseAuth => {
           message: '로그인이 완료되었습니다.',
           timer: 1000,
         })
-        setStoreUser(data.user)
-        router.push('/')
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

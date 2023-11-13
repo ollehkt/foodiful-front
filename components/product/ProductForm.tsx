@@ -7,7 +7,9 @@ import { CategoryType, ProductReturnType, ProductType } from '../../types/produc
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
+import { useInput } from '../common/hooks/useInput'
 import { useRenderImages } from '../common/hooks/useRenderImages'
+import { Input } from '../common/Input'
 import { PRODUCT_CATEGORIES } from '../constants/product'
 
 const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
@@ -31,7 +33,11 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
     (productForUpdate && productForUpdate.deliver) || false
   )
 
-  const [product, setProduct] = useState<ProductType>(
+  const {
+    state: product,
+    setState: setProduct,
+    onChangeInput,
+  } = useInput(
     (productForUpdate && { ...productForUpdate }) || {
       name: '',
       subTitle: '',
@@ -44,6 +50,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
       deliver: deliverState,
     }
   )
+
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
 
   const onSelectCategory = (clickedTitle: string) => {
@@ -66,11 +73,6 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
     setImagesSrc(imagesSrc.filter((image) => image !== img))
   }
 
-  const onChangeProductOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
-    setProduct({ ...product, [name]: value })
-  }
-
   useEffect(() => {
     setProduct({
       ...product,
@@ -88,113 +90,75 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
         <div className="border-b border-gray-900/10 pb-12">
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
-              <label
-                htmlFor="product-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                상품 이름
-              </label>
               <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="text"
-                    onChange={(e) => onChangeProductOption(e)}
-                    name="name"
-                    id="product-name"
-                    value={product.name}
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 이름을 입력해주세요."
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="product-price"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                상품 가격
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="number"
-                    onChange={(e) => onChangeProductOption(e)}
-                    name="price"
-                    id="product-price"
-                    value={product.price}
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 가격을 숫자로 입력해주세요."
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="product-discount"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                할인율
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="number"
-                    onChange={(e) => onChangeProductOption(e)}
-                    name="discount"
-                    id="product-discount"
-                    value={product.discount}
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 할인율을 숫자로 입력해주세요."
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="product-quantity"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                상품 수량
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="number"
-                    onChange={(e) => onChangeProductOption(e)}
-                    name="quantity"
-                    id="product-quantity"
-                    value={product.quantity}
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="상품 수량을 숫자로 입력해주세요."
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-span-full">
-              <label
-                htmlFor="product-sub-title"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                상품 간단 설명
-              </label>
-              <div className="mt-2">
-                <input
+                <Input
+                  style="w-[60%] block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0  sm:leading-6 shadow-sm"
+                  labelStyle="block  font-medium leading-6"
                   type="text"
-                  onChange={(e) => onChangeProductOption(e)}
-                  name="subTitle"
-                  id="product-sub-title"
-                  value={product.subTitle}
-                  placeholder="상품의 간단한 설명을 입력해주세요."
-                  className="block w-full rounded-md border-0 pl-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  labelName="상품 이름"
+                  value={product.name}
+                  name="name"
+                  placeholder="상품 이름을 입력해주세요."
+                  onChangeInput={onChangeInput}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <div className="mt-2">
+                <Input
+                  style="block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
+                  labelStyle="block font-medium leading-6 "
+                  type="text"
+                  labelName="상품 가격"
+                  value={product.price}
+                  name="price"
+                  placeholder="상품 가격을 입력해주세요."
+                  onChangeInput={onChangeInput}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <div className="mt-2">
+                <Input
+                  style="block flex-1 border-0 bg-transparent py-1.5 pl-1  focus:ring-0 sm:leading-6 shadow-sm"
+                  labelStyle="block font-medium leading-6 "
+                  type="text"
+                  labelName="상품 할인"
+                  value={product.discount}
+                  name="discount"
+                  placeholder="상품 할인율을 입력해주세요."
+                  onChangeInput={onChangeInput}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <div className="mt-2">
+                <Input
+                  style="block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
+                  labelStyle="block font-medium leading-6"
+                  type="text"
+                  labelName="상품 수량"
+                  value={product.quantity}
+                  name="quantity"
+                  placeholder="상품 수량을 입력해주세요."
+                  onChangeInput={onChangeInput}
                 />
               </div>
             </div>
             <div className="col-span-full">
-              <label
-                htmlFor="product-category"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <Input
+                style="w-full border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
+                labelStyle="block font-medium leading-6"
+                type="text"
+                labelName="상품 설명"
+                value={product.subTitle}
+                name="subTitle"
+                placeholder="상품의 간단한 설명을 입력해주세요."
+                onChangeInput={onChangeInput}
+              />
+            </div>
+            <div className="col-span-full">
+              <label htmlFor="product-category" className="block  font-medium leading-6">
                 상품 카테고리
               </label>
               <div className="mt-2">
@@ -214,10 +178,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
               </div>
             </div>
             <div className="col-span-full">
-              <label
-                htmlFor="product-category"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="product-category" className="block font-medium leading-6">
                 상품 배달 여부
               </label>
               <div className="mt-2">
@@ -241,10 +202,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
             </div>
 
             <div className="col-span-full">
-              <label
-                htmlFor="cover-photo"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="cover-photo" className="block font-medium leading-6">
                 상품 이미지
               </label>
               <div className="mt-2 flex justify-start">
@@ -291,10 +249,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
               )}
             </div>
             <div className="col-span-full">
-              <label
-                htmlFor="cover-photo"
-                className="block text-sm font-medium leading-6 text-gray-900 mb-4"
-              >
+              <label htmlFor="cover-photo" className="block font-medium leading-6 mb-4">
                 상품 상세 설명
               </label>
               <DynamicEditor product={product} setProduct={setProduct} />
@@ -313,7 +268,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
               onSubmit(updatedProduct, productForUpdate && productForUpdate.id)
             }
           }}
-          style="text-sm font-semibold leading-6 text-gray-900"
+          style="text-sm font-semibold leading-6 shadow-sm"
           title="올리기"
         />
 

@@ -57,11 +57,11 @@ const usePhoneVerfiy = () => {
 
   const checkVerifySms = async (
     phone: string,
-    verify: number,
+    verify: string,
     setVerifiedPhone: (p: boolean) => void,
     setIsClickedVerifyPhone: (p: boolean) => void,
     setIsPhoneInputDisabled: (p: boolean) => void,
-    setVerify: (p: string) => void,
+    resetSignUpValue: () => void,
     setVerifyExpiredTxt: (p: string) => void
   ) => {
     try {
@@ -95,7 +95,7 @@ const usePhoneVerfiy = () => {
           })
           setVerifiedPhone(false)
           setIsClickedVerifyPhone(false)
-          setVerify('')
+          resetSignUpValue()
           setIsPhoneInputDisabled(false)
           setVerifyExpiredTxt('인증번호 오류입니다. 다시 시도해주세요')
         } else if (error?.response?.status === 404) {
@@ -108,7 +108,7 @@ const usePhoneVerfiy = () => {
           })
           setVerifiedPhone(false)
           setIsClickedVerifyPhone(false)
-          setVerify('')
+          resetSignUpValue()
           setIsPhoneInputDisabled(false)
           setVerifyExpiredTxt('인증번호가 만료되었습니다.')
         }

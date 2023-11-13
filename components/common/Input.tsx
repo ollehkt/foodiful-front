@@ -3,13 +3,15 @@ import { useValidate } from '../auth/hooks/useValidate'
 
 interface PropsType {
   style?: string
-  name?: string
+  labelStyle?: string
+  labelName?: string
+  name: string
   type: string
   minLength?: number
   maxLength?: number
   value: string | number
   placeholder: string
-  setValue: (value: number | string) => void
+  onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
   errorText?: string
   isPhoneInputDisabled?: boolean
   validate?: (value: string) => boolean
@@ -17,20 +19,19 @@ interface PropsType {
 
 export const Input = ({
   style,
+  labelStyle,
+  labelName,
   name,
   type,
   minLength,
   maxLength,
   value,
-  setValue,
+  onChangeInput,
   placeholder,
   errorText,
   isPhoneInputDisabled,
   validate,
 }: PropsType) => {
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
   const [isValid, setIsValid] = useState(false)
   const [isBlur, setIsBlur] = useState(false)
   const [isFocus, setIsFocus] = useState(false)
@@ -50,10 +51,10 @@ export const Input = ({
     else if (validate && !validate(value as string)) {
       setIsValid(false)
     }
-  }, [value])
+  }, [value, validate])
   return (
-    <label className={`my-[30px] relative text-2xl ${isFocus ? 'text-main' : 'text-[#d596f0]'}`}>
-      {name}
+    <label className={`${labelStyle}`}>
+      {labelName}
       <input
         onBlur={() => {
           setIsBlur(true)
@@ -63,14 +64,13 @@ export const Input = ({
           setIsBlur(false)
           setIsFocus(true)
         }}
-        className={`${style}  outline-none py-[4px] pl-[8px] border-b-2 ${
-          isFocus ? 'border-main' : 'border-[#d596f0]'
-        } text-2xl`}
+        className={`${style} ${isFocus ? 'border-main' : 'border-[#d596f0]'} sm:text-sm text-2xl`}
         type={type}
         placeholder={placeholder}
         minLength={minLength}
         maxLength={maxLength}
         value={value}
+        name={name}
         disabled={isPhoneInputDisabled}
         onChange={(e) => onChangeInput(e)}
       />

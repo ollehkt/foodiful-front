@@ -67,7 +67,7 @@ const ReviewItem = ({ review }: PropsType) => {
             ></div>
           </div>
           <div className="flex items-center gap-x-2 text-[#999]">
-            {/* <div className="font-semibold">{user.email.split('@')[0]}</div> */}
+            <div className="font-semibold">{user.email.split('@')[0]}</div>
             <div>
               {updatedAt
                 ? dayjs(updatedAt).format('YY.MM.DD')
@@ -75,7 +75,7 @@ const ReviewItem = ({ review }: PropsType) => {
             </div>
           </div>
           <div className="h-[30px] flex items-center">
-            {/* <span className="text-[#666] text-[15px]">구매 상품: {product.name}</span> */}
+            <span className="text-[#666] text-[15px]">구매 상품: {product.name}</span>
           </div>
           <div className="md:w-[60%] w-[80%] mt-[20px] text-[#333] font-semibold break-keep">
             {comment}

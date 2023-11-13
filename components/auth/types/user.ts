@@ -15,6 +15,7 @@ export interface SignInType {
 export interface SignUpType extends SignInType {
   phone: string
   name: string
+  verify: string
 }
 
 export interface PromiseUserType {
