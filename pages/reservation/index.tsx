@@ -14,7 +14,7 @@ import { ReservationTypes } from '../../types/reservationTypes'
 export const getServerSideProps = async (): Promise<{
   props: { classes: ClassType[]; reservedTimes: string[] }
 }> => {
-  const { data: classes } = await api('/class')
+  const { data: classes } = await api('/class/all')
   const { data: reservations } = await api('/reservation/all')
 
   const reservedTimes: string[] = reservations.flatMap(

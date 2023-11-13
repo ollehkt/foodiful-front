@@ -8,8 +8,3 @@ export interface ClassType {
   id: number
   regular: boolean
 }
-
-export type ClassReturnType = {
-  success: boolean
-  data: ClassType[]
-}
