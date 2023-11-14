@@ -37,7 +37,7 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
     state: product,
     setState: setProduct,
     onChangeInput,
-  } = useInput(
+  } = useInput<ProductType, string | number | string[] | CategoryType[] | boolean>(
     (productForUpdate && { ...productForUpdate }) || {
       name: '',
       subTitle: '',

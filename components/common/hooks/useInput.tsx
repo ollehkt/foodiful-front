@@ -1,14 +1,12 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 
-export const useInput = (initValue: any) => {
-  const [state, setState] = useState<any>(initValue)
+export const useInput = <T extends { [K in keyof T]: U }, U>(initValue: T) => {
+  const [state, setState] = useState<T>(initValue)
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
     setState({ ...state, [name]: value })
-    console.log('name', name)
-    console.log('vlaue', value)
   }
 
   const reset = useCallback(() => {

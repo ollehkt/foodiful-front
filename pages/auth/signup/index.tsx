@@ -15,7 +15,7 @@ function SignUp() {
     state: signUpValue,
     onChangeInput,
     reset: resetSignUpValue,
-  } = useInput({
+  } = useInput<SignUpType, string>({
     email: '',
     name: '',
     password: '',
