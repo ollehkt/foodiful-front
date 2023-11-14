@@ -23,14 +23,6 @@ type AppPropsWithLayout = AppProps & {
 } // 기존 AppProps타입에 Layout을 추가한 것.
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
-  const { getUser } = useUser()
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    ;(async () => {
-      await getUser(storedUser)
-    })()
-  }, [])
 
   const queryClient = new QueryClient({
     defaultOptions: {

@@ -10,7 +10,6 @@ import { getStoredUser } from '../../util/userStorage'
 import HeaderNav from './HeaderNav'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { mobileNavState } from '../../../store/mobileNavState'
-
 import { User } from '../../auth/types/user'
 
 const Header = () => {
@@ -27,7 +26,7 @@ const Header = () => {
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
-  }, [])
+  }, [router])
 
   return (
     <div className={`w-full sticky top-0 z-[999999] bg-[white] shadow-md`}>

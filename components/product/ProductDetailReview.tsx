@@ -19,6 +19,7 @@ const ProductDetailReview = ({
   reviewList: ProductReviewTypes[]
 }) => {
   const [userReviewed, setUserReviewed] = useState<ProductReviewTypes>()
+  const [userPurchased, setUserPurchased] = useState(false)
   const [isModifyMode, setIsModifyMode] = useState(false)
   const [user, setUser] = useState<User>()
 
@@ -31,15 +32,18 @@ const ProductDetailReview = ({
       const userReview = reviewList.find((review: ProductReviewTypes) => {
         return review.userId === storedUser.id
       })
-
       setUserReviewed(userReview)
+      setUserPurchased(true)
     }
   }, [])
 
+  console.log(userReviewed)
+
   return (
     <div className="w-full">
-      {user && userReviewed ? (
-        isModifyMode ? (
+      {user &&
+        userReviewed &&
+        (isModifyMode ? (
           <>
             <div className="my-[20px] text-3xl font-bold">후기 수정하기</div>
             <ReviewForm
@@ -63,15 +67,13 @@ const ProductDetailReview = ({
             </div>
             <ReviewItem review={userReviewed} />
           </>
-        )
-      ) : (
-        /** 유저가 이미 쓴 리뷰가 있다면 post 안 뜨고 내가 쓴 리뷰가 위에 보이게 만들기 및 수정 가능하게끔 */
-        user && (
-          <>
-            <div className="my-[20px] text-3xl font-bold">후기 등록하기</div>
-            <ReviewForm productName={productName} productId={productId} userId={user.id} />
-          </>
-        )
+        ))}
+      {/** 유저가 이미 쓴 리뷰가 있다면 post 안 뜨고 내가 쓴 리뷰가 위에 보이게 만들기 및 수정 능하게끔 */}
+      {user && !userPurchased && (
+        <>
+          <div className="my-[20px] text-3xl font-bold">후기 등록하기</div>
+          <ReviewForm productName={productName} productId={productId} userId={user.id} />
+        </>
       )}
       <div className="flex flex-col mt-[40px] border-main border-t-[1px]">
         <div className="mt-[10px]  text-3xl">후기 목록</div>
