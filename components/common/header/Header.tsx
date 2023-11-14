@@ -43,7 +43,7 @@ const Header = () => {
             <HeaderNav />
             {user ? (
               <>
-                <Link className="text-xl" href="/mypage">
+                <Link className="text-xl" href="/mypage/modify">
                   <span className="text-main hover:text-hover font-extrabold">{user.name}</span> 님
                 </Link>
                 <button

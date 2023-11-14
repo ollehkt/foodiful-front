@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useUser } from '../../components/auth/hooks/useUser'
+import { ReactElement, useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { getStoredUser } from '../../components/util/userStorage'
+import Layout from '../../components/layout/Layout'
+import MyPageLayout from '../../components/layout/\bMyPageLayout'
+import { getMyPageLayout } from './getMyPageLayout'
 
 function MyPage() {
   const [user, setUser] = useState<User>()
@@ -11,7 +13,9 @@ function MyPage() {
     if (storedUser) setUser(storedUser)
   }, [])
 
-  return <div></div>
+  return <div className="grow h-[1000px] shadow-basic rounded-md">hi</div>
 }
+
+MyPage.getLayout = getMyPageLayout
 
 export default MyPage
