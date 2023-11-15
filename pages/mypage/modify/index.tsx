@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useUser } from '../../../components/auth/hooks/useUser'
 import { User } from '../../../components/auth/types/user'
 import StrongTitle from '../../../components/common/StrongTitle'
 import { getStoredUser } from '../../../components/util/userStorage'
@@ -7,9 +8,13 @@ import { getMyPageLayout } from '../getMyPageLayout'
 const MyPageModify = () => {
   const [isModifyMode, setIsModifyMode] = useState(false)
   const [user, setUser] = useState<User>()
+  const { getUser } = useUser()
   useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
+    ;(async () => {
+      const storedUser = getStoredUser()
+      const res = await getUser(storedUser)
+      if (res) setUser(res)
+    })()
   }, [])
   return (
     <div className="w-full flex flex-col items-center rounded-md shadow-basic py-2">
