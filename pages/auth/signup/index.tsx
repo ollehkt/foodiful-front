@@ -7,6 +7,7 @@ import { useAuth } from '../../../components/auth/hooks/useAuth'
 import usePhoneVerfiy from '../../../components/auth/hooks/usePhoneVerify'
 import { Button } from '../../../components/common/Button'
 import { SignUpType } from '../../../components/auth/types/user'
+import { calPhoneVerifyTime } from '../../../components/util/timeUtil/getTimes'
 
 function SignUp() {
   const { signUp } = useAuth()
@@ -23,30 +24,28 @@ function SignUp() {
     verify: '',
   })
 
-  const [isPhoneInputDisabled, setIsPhoneInputDisabled] = useState(false)
-  const [isExistPhoneNumber, setIsExistPhoneNumber] = useState(false)
-  const [phoneCheckErrorMsg, setPhoneCheckErrorMsg] = useState('')
-  const [isClickedVerifyPhone, setIsClickedVerifyPhone] = useState(false)
-  const [time, setTime] = useState(-1) // 남은 시간 (단위: 초)
-  const [verifyExpiredTxt, setVerifyExpiredTxt] = useState('')
-  // 핸드폰 인증 확인
-  const [verifiedPhone, setVerifiedPhone] = useState(false)
-
-  const { sendVerifySms, checkVerifySms, checkExistPhone } = usePhoneVerfiy()
+  const {
+    sendVerifySms,
+    checkExistPhone,
+    checkVerifySms,
+    setVerifyExpiredTxt,
+    setIsClickedVerifyPhone,
+    setIsExistPhoneNumber,
+    setPhoneCheckErrorMsg,
+    setTime,
+    setIsPhoneInputDisabled,
+    time,
+    verifiedPhone,
+    verifyExpiredTxt,
+    isClickedVerifyPhone,
+    isExistPhoneNumber,
+    phoneCheckErrorMsg,
+    isPhoneInputDisabled,
+  } = usePhoneVerfiy()
   const { emailValidate, passwordValidate } = useValidate()
 
   const onClickSignUpBtn = async () => {
     await signUp(signUpValue)
-  }
-
-  // timer 로직
-  const getSeconds = (time: number) => {
-    const seconds = Number(time % 60)
-    if (seconds < 10) {
-      return '0' + String(seconds)
-    } else {
-      return String(seconds)
-    }
   }
 
   useEffect(() => {
@@ -62,7 +61,7 @@ function SignUp() {
 
   useEffect(() => {
     if (signUpValue.phone.length === 11) {
-      checkExistPhone(signUpValue.phone, setIsExistPhoneNumber, setPhoneCheckErrorMsg)
+      checkExistPhone(signUpValue.phone)
     } else {
       setIsExistPhoneNumber(false)
     }
@@ -114,7 +113,7 @@ function SignUp() {
         <Input
           style="ml-[38px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-b-2"
           labelStyle="my-[30px] relative text-2xl"
-          isPhoneInputDisabled={isPhoneInputDisabled}
+          isDisabled={isPhoneInputDisabled}
           labelName="휴대폰"
           type="tel"
           minLength={0}
@@ -132,7 +131,7 @@ function SignUp() {
             className="absolute text-xl w-[80px] right-0 bottom-[8px] hover:text-main disabled:text-[#999] "
             onClick={() => {
               setIsClickedVerifyPhone(true)
-              sendVerifySms(signUpValue.phone, setTime, setVerifyExpiredTxt)
+              sendVerifySms(signUpValue.phone)
               setIsPhoneInputDisabled(true)
             }}
           >
@@ -155,20 +154,12 @@ function SignUp() {
               placeholder="인증번호"
             />
             <span className="text-main text-2xl">
-              {Math.floor(time / 60)} : {getSeconds(time)}
+              {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
             </span>
             <button
               className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
               onClick={() =>
-                checkVerifySms(
-                  signUpValue.phone,
-                  signUpValue.verify,
-                  setVerifiedPhone,
-                  setIsClickedVerifyPhone,
-                  setIsPhoneInputDisabled,
-                  resetSignUpValue,
-                  setVerifyExpiredTxt
-                )
+                checkVerifySms(signUpValue.phone, signUpValue.verify, resetSignUpValue)
               }
             >
               확인

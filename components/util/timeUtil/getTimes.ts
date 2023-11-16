@@ -10,3 +10,12 @@ export const getTimes = (selectedDate: string) => {
   }
   return timeArr
 }
+
+export const calPhoneVerifyTime = (time: number) => {
+  const seconds = Number(time % 60)
+  if (seconds < 10) {
+    return '0' + String(seconds)
+  } else {
+    return String(seconds)
+  }
+}

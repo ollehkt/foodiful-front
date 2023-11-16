@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '../../../components/common/Input'
 import { useInput } from '../../../components/common/hooks/useInput'
 import { useValidate } from '../../../components/auth/hooks/useValidate'
@@ -16,13 +16,20 @@ function SignIn() {
   const router = useRouter()
   const { signIn } = useAuth()
   const { emailValidate, passwordValidate } = useValidate()
+  const [isValidated, setIsValidated] = useState(false)
+
+  useEffect(() => {
+    if (emailValidate(signInValue.email) && passwordValidate(signInValue.password)) {
+      setIsValidated(true)
+    } else setIsValidated(false)
+  }, [signInValue, emailValidate, passwordValidate])
 
   return (
-    <div className="w-full h-screen mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
+    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>로그인
       <Input
-        style="ml-[38px] outline-none py-[4px] pl-[8px] border-b-2"
-        labelStyle="my-[30px] relative text-2xl"
+        style="ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        labelStyle="my-[30px] relative text-xl"
         labelName="이메일"
         type="text"
         value={signInValue.email}
@@ -33,7 +40,7 @@ function SignIn() {
         errorText="이메일 형식에 맞춰 입력해주세요"
       />
       <Input
-        style="ml-[12px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-2xl"
         labelName="패스워드"
         type="password"
@@ -51,6 +58,7 @@ function SignIn() {
         style="mt-[40px] bg-primary text-[#fff] "
         title="로그인"
         size="md"
+        disabled={!isValidated}
       />
       <div className="mt-[10px]">
         <Button

@@ -1,15 +1,19 @@
 import axios, { AxiosResponse } from 'axios'
+import { useState } from 'react'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 
 const usePhoneVerfiy = () => {
   const { fireToast } = useToast()
+  const [isPhoneInputDisabled, setIsPhoneInputDisabled] = useState(false)
+  const [isExistPhoneNumber, setIsExistPhoneNumber] = useState(false)
+  const [phoneCheckErrorMsg, setPhoneCheckErrorMsg] = useState('')
+  const [isClickedVerifyPhone, setIsClickedVerifyPhone] = useState(false)
+  const [time, setTime] = useState(-1) // 남은 시간 (단위: 초)
+  const [verifyExpiredTxt, setVerifyExpiredTxt] = useState('')
+  const [verifiedPhone, setVerifiedPhone] = useState(false)
 
-  const checkExistPhone = async (
-    phone: string,
-    setIsExistPhoneNumber: (p: boolean) => void,
-    setPhoneCheckErrorMsg: (p: string) => void
-  ) => {
+  const checkExistPhone = async (phone: string) => {
     try {
       const res = await api.get(`/auth/checkphone/exists?phone=${phone}`)
       if (res) setIsExistPhoneNumber(true)
@@ -30,11 +34,7 @@ const usePhoneVerfiy = () => {
     }
   }
 
-  const sendVerifySms = async (
-    phone: string | number,
-    setTime: (p: number) => void,
-    setVerifyExpiredTxt: (p: string) => void
-  ) => {
+  const sendVerifySms = async (phone: string | number) => {
     try {
       const res = await api.post('/auth/checkphone', {
         phoneNumber: phone,
@@ -55,15 +55,7 @@ const usePhoneVerfiy = () => {
     }
   }
 
-  const checkVerifySms = async (
-    phone: string,
-    verify: string,
-    setVerifiedPhone: (p: boolean) => void,
-    setIsClickedVerifyPhone: (p: boolean) => void,
-    setIsPhoneInputDisabled: (p: boolean) => void,
-    resetSignUpValue: () => void,
-    setVerifyExpiredTxt: (p: string) => void
-  ) => {
+  const checkVerifySms = async (phone: string, verify: string, resetSignUpValue: () => void) => {
     try {
       const res = await api.post('/auth/checkphone/verify', {
         data: {
@@ -116,6 +108,23 @@ const usePhoneVerfiy = () => {
     }
   }
 
-  return { sendVerifySms, checkExistPhone, checkVerifySms }
+  return {
+    sendVerifySms,
+    checkExistPhone,
+    checkVerifySms,
+    setVerifyExpiredTxt,
+    setIsClickedVerifyPhone,
+    setIsExistPhoneNumber,
+    setPhoneCheckErrorMsg,
+    setTime,
+    setIsPhoneInputDisabled,
+    time,
+    verifiedPhone,
+    verifyExpiredTxt,
+    isClickedVerifyPhone,
+    isExistPhoneNumber,
+    phoneCheckErrorMsg,
+    isPhoneInputDisabled,
+  }
 }
 export default usePhoneVerfiy

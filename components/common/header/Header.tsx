@@ -43,9 +43,9 @@ const Header = () => {
             <HeaderNav />
             {user ? (
               <>
-                <Link className="text-xl" href="/mypage/modify">
+                <div className="text-xl" onClick={() => router.push('/mypage/modify')}>
                   <span className="text-main hover:text-hover font-extrabold">{user.name}</span> 님
-                </Link>
+                </div>
                 <button
                   onClick={signOut}
                   className="text-xl no-underline text-[#666] hover:text-[#000]"

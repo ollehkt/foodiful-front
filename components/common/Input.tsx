@@ -13,7 +13,7 @@ interface PropsType {
   placeholder: string
   onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
   errorText?: string
-  isPhoneInputDisabled?: boolean
+  isDisabled?: boolean
   validate?: (value: string) => boolean
 }
 
@@ -29,7 +29,7 @@ export const Input = ({
   onChangeInput,
   placeholder,
   errorText,
-  isPhoneInputDisabled,
+  isDisabled,
   validate,
 }: PropsType) => {
   const [isValid, setIsValid] = useState(false)
@@ -64,18 +64,18 @@ export const Input = ({
           setIsBlur(false)
           setIsFocus(true)
         }}
-        className={`${style} ${isFocus ? 'border-main' : 'border-[#d596f0]'} sm:text-sm text-2xl`}
+        className={`${style} ${isFocus ? 'border-main' : 'border-[#d596f0]'} text-lg`}
         type={type}
         placeholder={placeholder}
         minLength={minLength}
         maxLength={maxLength}
         value={value}
         name={name}
-        disabled={isPhoneInputDisabled}
+        disabled={isDisabled}
         onChange={(e) => onChangeInput(e)}
       />
       {isBlur && !isValid ? (
-        <div className="text-[#f00] text-lg absolute right-0">{errorText}</div>
+        <div className="text-[#f00] text-lg absolute right-0 text-center">{errorText}</div>
       ) : null}
     </label>
   )
