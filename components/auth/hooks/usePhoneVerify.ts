@@ -1,23 +1,42 @@
 import axios, { AxiosResponse } from 'axios'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
+import { SignUpType } from '../types/user'
+
+/**
+ * 핸드폰 번호 수정 눌렀을 때 번호 input able
+ * 취소 했을 때 input disable 및 초기 상태로 돌아감
+ * 인증 눌렀을 때 번호 존재한다면, 에러 텍스트만 띄우고 변경 없음
+ * 인증 눌렀을 때 번호 존재x, 인증번호 창과 확인 버튼 등 띄우기
+ * 취소 눌렀을 때는 다시 초기 상태로
+ * 재시도 눌렀을 떄는 시간만 초기화
+ */
 
 const usePhoneVerfiy = () => {
   const { fireToast } = useToast()
+  // input disable 여부
   const [isPhoneInputDisabled, setIsPhoneInputDisabled] = useState(false)
+  // 존재하는 번호인지 여부
   const [isExistPhoneNumber, setIsExistPhoneNumber] = useState(false)
+  // 번호 체크 후 에러 메시지
   const [phoneCheckErrorMsg, setPhoneCheckErrorMsg] = useState('')
+  // 인증 버튼 눌렀는지 여부
   const [isClickedVerifyPhone, setIsClickedVerifyPhone] = useState(false)
+  // 검증 시간
   const [time, setTime] = useState(-1) // 남은 시간 (단위: 초)
+  // 만료 시 텍스트
   const [verifyExpiredTxt, setVerifyExpiredTxt] = useState('')
-  const [verifiedPhone, setVerifiedPhone] = useState(false)
+  // 핸드폰 인증 여부
+  const [isVerifiedPhone, setIsVerifiedPhone] = useState(false)
 
   const checkExistPhone = async (phone: string) => {
     try {
       const res = await api.get(`/auth/checkphone/exists?phone=${phone}`)
-      if (res) setIsExistPhoneNumber(true)
+
+      if (res) setIsExistPhoneNumber(false)
       setPhoneCheckErrorMsg('')
+      return true
     } catch (error) {
       if (axios.isAxiosError(error)) {
         fireToast({
@@ -28,20 +47,23 @@ const usePhoneVerfiy = () => {
           timer: 1000,
         })
         if (error?.response?.status === 409) {
+          setIsExistPhoneNumber(true)
           setPhoneCheckErrorMsg(error.response.data.message)
         }
       }
     }
   }
 
-  const sendVerifySms = async (phone: string | number) => {
+  const sendVerifySms = async (phone: string) => {
     try {
-      const res = await api.post('/auth/checkphone', {
-        phoneNumber: phone,
-      })
-      setTime(180)
-      setVerifyExpiredTxt('')
-      console.log(res)
+      if (!isExistPhoneNumber) {
+        const res = await api.post('/auth/checkphone', {
+          phoneNumber: phone,
+        })
+        setTime(180)
+        setVerifyExpiredTxt('')
+        console.log(res)
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         fireToast({
@@ -55,7 +77,7 @@ const usePhoneVerfiy = () => {
     }
   }
 
-  const checkVerifySms = async (phone: string, verify: string, resetSignUpValue: () => void) => {
+  const checkVerifySms = async (phone: string, verify: string, resetPhone: () => void) => {
     try {
       const res = await api.post('/auth/checkphone/verify', {
         data: {
@@ -72,7 +94,7 @@ const usePhoneVerfiy = () => {
           timer: 2000,
         })
       }
-      setVerifiedPhone(true)
+      setIsVerifiedPhone(true)
       setIsClickedVerifyPhone(false)
       setIsPhoneInputDisabled(true)
     } catch (error) {
@@ -85,9 +107,9 @@ const usePhoneVerfiy = () => {
             position: 'bottom',
             timer: 2000,
           })
-          setVerifiedPhone(false)
+          setIsVerifiedPhone(false)
           setIsClickedVerifyPhone(false)
-          resetSignUpValue()
+          resetPhone()
           setIsPhoneInputDisabled(false)
           setVerifyExpiredTxt('인증번호 오류입니다. 다시 시도해주세요')
         } else if (error?.response?.status === 404) {
@@ -98,9 +120,9 @@ const usePhoneVerfiy = () => {
             position: 'bottom',
             timer: 2000,
           })
-          setVerifiedPhone(false)
+          setIsVerifiedPhone(false)
           setIsClickedVerifyPhone(false)
-          resetSignUpValue()
+          resetPhone()
           setIsPhoneInputDisabled(false)
           setVerifyExpiredTxt('인증번호가 만료되었습니다.')
         }
@@ -118,8 +140,9 @@ const usePhoneVerfiy = () => {
     setPhoneCheckErrorMsg,
     setTime,
     setIsPhoneInputDisabled,
+    setIsVerifiedPhone,
     time,
-    verifiedPhone,
+    isVerifiedPhone,
     verifyExpiredTxt,
     isClickedVerifyPhone,
     isExistPhoneNumber,

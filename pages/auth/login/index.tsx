@@ -41,7 +41,7 @@ function SignIn() {
       />
       <Input
         style="ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
-        labelStyle="my-[30px] relative text-2xl"
+        labelStyle="my-[30px] relative text-xl"
         labelName="패스워드"
         type="password"
         minLength={6}

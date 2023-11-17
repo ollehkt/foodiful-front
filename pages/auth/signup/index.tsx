@@ -26,26 +26,24 @@ function SignUp() {
 
   const {
     sendVerifySms,
-    checkExistPhone,
     checkVerifySms,
     setVerifyExpiredTxt,
     setIsClickedVerifyPhone,
-    setIsExistPhoneNumber,
-    setPhoneCheckErrorMsg,
     setTime,
     setIsPhoneInputDisabled,
+    checkExistPhone,
     time,
-    verifiedPhone,
+    isVerifiedPhone,
     verifyExpiredTxt,
     isClickedVerifyPhone,
-    isExistPhoneNumber,
     phoneCheckErrorMsg,
     isPhoneInputDisabled,
+    isExistPhoneNumber,
   } = usePhoneVerfiy()
   const { emailValidate, passwordValidate } = useValidate()
 
-  const onClickSignUpBtn = async () => {
-    await signUp(signUpValue)
+  const onClickSignUpBtn = () => {
+    signUp(signUpValue)
   }
 
   useEffect(() => {
@@ -59,13 +57,13 @@ function SignUp() {
     return () => clearInterval(count)
   }, [time])
 
-  useEffect(() => {
-    if (signUpValue.phone.length === 11) {
-      checkExistPhone(signUpValue.phone)
-    } else {
-      setIsExistPhoneNumber(false)
-    }
-  }, [signUpValue.phone])
+  // useEffect(() => {
+  //   if (signUpValue.phone.length === 11) {
+  //     checkExistPhone(signUpValue.phone)
+  //   } else {
+  //     setIsExistPhoneNumber(false)
+  //   }
+  // }, [signUpValue.phone])
 
   return (
     <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
@@ -125,14 +123,18 @@ function SignUp() {
           errorText={phoneCheckErrorMsg}
         />
 
-        {!isClickedVerifyPhone && !verifiedPhone && (
+        {!isClickedVerifyPhone && !isVerifiedPhone && (
           <button
-            disabled={!isExistPhoneNumber}
+            disabled={signUpValue.phone.length !== 11}
             className="absolute text-xl w-[80px] right-0 bottom-[8px] hover:text-main disabled:text-[#999] "
-            onClick={() => {
-              setIsClickedVerifyPhone(true)
-              sendVerifySms(signUpValue.phone)
-              setIsPhoneInputDisabled(true)
+            onClick={async () => {
+              const isNotExist = await checkExistPhone(signUpValue.phone)
+
+              if (isNotExist) {
+                setIsClickedVerifyPhone(true)
+                sendVerifySms(signUpValue.phone)
+                setIsPhoneInputDisabled(true)
+              }
             }}
           >
             인증
@@ -140,7 +142,7 @@ function SignUp() {
         )}
       </div>
       <div className="flex items-center mt-[0px] ml-[0px]">
-        {isClickedVerifyPhone && !verifyExpiredTxt ? (
+        {!isExistPhoneNumber && isClickedVerifyPhone && !verifyExpiredTxt ? (
           <>
             <Input
               style="mx-[30px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-b-2"
@@ -158,9 +160,10 @@ function SignUp() {
             </span>
             <button
               className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
-              onClick={() =>
+              onClick={() => {
                 checkVerifySms(signUpValue.phone, signUpValue.verify, resetSignUpValue)
-              }
+                setTime(-1)
+              }}
             >
               확인
             </button>
@@ -170,7 +173,7 @@ function SignUp() {
         )}
       </div>
       <Button
-        disabled={!verifiedPhone}
+        disabled={!isVerifiedPhone}
         style="mt-[40px] bg-primary text-[#fff] "
         title="회원가입"
         size="md"
