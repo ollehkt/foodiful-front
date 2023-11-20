@@ -64,7 +64,7 @@ export const Input = ({
           setIsBlur(false)
           setIsFocus(true)
         }}
-        className={`text-lg ${style} ${isFocus ? 'border-main' : 'border-[#d596f0]'} `}
+        className={`text-lg ${style} ${isFocus ? 'border-main' : 'border-primary'} `}
         type={type}
         placeholder={placeholder}
         minLength={minLength}

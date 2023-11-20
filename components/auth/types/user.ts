@@ -1,10 +1,10 @@
 export interface User {
+  id: number
   email: string
   name: string
   phone: string
   token: string
   role: string
-  id: number
 }
 
 export interface SignInType {
@@ -20,4 +20,14 @@ export interface SignUpType extends SignInType {
 
 export interface PromiseUserType {
   user: User
+}
+
+export interface ModifyUserType {
+  email: string
+  name: string
+  phone: string
+  verify: string
+  password: string
+  changePassword: string
+  confirmChangePassword: string
 }

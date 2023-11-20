@@ -43,7 +43,7 @@ const Header = () => {
             <HeaderNav />
             {user ? (
               <>
-                <div className="text-xl" onClick={() => router.push('/mypage/modify')}>
+                <div className="text-xl" onClick={() => router.push('/mypage')}>
                   <span className="text-main hover:text-hover font-extrabold">{user.name}</span> 님
                 </div>
                 <button

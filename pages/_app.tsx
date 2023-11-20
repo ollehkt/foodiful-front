@@ -27,8 +27,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: false,
-      },
+        refetchOnWindowFocus: true
+      }
     },
   })
   const getLayout =
