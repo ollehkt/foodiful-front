@@ -57,12 +57,11 @@ const usePhoneVerfiy = () => {
   const sendVerifySms = async (phone: string) => {
     try {
       if (!isExistPhoneNumber) {
-        const res = await api.post('/auth/checkphone', {
+        await api.post('/auth/checkphone', {
           phoneNumber: phone,
         })
         setTime(180)
         setVerifyExpiredTxt('')
-        console.log(res)
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

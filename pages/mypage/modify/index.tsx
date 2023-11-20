@@ -12,7 +12,6 @@ import { getMyPageLayout } from '../getMyPageLayout'
 
 const MyPageModify = () => {
   const { fireToast } = useToast()
-  const [isModifyMode, setIsModifyMode] = useState(false)
 
   const [user, setUser] = useState<Omit<User, 'role'>>({
     name: '',
@@ -63,39 +62,14 @@ const MyPageModify = () => {
   return (
     <div className="w-full flex flex-col items-center rounded-md shadow-basic py-2">
       <StrongTitle title="내 정보 수정" />
-      <div className="w-[80%] flex justify-end mt-[20px]">
-        <div
-          className="text-textDisabled font-bold cursor-pointer hover:text-disabled"
-          onClick={() => setIsModifyMode((prev) => !prev)}
-        >
-          {!isModifyMode && '수정'}
-        </div>
-      </div>
-      {user && !isModifyMode ? (
-        <>
-          <div className="flex">
-            <span>이메일: </span>
-            <span>{user.email}</span>
-          </div>
-          <div>
-            <span>이름: </span>
-            <span>{user.name}</span>
-          </div>
-          <div>
-            <span>핸드폰 번호: </span>
-            <span>{user.phone}</span>
-          </div>
-          <div></div>
-        </>
-      ) : (
+      <div className="w-[90%] mx-auto mt-[20px]">
         <UserModifyForm
           user={user}
           modifyUserState={modifyUserState}
           setModifyUserState={setModifyUserState}
           onChangeInput={onChangeInput}
-          setIsModifyMode={setIsModifyMode}
         />
-      )}
+      </div>
     </div>
   )
 }

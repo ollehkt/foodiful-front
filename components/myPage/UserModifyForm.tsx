@@ -15,7 +15,6 @@ interface PropsType {
   modifyUserState: ModifyUserType
   setModifyUserState: Dispatch<SetStateAction<ModifyUserType>>
   onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
-  setIsModifyMode: Dispatch<SetStateAction<boolean>>
 }
 
 const UserModifyForm = ({
@@ -23,7 +22,6 @@ const UserModifyForm = ({
   modifyUserState,
   setModifyUserState,
   onChangeInput,
-  setIsModifyMode,
 }: PropsType) => {
   const { fireToast } = useToast()
   const router = useRouter()
@@ -145,12 +143,25 @@ const UserModifyForm = ({
           errorText="3자 이상 10자 이하로 입력해주세요"
         />
         {isNameModifyMode ? (
-          <Button
-            title="취소"
-            onClick={() => setIsNameModifyMode(false)}
-            style="w-[50px]"
-            size="md"
-          />
+          <>
+            <Button
+              title="취소"
+              onClick={() => {
+                setIsNameModifyMode(false)
+                setModifyUserState({ ...modifyUserState, name: user.name })
+              }}
+              style="w-[50px]"
+              size="md"
+            />
+            <Button
+              title="확인"
+              onClick={() => {
+                setIsNameModifyMode(false)
+              }}
+              style="w-[50px]"
+              size="md"
+            />
+          </>
         ) : (
           <Button
             title="변경"
@@ -179,8 +190,10 @@ const UserModifyForm = ({
 
           {isPhoneModifyMode ? (
             <>
-              <button
-                className="absolute text-xl w-[50px] right-[20px] bottom-[8px] hover:text-main disabled:text-[#999] "
+              <Button
+                title="인증"
+                style="w-[50px] disabled:text-[#999]"
+                size="md"
                 onClick={async () => {
                   const isNotExist = await checkExistPhone(modifyUserState.phone)
                   if (isNotExist) {
@@ -190,28 +203,26 @@ const UserModifyForm = ({
                   }
                 }}
                 /** 인증 버튼 눌렀을 때 번호 체크 후 문자 보내기 */
-              >
-                인증
-              </button>
-              <button
-                className="absolute text-xl w-[50px] right-[-30px] bottom-[8px] hover:text-main"
+              />
+              <Button
+                title="취소"
+                style="w-[50px] disabled:text-[#999]"
+                size="md"
                 onClick={() => {
                   setIsClickedVerifyPhone(false)
                   setIsPhoneInputDisabled(false)
                   setIsPhoneModifyMode(false)
-                  setTime(-1)
+                  setTime(0)
                 }}
-              >
-                취소
-              </button>
+              />
             </>
           ) : (
-            <button
-              className="absolute text-xl w-[80px] right-0 bottom-[8px] hover:text-main"
+            <Button
+              style=" w-[50px]"
               onClick={() => setIsPhoneModifyMode(true)}
-            >
-              수정
-            </button>
+              size="md"
+              title="변경"
+            />
           )}
         </div>
         {isClickedVerifyPhone && !isExistPhoneNumber ? (
@@ -234,9 +245,19 @@ const UserModifyForm = ({
               <button
                 className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
                 onClick={() => {
+                  if (!modifyUserState.verify) {
+                    fireToast({
+                      id: '인증번호 미입력',
+                      type: 'failed',
+                      message: '인증번호 6자리를 입력해주세요.',
+                      position: 'bottom',
+                      timer: 2000,
+                    })
+                    return
+                  }
                   checkVerifySms(modifyUserState.phone, modifyUserState.verify, resetPhone)
                   setIsPhoneModifyMode(false)
-                  setTime(-1)
+                  setTime(0)
                 }}
               >
                 확인
@@ -255,7 +276,7 @@ const UserModifyForm = ({
       </>
 
       {isPasswordModifyMode ? (
-        <>
+        <div className="relative flex flex-col">
           <Input
             style="ml-[60px] w-[300px] outline-none py-[4px] pl-[4px] border-b-2"
             labelStyle="my-[20px] relative text-xl"
@@ -298,7 +319,15 @@ const UserModifyForm = ({
             errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
             validate={passwordValidate}
           />
-        </>
+          <div className="w-full absolute bottom-4 right-[-52px] flex justify-end">
+            <Button
+              title="취소"
+              onClick={() => setIsPasswordModifyMode(false)}
+              style="w-[50px] ml-[30px]"
+              size="md"
+            />
+          </div>
+        </div>
       ) : (
         <div className="w-full flex items-center mt-[20px]">
           <div className="text-xl">패스워드</div>
@@ -321,9 +350,11 @@ const UserModifyForm = ({
           title="수정하기"
           style=""
           size="md"
-          onClick={() => updateUser(user.id, modifyUserState)}
+          disabled={user.name === modifyUserState.name && user.phone === modifyUserState.phone}
+          onClick={() => {
+            updateUser(user.id, modifyUserState)
+          }}
         />
-        <Button title="취소하기" style="" size="md" onClick={() => setIsModifyMode(false)} />
       </div>
     </div>
   )
