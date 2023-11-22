@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { checkDisplayState } from '../../../store/checkDisplayState'
+import { isMobileDisplay } from '../../../store/isMobileDisplay'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useUser } from '../../auth/hooks/useUser'
 import { getStoredUser } from '../../util/userStorage'
@@ -15,7 +15,7 @@ import { User } from '../../auth/types/user'
 const Header = () => {
   const { signOut } = useAuth()
   const router = useRouter()
-  const isMobile = useAtomValue(checkDisplayState)
+  const isMobile = useAtomValue(isMobileDisplay)
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
   const [user, setUser] = useState<User>()
 
@@ -43,8 +43,11 @@ const Header = () => {
             <HeaderNav />
             {user ? (
               <>
-                <div className="text-xl" onClick={() => router.push('/mypage')}>
-                  <span className="text-main hover:text-hover font-extrabold">{user.name}</span> 님
+                <div className="text-xl mr-2" onClick={() => router.push('/mypage')}>
+                  <span className="text-main cursor-pointer hover:text-hover font-extrabold">
+                    {user.name}
+                  </span>
+                  님
                 </div>
                 <button
                   onClick={signOut}

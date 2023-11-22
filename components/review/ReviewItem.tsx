@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
-import { checkDisplayState } from '../../store/checkDisplayState'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReviewTypes } from '../../types/productReviewTypes'
 
 interface PropsType {
@@ -31,7 +31,7 @@ const ReviewItem = ({ review }: PropsType) => {
   const { createdAt, updatedAt, comment, userId, productId, id, rating, reviewImg, user, product } =
     review
   const [isImageClicked, setIsImageClicked] = useState(false)
-  const isMobile = useAtomValue(checkDisplayState)
+  const isMobile = useAtomValue(isMobileDisplay)
   return (
     <>
       <div

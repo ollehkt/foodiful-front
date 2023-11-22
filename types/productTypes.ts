@@ -15,6 +15,7 @@ export interface ProductType {
   descImg: string[]
   categories: CategoryType[] | string[]
   deliver: boolean
+  isLiked?: boolean
 }
 
 export interface ProductReturnType extends ProductType {

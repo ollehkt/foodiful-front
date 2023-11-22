@@ -8,7 +8,7 @@ import ProductDetailDesc from './ProductDetailDesc'
 import ProductDetailReview from './ProductDetailReview'
 import Image from 'next/image'
 import { useAtomValue } from 'jotai'
-import { checkDisplayState } from '../../store/checkDisplayState'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 interface PropsType {
   product: ProductReturnType
@@ -27,7 +27,7 @@ const ProductDetail = ({
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
   const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
   const [totalPrice, setTotalPrice] = useState(0)
-  const isMobile = useAtomValue(checkDisplayState)
+  const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
 
   useEffect(() => {

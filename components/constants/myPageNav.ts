@@ -8,8 +8,8 @@ export const myPageNav = [
     url: '/mypage/favorites',
   },
   {
-    title: '내 댓글 보기',
-    url: '/mypage/mycomments',
+    title: '내 후기 보기',
+    url: '/mypage/myreviews',
   },
   {
     title: '상품 구매내역',

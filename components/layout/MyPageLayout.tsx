@@ -12,7 +12,7 @@ const MyPageLayout = ({ children }: { children: ReactElement }) => {
     <>
       <ToastList />
       <Container style="flex gap-10 mt-[100px]">
-        <div className="w-[30%] h-[600px] rounded-md shadow-basic">
+        <div className="w-[20%] h-[600px] rounded-md shadow-basic">
           <div className="flex flex-col justify-center items-center gap-4 mt-[20px]">
             {myPageNav.map(({ title, url }) => (
               <Link

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { Button } from '../../components/common/Button'
 
-import { ProductReturnType, ProductType } from '../../types/productTypes'
+import { ProductReturnType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
 
@@ -20,10 +20,21 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
   // function ProductPage() {
 
   const [user, setUser] = useState<User>()
+  const [productsUserLiked, setProductuserLiked] = useState<ProductReturnType[]>([])
 
   useEffect(() => {
     const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
+    if (storedUser) {
+      setUser(storedUser)
+    }
+
+    ;(async () => {
+      if (storedUser) {
+        const { data: Products } = await api(`/product/all/${storedUser.id}`)
+
+        setProductuserLiked(Products)
+      }
+    })()
   }, [])
 
   const router = useRouter()
@@ -39,7 +50,7 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
       )}
 
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <ProductList products={products} />
+        <ProductList products={user ? productsUserLiked : products} />
       </div>
     </div>
   )

@@ -9,6 +9,7 @@ import { useInput } from '../common/hooks/useInput'
 import useToast from '../common/hooks/useToast'
 import { Input } from '../common/Input'
 import { calPhoneVerifyTime } from '../util/timeUtil/getTimes'
+import { setStoreUser } from '../util/userStorage'
 
 interface PropsType {
   user: Omit<User, 'role'>
@@ -79,8 +80,8 @@ const UserModifyForm = ({
         })
         return
       }
-      const res = await api.patch(
-        `/user/modify/${userId}`,
+      const { data } = await api.patch(
+        `/auth/update/${userId}`,
         { ...modifyUserState },
         {
           headers: {
@@ -88,7 +89,9 @@ const UserModifyForm = ({
           },
         }
       )
-      if (res) {
+
+      if (data) {
+        setStoreUser(data.user)
         fireToast({
           id: '유저 업데이트 성공',
           type: 'success',
@@ -96,9 +99,17 @@ const UserModifyForm = ({
           position: 'bottom',
           timer: 1000,
         })
-        router.push('/mypage/modify')
+        router.push('/mypage')
       }
-    } catch (error) {}
+    } catch (error) {
+      fireToast({
+        id: '유저 업데이트 실패',
+        type: 'failed',
+        message: '유저 업데이트에 실패했습니다.',
+        position: 'bottom',
+        timer: 1000,
+      })
+    }
   }
 
   useEffect(() => {

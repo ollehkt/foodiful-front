@@ -37,8 +37,6 @@ const ProductDetailReview = ({
     }
   }, [])
 
-  console.log(userReviewed)
-
   return (
     <div className="w-full">
       {user &&
@@ -69,11 +67,15 @@ const ProductDetailReview = ({
           </>
         ))}
       {/** 유저가 이미 쓴 리뷰가 있다면 post 안 뜨고 내가 쓴 리뷰가 위에 보이게 만들기 및 수정 능하게끔 */}
-      {user && !userPurchased && (
+      {user && !userPurchased ? (
         <>
           <div className="my-[20px] text-3xl font-bold">후기 등록하기</div>
           <ReviewForm productName={productName} productId={productId} userId={user.id} />
         </>
+      ) : (
+        <div className="flex justify-center text-xl font-bold">
+          상품을 구매하고 후기를 등록해주세요!
+        </div>
       )}
       <div className="flex flex-col mt-[40px] border-main border-t-[1px]">
         <div className="mt-[10px]  text-3xl">후기 목록</div>
