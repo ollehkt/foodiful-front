@@ -75,9 +75,9 @@ function MyPage() {
             좋아요 누른 상품이 없습니다.
           </div>
         ) : (
-          <div className="flex my-12 gap-10 items-center">
+          <div className="grid justify-center md:justify-start md:grid-cols-3 my-12 items-center">
             {myFavoriteProducts.slice(0, 4).map((product) => (
-              <ProductItem key={product.id} product={product} mini={true} />
+              <ProductItem key={product.id} product={product} mini={true} hideFavoriteIcon={true} />
             ))}
           </div>
         )}

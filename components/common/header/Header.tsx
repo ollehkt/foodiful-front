@@ -27,6 +27,7 @@ const Header = () => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
   }, [router])
+  console.log(isMenuOpened)
 
   return (
     <div className={`w-full sticky top-0 z-[999999] bg-[white] shadow-md`}>

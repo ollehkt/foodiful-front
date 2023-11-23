@@ -11,7 +11,11 @@ import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  const { data } = await api('/product/all')
+  // const { data } = await api('/product/all')
+  const data: ProductReturnType[] = await api(
+    'https://633010e5591935f3c8893690.mockapi.io/lenssis/api/v1/eventDetail'
+  )
+  console.log(data)
 
   return { props: { data } }
 }
@@ -27,11 +31,9 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
     if (storedUser) {
       setUser(storedUser)
     }
-
     ;(async () => {
       if (storedUser) {
         const { data: Products } = await api(`/product/all/${storedUser.id}`)
-
         setProductuserLiked(Products)
       }
     })()

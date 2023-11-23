@@ -12,9 +12,10 @@ import FavoriteIcon from '../common/FavoriteIcon'
 interface PropsType {
   product: ProductReturnType
   mini?: boolean
+  hideFavoriteIcon?: boolean
 }
 
-const ProductItem = ({ product, mini }: PropsType) => {
+const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
   const { name, id, descImg, price, discount, quantity, description, subTitle, isLiked } = product
 
   const router = useRouter()
@@ -24,23 +25,23 @@ const ProductItem = ({ product, mini }: PropsType) => {
 
   return (
     <>
-      <div key={`${name}-${id}`} className={`flex flex-col  ${mini ? 'w-[150px]' : 'w-[300px]'}`}>
+      <div key={`${name}-${id}`} className={`flex flex-col  ${mini ? 'w-[200px]' : 'w-[300px]'}`}>
         <Image
           key={descImg[0]}
           src={descImg[0]}
           alt="상품 설명 사진"
-          width={300}
-          height={300}
+          width={200}
+          height={200}
           className={`rounded-md  ${
-            mini ? 'w-[150px] h-[150px]' : 'w-[300px] h-[300px]'
+            mini ? 'h-[200px]' : ' h-[300px]'
           } border-2 border-[gray] cursor-pointer`}
           onClick={() => onClickItem(id)}
         />
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center justify-between mt-4 relative">
           <h3 className=" text text-gray-700">
-            {mini ? `${name.slice(0, 12)}...` : name.slice(0, 10).slice(0, 12)}
+            {mini ? `${name.slice(0, 10)}...` : name.slice(0, 10).slice(0, 12)}
           </h3>
-          <FavoriteIcon productId={id} isLiked={isLiked} />
+          {!hideFavoriteIcon && <FavoriteIcon productId={id} isLiked={isLiked} />}
         </div>
         <p className="mt-1 text-lg font-medium text-gray-900">{price.toLocaleString()}원</p>
       </div>

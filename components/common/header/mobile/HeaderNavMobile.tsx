@@ -6,6 +6,7 @@ import { headerTitle } from '../../../constants/headerTitle'
 
 const HeaderNavMobile = () => {
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
+
   return (
     <>
       {isMenuOpened && (

@@ -4,6 +4,7 @@ import { LOCALSTORAGE_KEY } from '../constants/localStorageKey'
 
 export const getStoredUser = (): User | null => {
   if (window !== undefined) {
+    console.log('called')
     const user = localStorage.getItem(LOCALSTORAGE_KEY)
     return user ? JSON.parse(user) : null
   } else return null

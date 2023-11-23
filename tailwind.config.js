@@ -49,6 +49,10 @@ module.exports = {
           '0%': { transform: 'translateY(0)' },
           '100%': { transform: 'translateY(100px)' },
         },
+        click: {
+          '0%': { transform: 'scale(1.5)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
       animation: {
         ease: 'easeInOut 1s ease-in-out',
@@ -58,6 +62,7 @@ module.exports = {
         translateUp: 'translateY10 1s ease-in-out',
         translateUp100: 'translateY100 1s ease-in-out',
         translateYDown: 'translateDown 1s ease-in-out',
+        click: 'click 1s ease-in-out',
       },
     },
   },
