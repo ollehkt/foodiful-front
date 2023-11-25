@@ -88,6 +88,16 @@ const ReviewForm = ({
 
   const postReview = async (postReview: PostReviewTypes) => {
     try {
+      if (!postReview.comment || postReview.rating === 0) {
+        fireToast({
+          id: '후기 등록 실패',
+          type: 'failed',
+          message: '후기 내용을 입력해주세요.',
+          timer: 1500,
+          position: 'bottom',
+        })
+        return
+      }
       const res = await api.post('/product-review', {
         ...postReview,
         comment: postReview.comment.trim(),
