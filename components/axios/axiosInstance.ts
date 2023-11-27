@@ -14,3 +14,9 @@ export const api = axios.create({
 api.interceptors.response.use((response) => {
   return response.data
 })
+
+export const getJWTToken = (token: string) => {
+  return {
+    Authorization: `Bearer ${token}`,
+  }
+}

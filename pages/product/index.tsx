@@ -9,37 +9,29 @@ import { api } from '../../components/axios/axiosInstance'
 import { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
+import { useGetProducts } from '../../components/product/hooks/useProduct'
+import useToast from '../../components/common/hooks/useToast'
+import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  // const { data } = await api('/product/all')
-  const data: ProductReturnType[] = await api(
-    'https://633010e5591935f3c8893690.mockapi.io/lenssis/api/v1/eventDetail'
-  )
-  console.log(data)
+  const { data } = await api('/product/all')
 
   return { props: { data } }
 }
 
 function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   // function ProductPage() {
-
-  const [user, setUser] = useState<User>()
-  const [productsUserLiked, setProductuserLiked] = useState<ProductReturnType[]>([])
+  const { fireToast } = useToast()
+  const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) {
       setUser(storedUser)
     }
-    ;(async () => {
-      if (storedUser) {
-        const { data: Products } = await api(`/product/all/${storedUser.id}`)
-        setProductuserLiked(Products)
-      }
-    })()
   }, [])
-
-  const router = useRouter()
+  const { data: productsUserLiked, isFetching } = useGetProducts()
 
   const onClickAddBtn = () => {
     router.push('/product/add')
@@ -52,7 +44,11 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
       )}
 
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <ProductList products={user ? productsUserLiked : products} />
+        {isFetching ? (
+          <ProductSkeleton count={4} />
+        ) : (
+          <ProductList products={user ? productsUserLiked : products} />
+        )}
       </div>
     </div>
   )
