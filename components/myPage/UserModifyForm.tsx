@@ -67,6 +67,7 @@ const UserModifyForm = ({
     sendVerifySms(modifyUserState.phone)
     setTime(180)
   }
+  console.log(time)
 
   const updateUser = async (userId: number, modifyUserState: ModifyUserType) => {
     try {
@@ -113,9 +114,12 @@ const UserModifyForm = ({
   }
 
   useEffect(() => {
-    const count = setInterval(() => {
-      setTime((prev) => prev - 1)
-    }, 1000)
+    let count: NodeJS.Timeout
+    if (time > 0) {
+      count = setInterval(() => {
+        setTime((prev) => prev - 1)
+      }, 1000)
+    }
     if (time == 0) {
       setVerifyExpiredTxt('인증번호를 다시 요청해주세요')
       setIsClickedVerifyPhone(false)
@@ -223,7 +227,8 @@ const UserModifyForm = ({
                   setIsClickedVerifyPhone(false)
                   setIsPhoneInputDisabled(false)
                   setIsPhoneModifyMode(false)
-                  setTime(0)
+                  setModifyUserState({ ...modifyUserState, phone: user.phone })
+                  setTime(-1)
                 }}
               />
             </>
@@ -268,7 +273,7 @@ const UserModifyForm = ({
                   }
                   checkVerifySms(modifyUserState.phone, modifyUserState.verify, resetPhone)
                   setIsPhoneModifyMode(false)
-                  setTime(0)
+                  setTime(-1)
                 }}
               >
                 확인
