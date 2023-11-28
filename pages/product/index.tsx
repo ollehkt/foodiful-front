@@ -12,6 +12,8 @@ import { User } from '../../components/auth/types/user'
 import { useGetProducts } from '../../components/product/hooks/useProduct'
 import useToast from '../../components/common/hooks/useToast'
 import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
+import { queryKeys } from '../../query-keys/queryKeys'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const { data } = await api('/product/all')
@@ -31,6 +33,7 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
       setUser(storedUser)
     }
   }, [])
+
   const { data: productsUserLiked, isFetching } = useGetProducts()
 
   const onClickAddBtn = () => {
@@ -47,7 +50,7 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
         {isFetching ? (
           <ProductSkeleton count={4} />
         ) : (
-          <ProductList products={user ? productsUserLiked : products} />
+          <ProductList products={user && productsUserLiked ? productsUserLiked : products} />
         )}
       </div>
     </div>

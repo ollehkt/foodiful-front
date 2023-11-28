@@ -1,17 +1,15 @@
 'use client'
-import axios, { AxiosResponse } from 'axios'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { queryKeys } from '../../../query-keys/queryKeys'
+import axios from 'axios'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser, removeStoredUser, setStoreUser } from '../../util/userStorage'
 import { User } from '../types/user'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
-interface UseUser {
+export interface UseUser {
   user: StoredUser | null | undefined
 }
-interface StoredUser {
+export interface StoredUser {
   email: string
   name: string
   token: string
@@ -23,7 +21,6 @@ export const useUser = (): any => {
   if (typeof window !== 'undefined') {
     storedUser = getStoredUser()
   }
-
   const { fireToast } = useToast()
   const getUser = async (storedUser: StoredUser | null): Promise<User | undefined> => {
     // user가 없을 경우 return

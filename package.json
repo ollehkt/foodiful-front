@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
-    "@tanstack/react-query": "^5.8.4",
-    "@tanstack/react-query-devtools": "^5.8.4",
+    "@tanstack/react-query": "4",
+    "@tanstack/react-query-devtools": "^5.8.7",
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
     "@toast-ui/react-editor": "^3.2.3",
     "autoprefixer": "^10.4.14",
@@ -24,10 +24,10 @@
     "react": "18.2.0",
     "react-awesome-reveal": "^4.2.3",
     "react-dom": "18.2.0",
-    "react-icons": "^4.8.0"
+    "react-icons": "^4.12.0"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^5.8.4",
+    "@tanstack/eslint-plugin-query": "4",
     "@types/node": "18.16.3",
     "@types/react": "18.2.2",
     "@types/react-dom": "18.2.3",

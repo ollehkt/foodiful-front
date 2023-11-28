@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import React from 'react'
 import { ProductReturnType } from '../../types/productTypes'
 import StrongTitle from '../common/StrongTitle'

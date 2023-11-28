@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ const Header = () => {
   const { signOut } = useAuth()
   const router = useRouter()
   const isMobile = useAtomValue(isMobileDisplay)
-  const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
+  const setIsMenuOpened = useSetAtom(mobileNavState)
   const [user, setUser] = useState<User>()
 
   const onClickLogo = useCallback(() => {
@@ -27,7 +27,6 @@ const Header = () => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
   }, [router])
-  console.log(isMenuOpened)
 
   return (
     <div className={`w-full sticky top-0 z-[999999] bg-[white] shadow-md`}>

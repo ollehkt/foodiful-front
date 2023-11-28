@@ -8,6 +8,7 @@ import { useAuth } from '../../../components/auth/hooks/useAuth'
 import { Button } from '../../../components/common/Button'
 import { SignInType } from '../../../components/auth/types/user'
 
+
 function SignIn() {
   const { state: signInValue, onChangeInput } = useInput<SignInType, string>({
     email: '',

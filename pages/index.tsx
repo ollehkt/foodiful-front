@@ -38,7 +38,7 @@ const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSi
           {isFetching ? (
             <ProductSkeleton count={4} />
           ) : (
-            <ProductList products={user ? productsUserLiked : products} />
+            <ProductList products={user && productsUserLiked ? productsUserLiked : products} />
           )}
         </div>
 

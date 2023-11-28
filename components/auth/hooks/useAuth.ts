@@ -4,7 +4,6 @@ import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { removeStoredUser, setStoreUser } from '../../util/userStorage'
 import { PromiseUserType, SignInType, SignUpType } from '../types/user'
-import { useUser } from './useUser'
 
 interface UseAuth {
   signIn: (param: SignInType) => void

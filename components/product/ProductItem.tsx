@@ -25,15 +25,15 @@ const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
 
   return (
     <>
-      <div key={`${name}-${id}`} className={`flex flex-col  ${mini ? 'w-[200px]' : 'w-[300px]'}`}>
+      <div key={`${name}-${id}`} className={`flex flex-col  ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
         <Image
           key={descImg[0]}
-          src={descImg[0]}
+          src={descImg.length > 0 ? descImg[0] : '/foodiful.jpeg'}
           alt="상품 설명 사진"
           width={200}
           height={200}
           className={`rounded-md  ${
-            mini ? 'h-[200px]' : ' h-[300px]'
+            mini ? 'w-[200px] h-[200px]' : 'w-[250px] h-[250px]'
           } border-2 border-[gray] cursor-pointer`}
           onClick={() => onClickItem(id)}
         />

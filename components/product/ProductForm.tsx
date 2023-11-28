@@ -1,3 +1,5 @@
+import { UseMutateFunction } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -18,10 +20,26 @@ const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
 
 interface PropsType {
   productForUpdate?: ProductReturnType
-  onSubmit: (p: ProductType, id?: number) => Promise<void>
+  onSubmitAdd?: UseMutateFunction<
+    AxiosResponse<any, any> | undefined,
+    unknown,
+    {
+      product: ProductType
+    },
+    unknown
+  >
+  onSubmitUpdate?: UseMutateFunction<
+    any,
+    unknown,
+    {
+      product: ProductType
+      id: number
+    },
+    unknown
+  >
 }
 
-const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
+const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsType) => {
   const { onChangeRenderImgs } = useRenderImages()
   const [files, setFiles] = useState<File[]>([])
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
@@ -265,7 +283,11 @@ const ProductForm = ({ productForUpdate, onSubmit }: PropsType) => {
             if (urls) {
               const updatedProduct = { ...product, descImg: [...product.descImg, ...urls] }
               setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-              onSubmit(updatedProduct, productForUpdate && productForUpdate.id)
+              if (productForUpdate?.id && onSubmitUpdate)
+                onSubmitUpdate({ product: updatedProduct, id: productForUpdate.id })
+              else {
+                onSubmitAdd && onSubmitAdd({ product: updatedProduct })
+              }
             }
           }}
           style="text-sm font-semibold leading-6 shadow-sm"

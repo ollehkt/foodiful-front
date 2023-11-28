@@ -30,6 +30,8 @@ const ProductDetail = ({
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
 
+  console.log(thumbnail)
+
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
   }, [additionalSelect, productQuantities, price])
@@ -46,27 +48,37 @@ const ProductDetail = ({
             <div>
               <Image
                 className="w-full h-[300px] object-contain mx-auto rounded-md my-4"
-                src={thumbnail}
+                src={thumbnail ? thumbnail : '/foodiful.jpeg'}
                 alt="대표 이미지"
                 width={300}
                 height={300}
               />
-              <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
-                {descImg.map((img) => (
-                  <Image
-                    key={img}
-                    src={img}
-                    alt="슬라이더 이미지"
-                    width={100}
-                    height={100}
-                    onClick={() => setThumbnail(img)}
-                  />
-                ))}
-              </div>
+              {descImg && (
+                <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
+                  {descImg.map((img) => (
+                    <Image
+                      key={img}
+                      src={img}
+                      alt="슬라이더 이미지"
+                      width={100}
+                      height={100}
+                      onClick={() => setThumbnail(img)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </>
-        ) : (
+        ) : descImg.length > 0 ? (
           <SubSlider items={descImg} btn slidePx={110} btnSize={24} />
+        ) : (
+          <Image
+            className="w-[450px] h-[400px] object-contain mx-auto rounded-md my-4"
+            src={thumbnail ? thumbnail : '/foodiful.jpeg'}
+            alt="대표 이미지"
+            width={300}
+            height={300}
+          />
         )}
 
         <div className="lg:ml-[100px] my-[10px] w-full mx-auto">
@@ -79,7 +91,7 @@ const ProductDetail = ({
                   {price.toLocaleString()}원
                 </div>
                 <div className="text-2xl text-main font-bold">
-                  {(price - price / discount).toLocaleString()}원
+                  {(price - price * (discount / 100)).toLocaleString()}원
                 </div>
               </>
             ) : (

@@ -14,6 +14,7 @@ const MyPageFavorites = () => {
   const router = useRouter()
   const [user, setUser] = useState<User>()
   const [myFavoriteProducts, setMyFavoriteProducts] = useState<ProductReturnType[]>([])
+  const [isProductsLoading, setIsProductsLoading] = useState()
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) {
@@ -50,7 +51,7 @@ const MyPageFavorites = () => {
             좋아요 누른 상품이 없습니다.
           </div>
         ) : (
-          <div className="grid justify-center md:justify-start md:grid-cols-3 my-12 items-center">
+          <div className="grid justify-center md:justify-start md:grid-cols-3 2xl:md-grid-cols-4 my-12 items-center gap-y-2">
             {myFavoriteProducts.slice(0, 4).map((product) => (
               <ProductItem key={product.id} product={product} mini={true} />
             ))}
