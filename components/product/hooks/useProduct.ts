@@ -1,4 +1,4 @@
-import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query'
+import { QueryFunctionContext, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
@@ -95,20 +95,20 @@ export const useUpdateProductById = () => {
 export const getProducts = async (): Promise<ProductReturnType[]> => {
   const storedUser = getStoredUser()
 
-  const res = await api.get(`product/all`, {
+  const { data } = await api.get(`product/all`, {
     headers:
       storedUser && getJWTToken(storedUser?.token) ? getJWTToken(storedUser?.token) : undefined,
   })
 
-  return res.data
+  return data
 }
 
 export const useGetProducts = (): {
-  data: ProductReturnType[] | undefined
+  data: ProductReturnType[]
   isFetching: boolean
 } => {
   const { fireToast } = useToast()
-  const { data, isFetching } = useQuery({
+  const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.product],
     queryFn: getProducts,
 
@@ -135,12 +135,16 @@ export const useGetProducts = (): {
   return { data, isFetching }
 }
 
-export const getProductById = async (id: string) => {
-  const res = await api.get(`/product/${id}`)
-  return res.data
+export const getProductById = async (
+  id: QueryFunctionContext<string[], any> | string
+): Promise<ProductReturnType> => {
+  const { data } = await api.get(`/product/${id}`)
+  return data
 }
 
-export const useGetProductById = (id: string) => {
+export const useGetProductById = (
+  id: string
+): { data: ProductReturnType | undefined; isFetching: boolean } => {
   const { data, isFetching } = useQuery({
     queryKey: [queryKeys.product, id],
     queryFn: () => getProductById(id),
