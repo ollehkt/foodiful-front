@@ -1,18 +1,14 @@
 import dayjs from 'dayjs'
-import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-
-import { PostReservationType } from '../../types/reservationTypes'
-import { useUser } from '../auth/hooks/useUser'
 import { User } from '../auth/types/user'
-import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import useToast from '../common/hooks/useToast'
 import { date } from '../constants/date'
 import { getStoredUser } from '../util/userStorage'
 import CalendarDatesRender from './CalendarDatesRender'
 import CalendarTimeRender from './CalendarTimeRender'
+import { useMutateReservation } from './hooks/useReservation'
 
 interface PropsType {
   currentDate: string
@@ -40,7 +36,8 @@ const CalendarContent = ({
   const [times, setTimes] = useState<string[]>([])
   const [isReserveTimeSelected, setIsReserveTimeSelected] = useState(false)
   const [selectedTimes, setSelectedTimes] = useState('')
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(null)
+  const { mutate: postReservation } = useMutateReservation()
 
   useEffect(() => {
     const storedUser = getStoredUser()
@@ -69,33 +66,7 @@ const CalendarContent = ({
       })
       return
     }
-    try {
-      if (user) {
-        const { data } = await api.post('/reservation', {
-          classId: selectedClass.id,
-          reserveDate: selectedTimes,
-          userEmail: user.email,
-        })
-        if (data) {
-          fireToast({
-            id: '예약 성공',
-            position: 'bottom',
-            timer: 1000,
-            message: '예약이 성공적으로 이루어졌습니다.',
-            type: 'success',
-          })
-          router.push('/')
-        }
-      }
-    } catch (error) {
-      fireToast({
-        id: '예약 실패',
-        position: 'bottom',
-        timer: 1000,
-        message: '예약을 다시 시도해주세요.',
-        type: 'failed',
-      })
-    }
+    postReservation({ classId: selectedClass.id, reserveDate: selectedTimes })
   }
 
   useEffect(() => {

@@ -6,8 +6,9 @@ export interface ReservationTypes {
 
 export interface PostReservationType {
   classId: number
-  reservedTime: string[]
-  deleted: boolean
-  id: number
-  userId: number
+  reserveDate: string
+}
+
+export interface updateReservartionType extends PostReservationType {
+  reservationId: number
 }

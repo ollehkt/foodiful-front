@@ -1,5 +1,5 @@
-import { User } from '../components/auth/types/user'
-import { ProductReturnType } from '../components/product/types/productTypes'
+import { User } from '../../auth/types/user'
+import { ProductReturnType } from '../../product/types/productTypes'
 
 export interface ProductReviewTypes {
   createdAt: string
