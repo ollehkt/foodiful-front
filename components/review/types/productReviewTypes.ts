@@ -19,3 +19,7 @@ export interface PostReviewTypes {
   rating: number
   reviewImg?: string
 }
+
+export interface UpdateReviewTypes extends Partial<PostReviewTypes> {
+  reviewId: number
+}

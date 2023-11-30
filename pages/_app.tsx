@@ -9,7 +9,7 @@ import React, { ReactElement, ReactNode, useEffect } from 'react'
 import { NextPage } from 'next'
 
 import HeaderNavMobile from '../components/common/header/mobile/HeaderNavMobile'
-import { getStoredUser, setStoreUser } from '../components/util/userStorage'
+import { getStoredUser, removeStoredUser, setStoreUser } from '../components/util/userStorage'
 import { useUser } from '../components/auth/hooks/useUser'
 
 import { useRouter } from 'next/router'
@@ -25,15 +25,18 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
   const { getUser } = useUser()
 
-  // useEffect(() => {
-  //   const storedUser = getStoredUser()
-  //   ;(async () => {
-  //     if (storedUser) {
-  //       const res = await getUser(storedUser)
-  //       setStoreUser(res)
-  //     }
-  //   })()
-  // }, [router])
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    ;(async () => {
+      if (storedUser) {
+        const res = await getUser(storedUser)
+        setStoreUser(res)
+      } else {
+        removeStoredUser()
+      }
+    })()
+  }, [router])
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

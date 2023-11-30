@@ -5,12 +5,12 @@ import { getStoredUser } from '../components/util/userStorage'
 import MainSlider from '../components/common/MainSlider'
 import Container from '../components/common/Container'
 import { api } from '../components/axios/axiosInstance'
-import { ProductReturnType } from '../types/productTypes'
 import Channel from '../components/main/channel/Channel'
 import ProductList from '../components/product/ProductList'
 import { User } from '../components/auth/types/user'
 import { useGetProducts } from '../components/product/hooks/useProduct'
 import { ProductSkeleton } from '../components/common/skeleton/Skeleton'
+import { ProductReturnType } from '../components/product/types/productTypes'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const { data } = await api('/product/all')

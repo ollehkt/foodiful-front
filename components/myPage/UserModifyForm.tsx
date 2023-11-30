@@ -67,7 +67,6 @@ const UserModifyForm = ({
     sendVerifySms(modifyUserState.phone)
     setTime(180)
   }
-  console.log(time)
 
   const updateUser = async (userId: number, modifyUserState: ModifyUserType) => {
     try {

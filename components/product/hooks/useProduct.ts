@@ -4,9 +4,8 @@ import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api, getJWTToken } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
-
 import { getStoredUser } from '../../util/userStorage'
-import { PostReviewTypes } from '../../../types/productReviewTypes'
+
 import { ProductReturnType, ProductType } from '../types/productTypes'
 
 const addProduct = async (product: ProductType) => {

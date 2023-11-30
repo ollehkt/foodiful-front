@@ -4,7 +4,6 @@ import { comment } from 'postcss'
 import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../types/fileTypes'
-import { PostReviewTypes, ProductReviewTypes } from '../../types/productReviewTypes'
 
 import { api } from '../axios/axiosInstance'
 
@@ -12,6 +11,8 @@ import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
 import { useRenderImages } from '../common/hooks/useRenderImages'
 import useToast from '../common/hooks/useToast'
+import { usePostReview } from './hooks/useReviews'
+import { PostReviewTypes, ProductReviewTypes } from './types/productReviewTypes'
 
 interface PropsType {
   productName: string
@@ -46,6 +47,8 @@ const ReviewForm = ({
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const { fireToast } = useToast()
   const router = useRouter()
+
+  const { mutate: postReviewMutation } = usePostReview(productId)
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setReviewState({ ...reviewState, comment: e.currentTarget.value })
@@ -87,42 +90,17 @@ const ReviewForm = ({
   }
 
   const postReview = async (postReview: PostReviewTypes) => {
-    try {
-      if (!postReview.comment || postReview.rating === 0) {
-        fireToast({
-          id: '후기 등록 실패',
-          type: 'failed',
-          message: '후기 내용을 입력해주세요.',
-          timer: 1500,
-          position: 'bottom',
-        })
-        return
-      }
-      const res = await api.post('/product-review', {
-        ...postReview,
-        comment: postReview.comment.trim(),
-        productId,
-        userId,
-      })
-      if (res) {
-        fireToast({
-          id: '후기 등록 성공',
-          type: 'success',
-          message: '후기 등록이 완료됐습니다.',
-          timer: 1500,
-          position: 'bottom',
-        })
-        router.push(`/product/${productId}`)
-      }
-    } catch (error) {
+    if (!postReview.comment || postReview.rating === 0) {
       fireToast({
         id: '후기 등록 실패',
         type: 'failed',
-        message: '후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요..',
+        message: '후기 내용을 입력해주세요.',
         timer: 1500,
         position: 'bottom',
       })
+      return
     }
+    postReviewMutation({ ...postReview, comment: postReview.comment.trim(), productId, userId })
   }
 
   const updateReview = async (updatedReview: PostReviewTypes) => {
