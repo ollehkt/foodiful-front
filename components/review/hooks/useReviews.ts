@@ -1,7 +1,6 @@
-import { QueryClient, QueryFunctionContext, useMutation, useQuery } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
-
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
@@ -9,7 +8,6 @@ import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from '../types
 
 export const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
   const { data } = await api(`/product-review/${id}`)
-
   return data
 }
 
@@ -30,10 +28,13 @@ const postReview = async (
   postReviewData: PostReviewTypes & { productId: number; userId: number }
 ) => {
   const user = getStoredUser()
-  const { data } = await api('/product-review', {
-    ...postReviewData,
-    headers: { Authorization: `Bearer ${user?.token}` },
-  })
+  const { data } = await api.post(
+    `/product-review`,
+    {
+      ...postReviewData,
+    },
+    { headers: { Authorization: `Bearer ${user?.token}` } }
+  )
   return data
 }
 
@@ -48,10 +49,12 @@ export const usePostReview = (productId: number) => {
     mutationFn: ({ ...postReviewData }: PostReviewTypes & { productId: number; userId: number }) =>
       postReview(postReviewData),
     onMutate: async (postReviewData: PostReviewTypes) => {
-      await queryClient.cancelQueries([queryKeys.review])
-      const prevReviews = queryClient.getQueryData([queryKeys.review])
+      await queryClient.cancelQueries([queryKeys.review, productId])
 
-      queryClient.setQueryData([queryKeys.review], (old: any) => {
+      const prevReviews = queryClient.getQueryData([queryKeys.review, productId])
+
+      queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
+        if (!old) return [postReviewData]
         return [...old, postReviewData]
       })
 
@@ -66,7 +69,7 @@ export const usePostReview = (productId: number) => {
       return { prevReviews }
     },
     onError: (err, prevData, context) => {
-      queryClient.setQueryData(['todos'], context?.prevReviews)
+      queryClient.setQueryData([queryKeys.review, productId], context?.prevReviews)
       fireToast({
         id: '후기 등록 실패',
         type: 'failed',
@@ -112,6 +115,9 @@ export const useUpdateReview = (productId: number) => {
         }
       })
       queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+      return {
+        prevReviews,
+      }
     },
     onError: () => {},
   })

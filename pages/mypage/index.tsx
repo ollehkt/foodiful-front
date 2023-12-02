@@ -9,9 +9,9 @@ import StrongTitle from '../../components/common/StrongTitle'
 import { useRouter } from 'next/router'
 import useToast from '../../components/common/hooks/useToast'
 import { api } from '../../components/axios/axiosInstance'
-import { ProductReturnType } from '../../types/productTypes'
 import ProductItem from '../../components/product/ProductItem'
 import Link from 'next/link'
+import { ProductReturnType } from '../../components/product/types/productTypes'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>()
@@ -49,7 +49,6 @@ function MyPage() {
       }
     })()
   }, [])
-  console.log(myFavoriteProducts)
 
   return (
     <div className="grow shadow-basic rounded-md px-5">

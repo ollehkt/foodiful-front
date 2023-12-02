@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
-import { ProductReviewTypes } from '../../types/productReviewTypes'
+import { ProductReviewTypes } from './types/productReviewTypes'
 
 interface PropsType {
   review: ProductReviewTypes
@@ -36,9 +36,18 @@ const ReviewItem = ({ review }: PropsType) => {
     <>
       <div
         className={`w-full cursor-pointer py-[12px] my-[20px] bg-main bg-opacity-10  rounded-md ${
-          isImageClicked ? '' : !isMobile && 'flex relative h-[200px]'
+          isImageClicked
+            ? ''
+            : isImageClicked && !reviewImg
+            ? ''
+            : !isMobile && 'relative h-[200px]'
         }  `}
-        onClick={() => setIsImageClicked((prev) => !prev)}
+        onClick={() => {
+          if (!reviewImg) {
+            return
+          }
+          setIsImageClicked((prev) => !prev)
+        }}
       >
         <div className="p-[4px_0px_4px_4px]">
           <div
@@ -77,10 +86,10 @@ const ReviewItem = ({ review }: PropsType) => {
           <div className="h-[30px] flex items-center">
             <span className="text-[#666] text-[15px]">구매 상품: {product.name}</span>
           </div>
-          <div className="md:w-[60%] w-[80%] mt-[20px] text-[#333] font-semibold break-keep">
+          <div className={`md:w-[60%] w-[80%] mt-[20px] text-[#333] font-semibold break-keep`}>
             {comment}
           </div>
-          {isMobile && !isImageClicked && (
+          {isMobile && !isImageClicked && reviewImg && (
             <div className="relative h-6">
               <span className="absolute bottom-0 left-[45%] text-[20px] font-extrabold text-main animate-bounce">
                 <AiOutlineArrowDown />
@@ -110,7 +119,7 @@ const ReviewItem = ({ review }: PropsType) => {
               height={200}
             />
           ))}
-        {isMobile && isImageClicked && (
+        {isMobile && isImageClicked && reviewImg && (
           <div className="relative h-6">
             <span className="absolute bottom-0 left-[45%] text-[20px] font-extrabold text-main animate-bounce">
               <AiOutlineArrowUp />

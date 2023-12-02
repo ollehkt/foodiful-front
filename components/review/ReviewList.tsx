@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
-import { ProductReviewTypes } from '../../types/productReviewTypes'
+
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import useIntersectionObserver from '../common/hooks/useIntersectionObserver'
 import ReviewItem from './ReviewItem'
+import { ProductReviewTypes } from './types/productReviewTypes'
 
 interface PropsType {
   reviewList: ProductReviewTypes[]
@@ -44,7 +45,7 @@ const ReviewList = ({ reviewList }: PropsType) => {
       ) : (
         <div className="w-full flex justify-center items-center mt-[40px]">
           <span className="text-textDisabled text-2xl font-bold">
-            리뷰가 없습니다. 상품을 구매하시고 리뷰를 등록 해주세요!
+            리뷰가 존재하지 않습니다. <br /> 상품을 구매하시고 리뷰를 등록 해주세요!
           </span>
         </div>
       )}

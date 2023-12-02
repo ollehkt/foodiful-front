@@ -33,24 +33,15 @@ export const useAuth = (): UseAuth => {
         })
       }
     } catch (error) {
+      console.log(error)
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          fireToast({
-            id: '로그인',
-            type: 'failed',
-            position: 'bottom',
-            message: '패스워드를 확인해주세요.',
-            timer: 2000,
-          })
-        } else {
-          fireToast({
-            id: '서버 에러',
-            type: 'failed',
-            position: 'bottom',
-            message: '서버에러 입니다. 다시 시도해주세요.',
-            timer: 2000,
-          })
-        }
+        fireToast({
+          id: '로그인',
+          type: 'failed',
+          position: 'bottom',
+          message: error.response?.data.message,
+          timer: 2000,
+        })
       }
     }
   }
@@ -69,23 +60,13 @@ export const useAuth = (): UseAuth => {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 409) {
-          fireToast({
-            id: '회원가입 이메일 충돌 에러',
-            type: 'failed',
-            position: 'bottom',
-            message: '이미 존재하는 이메일입니다.',
-            timer: 2000,
-          })
-        } else {
-          fireToast({
-            id: '서버 에러',
-            type: 'failed',
-            position: 'bottom',
-            message: '서버에러 입니다. 다시 시도해주세요.',
-            timer: 2000,
-          })
-        }
+        fireToast({
+          id: '회원가입 이메일 에러',
+          type: 'failed',
+          position: 'bottom',
+          message: error.response?.data.message,
+          timer: 2000,
+        })
       }
     }
   }

@@ -1,14 +1,11 @@
-import dynamic from 'next/dynamic'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { ProductReturnType } from '../../types/productTypes'
 import AmountCounter from '../common/AmountCounter'
 import Select from '../common/Select'
 import SubSlider from '../common/DetailSlider'
-import ProductDetailDesc from './ProductDetailDesc'
-import ProductDetailReview from './ProductDetailReview'
 import Image from 'next/image'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
+import { ProductReturnType } from './types/productTypes'
 
 interface PropsType {
   product: ProductReturnType
@@ -29,8 +26,6 @@ const ProductDetail = ({
   const [totalPrice, setTotalPrice] = useState(0)
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
-
-  console.log(thumbnail)
 
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)

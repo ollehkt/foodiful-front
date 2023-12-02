@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { Button } from '../../components/common/Button'
 
-import { ProductReturnType } from '../../types/productTypes'
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
 
@@ -14,6 +13,7 @@ import useToast from '../../components/common/hooks/useToast'
 import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
+import { ProductReturnType } from '../../components/product/types/productTypes'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const { data } = await api('/product/all')

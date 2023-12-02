@@ -48,6 +48,10 @@ const ReviewForm = ({
   const { fireToast } = useToast()
   const router = useRouter()
 
+  useEffect(() => {
+    console.log(reviewState.reviewImg)
+  }, [reviewState])
+
   const { mutate: postReviewMutation } = usePostReview(productId)
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,15 +81,15 @@ const ReviewForm = ({
       })
       return
     }
-    if (reviewState.reviewImg !== userReviewed?.reviewImg && reviewState.reviewImg) {
-      const urls = await getPresignedUrlByFiles(files, 'product-review')
-      if (urls) {
-        const postReviewWithImg = {
-          ...reviewState,
-          reviewImg: urls[0],
-        }
-        userReviewed ? updateReview(postReviewWithImg) : postReview(postReviewWithImg)
+
+    // if (reviewState.reviewImg !== userReviewed?.reviewImg && reviewState.reviewImg) {}
+    const urls = await getPresignedUrlByFiles(files, 'product-review')
+    if (urls) {
+      const postReviewWithImg = {
+        ...reviewState,
+        reviewImg: urls[0],
       }
+      userReviewed ? updateReview(postReviewWithImg) : postReview(postReviewWithImg)
     } else userReviewed ? updateReview(reviewState) : postReview(reviewState)
   }
 
@@ -118,7 +122,7 @@ const ReviewForm = ({
             timer: 1500,
             position: 'bottom',
           })
-          router.reload()
+          // router.reload()
         }
       }
     } catch (error) {
@@ -146,7 +150,10 @@ const ReviewForm = ({
             <AiOutlinePlusCircle size={30} />
             <input
               id="file-upload"
-              onChange={(e) => onChangeRenderImgs(e, setFiles, setImgSrc)}
+              onChange={(e) => {
+                setImgSrc([])
+                onChangeRenderImgs(e, setFiles, setImgSrc)
+              }}
               name="fileUpload"
               type="file"
               accept={VALID_IMAGE_FILE_TYPES}

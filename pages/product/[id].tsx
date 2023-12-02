@@ -1,11 +1,9 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPageContext } from 'next'
 import React, { useState } from 'react'
-import { api } from '../../components/axios/axiosInstance'
+
 import ProductDetail from '../../components/product/ProductDetail'
-import { ProductReturnType } from '../../types/productTypes'
 import { Button } from '../../components/common/Button'
 import { useRouter } from 'next/router'
-import { ProductReviewTypes } from '../../types/productReviewTypes'
 import ProductDetailReview from '../../components/product/ProductDetailReview'
 import ProductDetailDesc from '../../components/product/ProductDetailDesc'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
