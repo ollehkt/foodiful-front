@@ -4,7 +4,6 @@ import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 import Footer from '../common/footer/Footer'
 import Header from '../common/header/Header'
-import { getStoredUser } from '../util/userStorage'
 
 const Layout = ({ children }: { children: ReactElement }) => {
   const setIsMobile = useSetAtom(isMobileDisplay)
@@ -17,6 +16,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
     <>
       <Header />
       <div className="w-full mx-auto">{children}</div>
+
       <Footer />
     </>
   )

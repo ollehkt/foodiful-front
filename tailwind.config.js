@@ -16,6 +16,9 @@ module.exports = {
       textDisabled: '#605D5D',
     },
     extend: {
+      fontFamily: {
+        roboto: ['Noto Sans KR', 'Roboto Condensed', 'sans-serif'],
+      },
       boxShadow: {
         basic: '0 0 8px 0 rgba(0, 0, 0, 0.18)',
       },
