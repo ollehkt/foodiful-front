@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { AiFillCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../types/fileTypes'
-import { CategoryType, ProductReturnType, ProductType } from '../../types/productTypes'
+
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
@@ -13,6 +13,7 @@ import { useInput } from '../common/hooks/useInput'
 import { useRenderImages } from '../common/hooks/useRenderImages'
 import { Input } from '../common/Input'
 import { PRODUCT_CATEGORIES } from '../constants/product'
+import { CategoryType, ProductReturnType, ProductType } from './types/productTypes'
 
 const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
   ssr: false,
@@ -62,7 +63,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
       description: '',
       price: 0,
       discount: 0,
-      quantity: 0,
+      limitQuantity: 0,
       descImg: [],
       categories: [],
       deliver: deliverState,
@@ -156,8 +157,8 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                   labelStyle="block font-medium leading-6"
                   type="text"
                   labelName="상품 수량"
-                  value={product.quantity}
-                  name="quantity"
+                  value={product.limitQuantity}
+                  name="limitQuantity"
                   placeholder="상품 수량을 입력해주세요."
                   onChangeInput={onChangeInput}
                 />

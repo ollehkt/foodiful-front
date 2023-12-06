@@ -1,7 +1,6 @@
 import { useAtom, useSetAtom } from 'jotai'
 import { ReactElement, useEffect } from 'react'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
-import { userState } from '../../store/userState'
 
 import Footer from '../common/footer/Footer'
 import Header from '../common/header/Header'

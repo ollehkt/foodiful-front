@@ -1,5 +1,5 @@
 import { QueryFunctionContext, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api, getJWTToken } from '../../axios/axiosInstance'
@@ -71,6 +71,7 @@ export const useUpdateProductById = () => {
     mutationFn: ({ product, id }: { product: ProductType; id: number }) =>
       updateProductById(id, product),
     onSuccess: () => {
+      // 지울 것
       fireToast({
         id: '상품 업데이트',
         type: 'success',
@@ -122,13 +123,14 @@ export const useGetProducts = (): {
       })
     },
     onError: (error) => {
-      fireToast({
-        id: '상품 조회',
-        message: '상품 조회에 실패했습니다.',
-        type: 'failed',
-        position: 'bottom',
-        timer: 2000,
-      })
+      if (axios.isAxiosError(error))
+        fireToast({
+          id: '상품 조회',
+          message: error.response?.data.message,
+          type: 'failed',
+          position: 'bottom',
+          timer: 2000,
+        })
     },
   })
 

@@ -1,12 +1,7 @@
-import { useAtomValue } from 'jotai'
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import { isMobileDisplay } from '../../store/isMobileDisplay'
-import { ProductReturnType } from '../../types/productTypes'
+import React from 'react'
+import { ProductReturnType } from './types/productTypes'
 import FavoriteIcon from '../common/FavoriteIcon'
 
 interface PropsType {
@@ -16,8 +11,7 @@ interface PropsType {
 }
 
 const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
-  const { name, id, descImg, price, discount, quantity, description, subTitle, isLiked } = product
-
+  const { name, id, descImg, price, isLiked } = product
   const router = useRouter()
   const onClickItem = (id: number) => {
     router.push(`/product/${id}`)

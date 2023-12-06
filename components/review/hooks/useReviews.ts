@@ -18,6 +18,7 @@ export const useGetReviews = (
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.review, productId],
     queryFn: () => getReviews(productId),
+    staleTime: 1000000,
     onSuccess: () => {},
     onError: () => {},
   })
@@ -55,7 +56,7 @@ export const usePostReview = (productId: number) => {
 
       queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
         if (!old) return [postReviewData]
-        return [...old, postReviewData]
+        return [postReviewData, ...old]
       })
 
       fireToast({
@@ -65,7 +66,7 @@ export const usePostReview = (productId: number) => {
         timer: 1500,
         position: 'bottom',
       })
-      router.push(`/product/${productId}`)
+      // router.push(`/product/${productId}`)
       return { prevReviews }
     },
     onError: (err, prevData, context) => {
@@ -104,22 +105,88 @@ const updateReview = async (updateReviewData: UpdateReviewTypes) => {
 
 export const useUpdateReview = (productId: number) => {
   const queryClient = new QueryClient()
-  const user = getStoredUser()
+  const { fireToast } = useToast()
   const { mutate } = useMutation({
-    mutationFn: (updateReviewData: UpdateReviewTypes) => updateReview(updateReviewData),
-    onMutate: (updateReviewData) => {
+    mutationFn: ({
+      ...updateReviewData
+    }: UpdateReviewTypes & { productId: number; userId: number }) => updateReview(updateReviewData),
+    onMutate: async (updateReviewData) => {
+      await queryClient.cancelQueries([queryKeys.review, productId])
+
       const prevReviews = queryClient.getQueryData([queryKeys.review, productId])
+
       queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
-        return {
-          ...old,
-        }
+        if (!old) return [updateReviewData]
+        return [updateReviewData, ...old]
       })
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+
       return {
         prevReviews,
       }
     },
-    onError: () => {},
+    onError: (err, prevData, context) => {
+      queryClient.setQueryData([queryKeys.review, productId], context?.prevReviews)
+      fireToast({
+        id: '후기 등록 실패',
+        type: 'failed',
+        message: '후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        timer: 1500,
+        position: 'bottom',
+      })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+    },
+  })
+  return { mutate }
+}
+
+const deleteReview = async (reviewId: number) => {
+  const user = getStoredUser()
+  const { data } = await api.delete(`/product-review/${reviewId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
+  return data
+}
+
+export const useDeleteReview = (productId: number) => {
+  const { fireToast } = useToast()
+  const queryClient = new QueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (reviewId: number) => deleteReview(reviewId),
+    onMutate: async (reviewId) => {
+      await queryClient.cancelQueries([queryKeys.review, productId])
+
+      const prevReviews: ProductReviewTypes[] | undefined = queryClient.getQueryData([
+        queryKeys.review,
+        productId,
+      ])
+
+      const filteredReviews = prevReviews && prevReviews.filter((review) => review.id !== reviewId)
+
+      queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
+        return { filteredReviews }
+      })
+
+      return {
+        prevReviews,
+      }
+    },
+    onError: (err, prevData, context) => {
+      queryClient.setQueryData([queryKeys.review, productId], context?.prevReviews)
+      fireToast({
+        id: '후기 등록 실패',
+        type: 'failed',
+        message: '후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        timer: 1500,
+        position: 'bottom',
+      })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+    },
   })
   return { mutate }
 }

@@ -1,24 +1,21 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { comment } from 'postcss'
-import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../types/fileTypes'
-
-import { api } from '../axios/axiosInstance'
-
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
 import { useRenderImages } from '../common/hooks/useRenderImages'
 import useToast from '../common/hooks/useToast'
-import { usePostReview } from './hooks/useReviews'
-import { PostReviewTypes, ProductReviewTypes } from './types/productReviewTypes'
+import { usePostReview, useUpdateReview } from './hooks/useReviews'
+import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from './types/productReviewTypes'
 
 interface PropsType {
   productName: string
   productId: number
   userId: number
   userReviewed?: ProductReviewTypes
+  isModifyMode?: boolean
   setIsModifyMode?: Dispatch<SetStateAction<boolean>>
 }
 
@@ -27,6 +24,7 @@ const ReviewForm = ({
   productId,
   userId,
   userReviewed,
+  isModifyMode,
   setIsModifyMode,
 }: PropsType) => {
   const [reviewState, setReviewState] = useState<PostReviewTypes>(
@@ -47,12 +45,9 @@ const ReviewForm = ({
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const { fireToast } = useToast()
   const router = useRouter()
-
-  useEffect(() => {
-    console.log(reviewState.reviewImg)
-  }, [reviewState])
-
+  console.log(userReviewed)
   const { mutate: postReviewMutation } = usePostReview(productId)
+  const { mutate: updateReviewMutation } = useUpdateReview(productId)
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setReviewState({ ...reviewState, comment: e.currentTarget.value })
@@ -82,15 +77,23 @@ const ReviewForm = ({
       return
     }
 
-    // if (reviewState.reviewImg !== userReviewed?.reviewImg && reviewState.reviewImg) {}
-    const urls = await getPresignedUrlByFiles(files, 'product-review')
-    if (urls) {
-      const postReviewWithImg = {
-        ...reviewState,
-        reviewImg: urls[0],
+    /**
+     *  post 시에는 리뷰 이미지가 있을 때
+     *  update 시에는 리뷰 이미지가 기존 이미지와 다를 때 -> url 올리기 전 까지는 기존 이미지와 같은 지 다른지 모른다.
+     *  그렇다면 aws에서 현재 파일이 등록되어 있는 지 확인 후 업로드 시키기 or 그냥 계속 업로드 되게 만들기
+     *  => 뭐가 리소스 낭비가 더 심할지 고민
+     */
+    if (reviewState.reviewImg) {
+      const urls = await getPresignedUrlByFiles(files, 'product-review')
+      if (urls) {
+        userReviewed
+          ? updateReview({ ...reviewState, reviewImg: urls[0], reviewId: userReviewed.id })
+          : postReview({ ...reviewState, reviewImg: urls[0] })
       }
-      userReviewed ? updateReview(postReviewWithImg) : postReview(postReviewWithImg)
-    } else userReviewed ? updateReview(reviewState) : postReview(reviewState)
+    } else
+      userReviewed
+        ? updateReview({ ...reviewState, reviewId: userReviewed.id })
+        : postReview(reviewState)
   }
 
   const postReview = async (postReview: PostReviewTypes) => {
@@ -107,33 +110,23 @@ const ReviewForm = ({
     postReviewMutation({ ...postReview, comment: postReview.comment.trim(), productId, userId })
   }
 
-  const updateReview = async (updatedReview: PostReviewTypes) => {
-    try {
-      if (userReviewed) {
-        const res = await api.patch(`/product-review/${userReviewed.id}`, {
-          ...updatedReview,
-          comment: updatedReview.comment.trim(),
-        })
-        if (res) {
-          fireToast({
-            id: '후기 업데이트 성공',
-            type: 'success',
-            message: '후기 업데이트가 완료됐습니다.',
-            timer: 1500,
-            position: 'bottom',
-          })
-          // router.reload()
-        }
-      }
-    } catch (error) {
+  const updateReview = async (updatedReview: UpdateReviewTypes) => {
+    if (!updatedReview.comment || updatedReview.rating === 0) {
       fireToast({
-        id: '업데이트 실패',
+        id: '후기 등록 실패',
         type: 'failed',
-        message: '업데이트에 실패했습니다. 다시 시도 해주세요.',
+        message: '후기 내용을 입력해주세요.',
         timer: 1500,
         position: 'bottom',
       })
+      return
     }
+    updateReviewMutation({
+      ...updatedReview,
+      comment: updatedReview.comment.trim(),
+      productId,
+      userId,
+    })
   }
   return (
     <div className="w-full">

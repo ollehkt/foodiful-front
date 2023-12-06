@@ -16,7 +16,7 @@ export const Button = ({ title, style, size, disabled, onClick }: PropsType) => 
           : size == 'md'
           ? 'w-[140px] h-[40px]'
           : 'w-[100px] h-[30px]'
-      } hover:bg-active disabled:bg-disabled disabled:text-textDisabled`}
+      } hover:bg-active hover:text-[white] disabled:bg-disabled disabled:text-textDisabled`}
       onClick={onClick}
     >
       {title}

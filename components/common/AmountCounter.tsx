@@ -5,9 +5,10 @@ interface PropsType {
   amount: number
   setAmount: Dispatch<SetStateAction<number>>
   limit: number
+  size?: string
 }
 
-const AmountCounter = ({ amount, setAmount, limit }: PropsType) => {
+const AmountCounter = ({ amount, setAmount, limit, size }: PropsType) => {
   const { fireToast } = useToast()
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
@@ -69,7 +70,9 @@ const AmountCounter = ({ amount, setAmount, limit }: PropsType) => {
   return (
     <div className="flex items-center mt-[10px]">
       <div
-        className={`w-[34px] h-[34px]  border rounded-md flex justify-center items-center  ${
+        className={`${
+          size === 'md' ? 'w-[26px] h-[26px]' : 'w-[34px] h-[34px]'
+        }  border rounded-md flex justify-center items-center  ${
           amount === 1 ? 'cursor-not-allowed' : 'cursor-pointer hover:text-[white] hover:bg-main'
         }`}
         onClick={onClickMinus}
@@ -89,7 +92,9 @@ const AmountCounter = ({ amount, setAmount, limit }: PropsType) => {
         />
       </div>
       <div
-        className={`w-[34px] h-[34px] border rounded-md flex justify-center items-center ${
+        className={`${
+          size === 'md' ? 'w-[26px] h-[26px]' : 'w-[34px] h-[34px]'
+        } border rounded-md flex justify-center items-center ${
           amount === limit
             ? 'cursor-not-allowed'
             : 'cursor-pointer hover:text-[white] hover:bg-main'

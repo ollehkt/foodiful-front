@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         removeStoredUser()
       }
     })()
-  }, [router])
+  }, [])
 
   const queryClient = new QueryClient({
     defaultOptions: {

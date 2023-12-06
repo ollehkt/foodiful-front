@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReturnType } from './types/productTypes'
+import { Button } from '../common/Button'
+import { useAddCart } from '../cart/hooks/useCart'
 
 interface PropsType {
   product: ProductReturnType
@@ -18,7 +20,8 @@ const ProductDetail = ({
   isAdditionalSelectModalOpen,
   setIsAdditionalSelectModalOpen,
 }: PropsType) => {
-  const { name, id, descImg, price, discount, quantity, description, subTitle, deliver } = product
+  const { name, id, descImg, price, discount, limitQuantity, description, subTitle, deliver } =
+    product
   const [productQuantities, setProductQuantities] = useState<number>(1)
   const [additionalSelect, setadditionalSelect] = useState('')
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
@@ -26,6 +29,14 @@ const ProductDetail = ({
   const [totalPrice, setTotalPrice] = useState(0)
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
+
+  const { mutate: addCart } = useAddCart()
+
+  const onClickAddCart = (productId: number, quantity: number, additionalCount: number) => {
+    addCart({ productId, quantity, additionalCount })
+  }
+
+  const onClickPurchase = () => {}
 
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)
@@ -107,7 +118,7 @@ const ProductDetail = ({
 
           <div className="relative border-t border-disabled mt-[20px] pt-[10px]">
             <span className="text-lg font-bold">주문 가능 수량</span>
-            <div className="text-main text-xl font-bold">{quantity} 개</div>
+            <div className="text-main text-xl font-bold">{limitQuantity} 개</div>
           </div>
 
           <div className="relative border-t border-disabled mt-[20px] pt-[10px]">
@@ -124,14 +135,14 @@ const ProductDetail = ({
             />
           </div>
 
-          <div className="my-[40px] flex flex-col border border-disabled rounded-md">
+          <div className="mt-[40px] flex flex-col border border-disabled rounded-md">
             <div className="mt-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
               <div className="flex flex-col justify-center flex-2">
                 <span className="text-lg font-bold">수량 선택하기</span>
                 <AmountCounter
                   amount={productQuantities}
                   setAmount={setProductQuantities}
-                  limit={quantity}
+                  limit={limitQuantity}
                 />
               </div>
               <div className="text-xl text-main font-bold">{displayPrice.toLocaleString()}원</div>
@@ -156,6 +167,20 @@ const ProductDetail = ({
               <span className="text-xl font-bold">총 가격</span>
               <span className="text-2xl text-main font-bold">{totalPrice.toLocaleString()}원</span>
             </div>
+          </div>
+          <div className="flex items-center mt-[10px] gap-10">
+            <Button
+              title="장바구니 추가"
+              onClick={() => onClickAddCart(id, productQuantities, additionalQuantities)}
+              style="border-2 border-main hover:border-[white] w-full"
+              size="lg"
+            />
+            <Button
+              title="구매하기"
+              onClick={() => {}}
+              style="border-2 border-main hover:border-[white] w-full"
+              size="lg"
+            />
           </div>
         </div>
       </div>

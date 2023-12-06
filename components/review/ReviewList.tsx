@@ -1,9 +1,4 @@
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
-
-import { api } from '../axios/axiosInstance'
-import { Button } from '../common/Button'
+import React, { useRef, useState } from 'react'
 import useIntersectionObserver from '../common/hooks/useIntersectionObserver'
 import ReviewItem from './ReviewItem'
 import { ProductReviewTypes } from './types/productReviewTypes'

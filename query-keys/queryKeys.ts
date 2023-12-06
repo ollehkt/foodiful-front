@@ -3,4 +3,5 @@ export const queryKeys = {
   product: 'product',
   review: 'review',
   reservation: 'reservation',
+  cart: 'cart',
 }

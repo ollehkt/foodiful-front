@@ -20,6 +20,6 @@ export interface PostReviewTypes {
   reviewImg?: string
 }
 
-export interface UpdateReviewTypes extends Partial<PostReviewTypes> {
+export interface UpdateReviewTypes extends PostReviewTypes {
   reviewId: number
 }

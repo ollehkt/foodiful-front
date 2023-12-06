@@ -11,6 +11,7 @@ import HeaderNav from './HeaderNav'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { mobileNavState } from '../../../store/mobileNavState'
 import { User } from '../../auth/types/user'
+import { FaShoppingCart } from 'react-icons/fa'
 
 const Header = () => {
   const { signOut } = useAuth()
@@ -43,8 +44,17 @@ const Header = () => {
             <HeaderNav />
             {user ? (
               <>
-                <div className="text-xl mr-2" onClick={() => router.push('/mypage')}>
-                  <span className="text-main cursor-pointer hover:text-hover font-extrabold">
+                <div className="text-xl mr-2 flex items-center gap-2">
+                  <span
+                    className="hover:text-textDisabled cursor-pointer"
+                    onClick={() => router.push('/cart')}
+                  >
+                    <FaShoppingCart />
+                  </span>
+                  <span
+                    className="text-main cursor-pointer hover:text-hover font-extrabold"
+                    onClick={() => router.push('/mypage')}
+                  >
                     {user.name}
                   </span>
                   님

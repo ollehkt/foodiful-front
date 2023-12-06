@@ -22,10 +22,10 @@ export const useUser = (): any => {
     storedUser = getStoredUser()
   }
   const { fireToast } = useToast()
-  const getUser = async (storedUser: StoredUser | null): Promise<User | undefined> => {
+  const getUser = async (storedUser: StoredUser | null): Promise<User | undefined | null> => {
     // user가 없을 경우 return
     try {
-      if (!storedUser) return
+      if (!storedUser) return null
       const { data: user } = await api('/auth/authenticate', {
         headers: { Authorization: `Bearer ${storedUser.token}` },
       })
@@ -35,7 +35,6 @@ export const useUser = (): any => {
         if (error.response?.status === 401) {
           try {
             const { refreshUser }: { refreshUser: User } = await api.post('/auth/refresh')
-
             setStoreUser(refreshUser)
             // router.reload()
             fireToast({

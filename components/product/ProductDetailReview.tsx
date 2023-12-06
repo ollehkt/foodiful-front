@@ -1,7 +1,6 @@
-import { useAtomValue } from 'jotai'
 import React, { useEffect, useState } from 'react'
-
 import { User } from '../auth/types/user'
+import { useDeleteReview } from '../review/hooks/useReviews'
 import ReviewForm from '../review/PostReview'
 import ReviewItem from '../review/ReviewItem'
 import ReviewList from '../review/ReviewList'
@@ -22,7 +21,7 @@ const ProductDetailReview = ({
   const [isModifyMode, setIsModifyMode] = useState(false)
   const [user, setUser] = useState<User>()
 
-  useEffect(() => {}, [])
+  const { mutate: deleteReview } = useDeleteReview(productId)
 
   useEffect(() => {
     const storedUser = getStoredUser()
@@ -54,7 +53,7 @@ const ProductDetailReview = ({
         ) : (
           <>
             <div className="my-[20px] text-3xl font-bold">내 후기</div>
-            <div className="flex w-[90%] justify-end">
+            <div className="flex w-full justify-end gap-2">
               <span
                 className="text-textDisabled cursor-pointer hover:text-[#999]"
                 onClick={() => setIsModifyMode(true)}
@@ -63,9 +62,9 @@ const ProductDetailReview = ({
               </span>
               <span
                 className="text-textDisabled cursor-pointer hover:text-[#999]"
-                onClick={() => setIsModifyMode(true)}
+                onClick={() => deleteReview(userReviewed.id)}
               >
-              
+                삭제
               </span>
             </div>
             <ReviewItem review={userReviewed} />

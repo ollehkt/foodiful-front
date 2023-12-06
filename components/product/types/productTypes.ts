@@ -9,7 +9,7 @@ export interface ProductType {
   description: string
   price: number
   discount: number
-  quantity: number
+  limitQuantity: number
   descImg: string[]
   categories: CategoryType[] | string[]
   deliver: boolean
