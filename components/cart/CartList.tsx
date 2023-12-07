@@ -14,25 +14,28 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
    */
   return (
     <>
-      {cartLists.map((cartList) => (
-        <CartItem
-          cartList={cartList}
-          key={cartList.productId}
-          setselectedProductId={setselectedProductId}
-        />
-      ))}
+      {cartLists &&
+        cartLists.map((cartList) => (
+          <CartItem
+            cartList={cartList}
+            key={cartList.productId}
+            setselectedProductId={setselectedProductId}
+          />
+        ))}
       <div className="w-full flex justify-center items-center gap-4 mt-[40px">
         <Button
           title={`(${selectedProductId.length})선택 구매`}
           onClick={() => {}}
-          style="border-2 border-active"
+          style="disabled:border-none border-2 border-active"
           size="lg"
+          disabled={selectedProductId.length < 1}
         />
         <Button
           title="전체 삭제"
           onClick={() => deleteAllCartItems(cartLists[0].cartId)}
-          style="border-2 border-[red] hover:bg-[red] hover:text-[white]"
+          style="border-2 border-[red] hover:bg-[red]"
           size="lg"
+          disabled={cartLists.length < 1}
         />
       </div>
     </>
