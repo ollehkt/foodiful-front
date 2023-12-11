@@ -8,8 +8,14 @@ import Header from '../common/header/Header'
 const Layout = ({ children }: { children: ReactElement }) => {
   const setIsMobile = useSetAtom(isMobileDisplay)
 
+  const handleResize = () => {
+    if (window.innerWidth < 950) setIsMobile(true)
+    else setIsMobile(false)
+  }
+
   useEffect(() => {
-    if (window.innerWidth < 500) setIsMobile(true)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
