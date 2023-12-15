@@ -8,14 +8,15 @@ import { useUpdateCart } from './hooks/useCart'
 interface PropsType {
   cartList: CartReturnType
   setselectedProductId: Dispatch<SetStateAction<{ cartId: number; productId: number }[]>>
+  isSelectedItem: boolean
 }
 
-const CartItem = ({ cartList, setselectedProductId }: PropsType) => {
+const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType) => {
   const { cartId, productId, additionalCount, quantity, product } = cartList
   const [productQuantity, setProductQuantity] = useState(quantity)
   const [additionalQuantity, setAdditionalQuantity] = useState(additionalCount)
   const [isSelected, setIsSelected] = useState(false)
-  console.log(isSelected)
+
   const onClickCheckBox = (ids: { productId: number; cartId: number }) => {
     if (!isSelected) setselectedProductId((prev) => [...prev, ids])
     else
@@ -24,11 +25,15 @@ const CartItem = ({ cartList, setselectedProductId }: PropsType) => {
       )
   }
 
+  useEffect(() => {
+    setIsSelected(isSelectedItem)
+  }, [isSelectedItem])
+
   const { mutate: updateCartMutate } = useUpdateCart()
 
   useEffect(() => {
     if (additionalQuantity > productQuantity) setAdditionalQuantity(productQuantity)
-  }, [productQuantity])
+  }, [productQuantity, additionalQuantity])
 
   useEffect(() => {
     if (productQuantity === quantity && additionalQuantity === additionalCount) return
@@ -41,7 +46,15 @@ const CartItem = ({ cartList, setselectedProductId }: PropsType) => {
       })
     }, 2000)
     return () => clearTimeout(timer)
-  }, [productQuantity, additionalQuantity])
+  }, [
+    productQuantity,
+    additionalQuantity,
+    additionalCount,
+    cartId,
+    productId,
+    quantity,
+    updateCartMutate,
+  ])
 
   return (
     <div className="w-full xs:w-[300px] border-2 md:h-[140px] my-4 flex justify-between gap-8 py-2">

@@ -8,18 +8,39 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const [selectedProductId, setselectedProductId] = useState<
     { cartId: number; productId: number }[]
   >([])
+  const [isAllItemSelected, setIsAllItemSelected] = useState(false)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
+
   /**
    * 선택 구매 버튼 눌렀을 때 배열에 들어있는 productId로 구매 목록에 상품 추가
    */
   return (
     <>
+      <div className="flex items-center mt-[20px] mb-[-10px] gap-2">
+        {isAllItemSelected ? <div>전체 해제</div> : <div>전체 선택</div>}
+        <input
+          type="checkbox"
+          className="w-[15px] h-[15px]"
+          checked={isAllItemSelected}
+          onChange={() => setIsAllItemSelected((prev) => !prev)}
+          onClick={() => {
+            if (isAllItemSelected) {
+              setselectedProductId([])
+            } else {
+              setselectedProductId(
+                cartLists.map((cart) => ({ cartId: cart.cartId, productId: cart.productId }))
+              )
+            }
+          }}
+        />
+      </div>
       {cartLists &&
         cartLists.map((cartList) => (
           <CartItem
             cartList={cartList}
             key={cartList.productId}
             setselectedProductId={setselectedProductId}
+            isSelectedItem={isAllItemSelected}
           />
         ))}
       <div className="w-full flex justify-center items-center gap-4 mt-[40px">
