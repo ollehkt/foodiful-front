@@ -1,16 +1,26 @@
+import { useSetAtom } from 'jotai'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { cartProductState } from '../../store/cartProducState'
 import { Button } from '../common/Button'
 import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
 import { useDeleteAllCart } from './hooks/useCart'
 
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
+  const router = useRouter()
   const [selectedProductId, setselectedProductId] = useState<
     { cartId: number; productId: number }[]
   >([])
   const [isAllItemSelected, setIsAllItemSelected] = useState(false)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
+  const setCartProduct = useSetAtom(cartProductState)
 
+  const onClickPurchaseBtn = () => {
+    setCartProduct(selectedProductId)
+    router.push('/purchase')
+  }
   /**
    * 선택 구매 버튼 눌렀을 때 배열에 들어있는 productId로 구매 목록에 상품 추가
    */
@@ -46,11 +56,12 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
       <div className="w-full flex justify-center items-center gap-4 mt-[40px">
         <Button
           title={`(${selectedProductId.length})선택 구매`}
-          onClick={() => {}}
+          onClick={onClickPurchaseBtn}
           style="disabled:border-none border-2 border-active"
           size="lg"
           disabled={selectedProductId.length < 1}
         />
+
         <Button
           title="전체 삭제"
           onClick={() => deleteAllCartItems(cartLists[0].cartId)}
