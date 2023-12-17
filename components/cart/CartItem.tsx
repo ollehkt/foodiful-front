@@ -57,11 +57,12 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
   ])
 
   return (
-    <div className="w-full xs:w-[300px] border-2 md:h-[140px] my-4 flex justify-between gap-8 py-2">
+    <div className="w-full xs:w-[300px] md:h-[140px] flex gap-4 my-4 p-4">
       {/**
        * 체크 버튼 / 상품 사진 / 상품 이름 및 서브타이틀 / 상품 수량 / 추가 상품 수량 / 구매 하기 / 삭제하기
        * 전체 구매, 전체 삭제
        */}
+
       <div className="flex items-center ml-2">
         <input
           type="checkbox"
@@ -80,39 +81,33 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
           className="w-[120px] h-[120px] rounded-sm"
         />
       </div>
-      <div className="flex flex-col w-[18%]">
+      <div className="flex flex-col w-[18%] grow">
         <span className="font-bold">{product.name}</span>
         <span className="text-textDisabled">{product.subTitle.slice(0, 10)}..</span>
-        <span className="">
-          주문 가능 수량: <span className="font-bold">{product.limitQuantity}</span>{' '}
-        </span>
+
+        <div className="flex items-center grow">
+          <div className="flex flex-col justify-center items-center ">
+            <span className="text-sm font-semibold text-main">상품 수량 변경</span>
+            <AmountCounter
+              amount={productQuantity}
+              setAmount={setProductQuantity}
+              limit={product.limitQuantity}
+              size="md"
+            />
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <span className="text-sm font-semibold text-main">추가 상품 수량 변경</span>
+            <AmountCounter
+              amount={additionalQuantity}
+              setAmount={setAdditionalQuantity}
+              limit={productQuantity}
+              size="md"
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col justify-center items-center ">
-        <span className="text-sm font-semibold text-main">상품 수량 변경</span>
-        <AmountCounter
-          amount={productQuantity}
-          setAmount={setProductQuantity}
-          limit={product.limitQuantity}
-          size="md"
-        />
-      </div>
-      <div className="flex flex-col justify-center items-center">
-        <span className="text-sm font-semibold text-main">추가 상품 수량 변경</span>
-        <AmountCounter
-          amount={additionalQuantity}
-          setAmount={setAdditionalQuantity}
-          limit={productQuantity}
-          size="md"
-        />
-      </div>
-      <div className="flex items-center gap-2 mr-2">
-        <Button title="구매" onClick={() => {}} style="border-2 border-active" size="md" />
-        <Button
-          title="삭제"
-          onClick={() => {}}
-          style="border-2 border-[red] hover:bg-[red] hover:text-[white]"
-          size="md"
-        />
+      <div className="flex items-start gap-2 mr-2">
+        <button className="bg-[white] text-textDisabled hover:text-disabled">삭제</button>
       </div>
     </div>
   )
