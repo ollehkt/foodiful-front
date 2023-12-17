@@ -6,7 +6,7 @@ interface PropsType {
 }
 
 const Container = ({ style, children }: PropsType) => {
-  return <div className={`w-[80%] mx-auto ${style}`}>{children}</div>
+  return <div className={`w-[90%] mx-auto ${style}`}>{children}</div>
 }
 
 export default Container
