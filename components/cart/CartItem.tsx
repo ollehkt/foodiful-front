@@ -7,7 +7,16 @@ import { useUpdateCart } from './hooks/useCart'
 
 interface PropsType {
   cartList: CartReturnType
-  setselectedProductId: Dispatch<SetStateAction<{ cartId: number; productId: number }[]>>
+  setselectedProductId: Dispatch<
+    SetStateAction<
+      {
+        productId: number
+        cartId: number
+        productQuantity: number
+        additionalQuantity: number
+      }[]
+    >
+  >
   isSelectedItem: boolean
 }
 
@@ -17,7 +26,12 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
   const [additionalQuantity, setAdditionalQuantity] = useState(additionalCount)
   const [isSelected, setIsSelected] = useState(false)
 
-  const onClickCheckBox = (ids: { productId: number; cartId: number }) => {
+  const onClickCheckBox = (ids: {
+    productId: number
+    cartId: number
+    productQuantity: number
+    additionalQuantity: number
+  }) => {
     if (!isSelected) setselectedProductId((prev) => [...prev, ids])
     else
       setselectedProductId((prev) =>
@@ -69,7 +83,9 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
           className="w-[16px] h-[16px]"
           checked={isSelected}
           onChange={() => setIsSelected((prev) => !prev)}
-          onClick={() => onClickCheckBox({ productId, cartId })}
+          onClick={() =>
+            onClickCheckBox({ productId, cartId, productQuantity, additionalQuantity })
+          }
         />
       </div>
       <div className="flex items-center">
@@ -87,7 +103,7 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
 
         <div className="flex items-center grow">
           <div className="flex flex-col justify-center items-center ">
-            <span className="text-sm font-semibold text-main">상품 수량 변경</span>
+            <span className="text-sm font-semibold text-main">상품 수량</span>
             <AmountCounter
               amount={productQuantity}
               setAmount={setProductQuantity}
@@ -96,7 +112,7 @@ const CartItem = ({ cartList, setselectedProductId, isSelectedItem }: PropsType)
             />
           </div>
           <div className="flex flex-col justify-center items-center">
-            <span className="text-sm font-semibold text-main">추가 상품 수량 변경</span>
+            <span className="text-sm font-semibold text-main">추가 상품 수량</span>
             <AmountCounter
               amount={additionalQuantity}
               setAmount={setAdditionalQuantity}

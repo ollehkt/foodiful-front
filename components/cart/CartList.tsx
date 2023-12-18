@@ -11,9 +11,15 @@ import { useDeleteAllCart } from './hooks/useCart'
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
   const [selectedProductId, setselectedProductId] = useState<
-    { cartId: number; productId: number }[]
+    {
+      productId: number
+      cartId: number
+      productQuantity: number
+      additionalQuantity: number
+      // product quantity, additional quantity 처음 추가 되어야 함
+    }[]
   >([])
-  const [isAllItemSelected, setIsAllItemSelected] = useState(false)
+  const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
 
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
@@ -25,18 +31,30 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   }
 
   useEffect(() => {
-    const cartItemPrices = cartLists.map(({ product }) =>
-      product.discount > 0
-        ? Number((product.price - product.price * (product.discount / 100)).toLocaleString())
-        : product.price
+    // TODO: 선택 상품에 대해 가격 표시
+    /**
+     *
+     */
+
+    const cartItemPrices = cartLists.map((list) =>
+      list.product.discount
+        ? list.product.price - list.product.price * (list.product.discount / 100) * list.quantity
+        : list.product.price * list.quantity
     )
-    console.log(cartItemPrices)
-    console.log(cartLists)
     setTotalPrice(cartItemPrices.reduce((acc, cur) => acc + cur, 0))
   }, [])
-  /**
-   * 선택 구매 버튼 눌렀을 때 배열에 들어있는 productId로 구매 목록에 상품 추가
-   */
+  // console.log(cartLists)
+  useEffect(() => {}, [])
+
+  useEffect(() => {
+    // selectedproductId가 바뀌고 각 상품의 수량이 바뀔때마다 전체 가격이 변경되어야 함.
+    const list = selectedProductId.filter((selected) => {
+      return cartLists.filter(({ productId }) => selected.productId === productId)
+    })
+    console.log('lsit', list)
+    // console.log(selectedProductId)
+  }, [selectedProductId, cartLists])
+
   return (
     <div className="shadow-basic rounded-md p-4 mt-[40px]">
       <div className="border-b-[1px] border-main ">상품</div>
@@ -51,7 +69,12 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
               setselectedProductId([])
             } else {
               setselectedProductId(
-                cartLists.map((cart) => ({ cartId: cart.cartId, productId: cart.productId }))
+                cartLists.map((cart) => ({
+                  cartId: cart.cartId,
+                  productId: cart.productId,
+                  productQuantity: cart.quantity,
+                  additionalQuantity: cart.additionalCount,
+                }))
               )
             }
           }}
@@ -78,22 +101,33 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
               />
             ))}
         </div>
-        <div className="flex-col grow justify-center items-center">
+        <div className="flex-col grow justify-center items-center my-4">
           {/**구매 금액 */}
           <div className="shadow-basic rounded-md p-4">
             <div className="text-main font-bold text-lg">지불 금액</div>
-            <div className="flex items-center">
-              <div className="mt-[20px] font-bold">총 상품 금액</div>
-              <div>{totalPrice}</div>
+            <div className="flex items-center justify-between mt-[20px]">
+              <div className=" font-bold">총 상품 금액</div>
+
+              <div className="font-bold text-main">
+                {totalPrice.toLocaleString()}
+                <span className="text-[black] ml-2">원</span>
+              </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">배송비</div>
+              <div className="font-bold text-main">
+                3,000<span className="text-[black] ml-2">원</span>
+              </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">결제 예상 금액</div>
+              <div className="font-bold text-main">
+                {(totalPrice + 3000).toLocaleString()}
+                <span className="text-[black] ml-2">원</span>
+              </div>
             </div>
           </div>
-          <div className="w-full flex justify-center items-center gap-4 mt-[40px">
+          <div className="w-full flex justify-center items-center gap-4 mt-[40px]">
             <Button
               title={`선택 상품 구매`}
               onClick={onClickPurchaseBtn}
@@ -105,7 +139,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             <Button
               title="전체 상품 구매"
               onClick={() => deleteAllCartItems(cartLists[0].cartId)}
-              style="bg-main border-[1px] border-main text-[white] hover:bg-active  hover:text-[white]"
+              style="bg-main border-[1px] border-main text-[white] hover:bg-active  hover:text-[white] hover:border-active"
               size="md"
               disabled={cartLists.length < 1}
             />
