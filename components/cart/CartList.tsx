@@ -1,109 +1,103 @@
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { cartProductState } from '../../store/cartProducState'
+import { cartProductState } from '../../store/cartProductState'
 import { Button } from '../common/Button'
+import { calculatePrice } from '../lib/calculatePrice'
 import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
 import { useDeleteAllCart } from './hooks/useCart'
 
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
-  const [selectedProductId, setselectedProductId] = useState<
-    {
-      productId: number
-      cartId: number
-      productQuantity: number
-      additionalQuantity: number
-      // product quantity, additional quantity 처음 추가 되어야 함
-    }[]
-  >([])
+  const [selectedProductId, setSelectedProductId] = useAtom(cartProductState)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
-
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
-  const setCartProduct = useSetAtom(cartProductState)
 
-  const onClickPurchaseBtn = () => {
-    setCartProduct(selectedProductId)
+  const onClickDeleteAll = () => {
+    setSelectedProductId([])
+    deleteAllCartItems(cartLists[0].cartId)
+  }
+
+  const onClickPurchaseSelectedItemBtn = () => {
+    router.push('/purchase')
+  }
+  const onClickPurchaseAllBtn = () => {
+    setSelectedProductId(cartLists)
     router.push('/purchase')
   }
 
+  // selectedProductId 변경 시 마다 가격 계산
   useEffect(() => {
-    // TODO: 선택 상품에 대해 가격 표시
-    /**
-     *
-     */
-
-    const cartItemPrices = cartLists.map((list) =>
-      list.product.discount
-        ? list.product.price - list.product.price * (list.product.discount / 100) * list.quantity
-        : list.product.price * list.quantity
+    const selectedProductPrices = selectedProductId.map(
+      (selected) => selected.product.price * selected.quantity
     )
-    setTotalPrice(cartItemPrices.reduce((acc, cur) => acc + cur, 0))
-  }, [])
-  // console.log(cartLists)
-  useEffect(() => {}, [])
+    setTotalPrice(selectedProductPrices.reduce((acc, cur) => acc + cur, 0))
+  }, [selectedProductId])
 
+  // 첫 렌더링 때 모든 아이템 체크 된 상태 만들기
   useEffect(() => {
-    // selectedproductId가 바뀌고 각 상품의 수량이 바뀔때마다 전체 가격이 변경되어야 함.
-    const list = selectedProductId.filter((selected) => {
-      return cartLists.filter(({ productId }) => selected.productId === productId)
-    })
-    console.log('lsit', list)
-    // console.log(selectedProductId)
-  }, [selectedProductId, cartLists])
+    setSelectedProductId(
+      cartLists.map((item) => ({
+        ...item,
+        product: {
+          ...item.product,
+          price: item.product.discount
+            ? calculatePrice(item.product.price, item.product.discount)
+            : item.product.price,
+        },
+      }))
+    )
+  }, [])
 
   return (
     <div className="shadow-basic rounded-md p-4 mt-[40px]">
       <div className="border-b-[1px] border-main ">상품</div>
-      <div className="flex items-center my-[20px] pb-[20px] gap-2 border-b-[1px] border-disabled">
-        <input
-          type="checkbox"
-          className="w-[15px] h-[15px]"
-          checked={isAllItemSelected}
-          onChange={() => setIsAllItemSelected((prev) => !prev)}
-          onClick={() => {
-            if (isAllItemSelected) {
-              setselectedProductId([])
-            } else {
-              setselectedProductId(
-                cartLists.map((cart) => ({
-                  cartId: cart.cartId,
-                  productId: cart.productId,
-                  productQuantity: cart.quantity,
-                  additionalQuantity: cart.additionalCount,
-                }))
-              )
-            }
-          }}
-        />
-        {isAllItemSelected ? (
-          <div>
-            전체 해제 ({selectedProductId.length} / {cartLists.length})
-          </div>
-        ) : (
-          <div>
-            전체 선택 ({selectedProductId.length} / {cartLists.length})
-          </div>
-        )}
+      <div className="flex items-center justify-between my-[20px] pb-[20px] gap-2 border-b-[1px] border-disabled">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            className="w-[15px] h-[15px]"
+            checked={isAllItemSelected}
+            onChange={() => setIsAllItemSelected((prev) => !prev)}
+            onClick={() => {
+              if (isAllItemSelected) {
+                setSelectedProductId([])
+              } else {
+                setSelectedProductId(cartLists)
+              }
+            }}
+          />
+          {isAllItemSelected ? (
+            <div>
+              전체 해제 ({selectedProductId.length} / {cartLists.length})
+            </div>
+          ) : (
+            <div>
+              전체 선택 ({selectedProductId.length} / {cartLists.length})
+            </div>
+          )}
+        </div>
+        <button className="text-textDisabled hover:text-disabled" onClick={onClickDeleteAll}>
+          전체 삭제
+        </button>
       </div>
-      <div className="flex">
+      <div className="flex gap-3">
         <div className="flex-col grow-[4]">
           {cartLists &&
             cartLists.map((cartList) => (
               <CartItem
                 cartList={cartList}
                 key={cartList.productId}
-                setselectedProductId={setselectedProductId}
                 isSelectedItem={isAllItemSelected}
               />
             ))}
         </div>
         <div className="flex-col grow justify-center items-center my-4">
-          {/**구매 금액 */}
-          <div className="shadow-basic rounded-md p-4">
+          {/**지불 금액 */}
+          <div className="shadow-basic rounded-md p-4 border-[2px] border-main">
             <div className="text-main font-bold text-lg">지불 금액</div>
             <div className="flex items-center justify-between mt-[20px]">
               <div className=" font-bold">총 상품 금액</div>
@@ -130,7 +124,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
           <div className="w-full flex justify-center items-center gap-4 mt-[40px]">
             <Button
               title={`선택 상품 구매`}
-              onClick={onClickPurchaseBtn}
+              onClick={onClickPurchaseSelectedItemBtn}
               style="disabled:border-none border-[1px] border-main hover:bg-main hover:text-[white]"
               size="md"
               disabled={selectedProductId.length < 1}
@@ -138,10 +132,9 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
             <Button
               title="전체 상품 구매"
-              onClick={() => deleteAllCartItems(cartLists[0].cartId)}
+              onClick={onClickPurchaseAllBtn}
               style="bg-main border-[1px] border-main text-[white] hover:bg-active  hover:text-[white] hover:border-active"
               size="md"
-              disabled={cartLists.length < 1}
             />
           </div>
         </div>

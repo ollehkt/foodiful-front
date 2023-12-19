@@ -91,25 +91,42 @@ export const useUpdateCart = () => {
   return { mutate }
 }
 
-const deleteCart = async ({ cartId, productId }: { cartId: number; productId: number }) => {
-  const { data } = await api.delete(`/cart/${cartId}/${productId}`)
+const deleteCartItem = async ({ cartId, productId }: { cartId: number; productId: number }) => {
+  const user = getStoredUser()
+  const { data } = await api.delete(`/cart/${cartId}/${productId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
   return data
 }
 
 export const useDeleteCart = () => {
   const { mutate } = useMutation({
     mutationFn: (deleteCartData: { cartId: number; productId: number }) =>
-      deleteCart(deleteCartData),
+      deleteCartItem(deleteCartData),
   })
   return { mutate }
 }
 
 const deleteAllCart = async (cartId: number) => {
-  const { data } = await api.delete(`cart/all/${cartId}`)
+  const user = getStoredUser()
+  const { data } = await api.delete(`cart/all/${cartId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
   return data
 }
 
 export const useDeleteAllCart = () => {
-  const { mutate } = useMutation({ mutationFn: (cartId: number) => deleteAllCart(cartId) })
+  const queryClient = new QueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (cartId: number) => deleteAllCart(cartId),
+    onSuccess: () => {},
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.cart] })
+    },
+  })
   return { mutate }
 }
