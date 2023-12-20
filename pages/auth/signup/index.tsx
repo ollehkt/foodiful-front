@@ -66,7 +66,7 @@ function SignUp() {
   // }, [signUpValue.phone])
 
   return (
-    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
+    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>회원가입
       <Input
         style=" ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"

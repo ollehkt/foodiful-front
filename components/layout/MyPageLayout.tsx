@@ -18,11 +18,14 @@ const MyPageLayout = ({ children }: { children: ReactElement }) => {
 
       <HeaderNavMobile />
       {isMobile ? (
+        /**
+         * TODO: 상단에 드롭다운으로 라우트 주소 표시하기
+         */
         <>{children}</>
       ) : (
         <Container style="flex gap-10 mt-[100px]">
           <div className="w-[20%] h-[600px] rounded-md shadow-basic">
-            <div className="flex flex-col justify-center items-center gap-4 mt-[20px]">
+            <div className="flex-col justify-center items-center gap-4 mt-[20px]">
               {myPageNav.map(({ title, url }) => (
                 <Link
                   href={url}

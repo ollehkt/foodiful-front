@@ -1,4 +1,4 @@
-export interface ReservationTypes {
+export interface ReservationType {
   id: number
   reserveDate: string[]
   regular: boolean

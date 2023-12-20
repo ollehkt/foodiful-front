@@ -109,20 +109,24 @@ const CartItem = ({
           className="w-[120px] h-[120px] rounded-sm"
         />
       </div>
-      <div className="flex flex-col w-[18%] grow">
+      <div className="flex-col w-[18%] grow">
         <span className="font-bold">{product.name}</span>
         <span className="text-textDisabled">
           {product.subTitle.length > 15 ? `${product.subTitle.slice(0, 15)}..` : product.subTitle}
         </span>
-        {product.discount && (
+        {product.discount ? (
           <>
-            <span className="text-textDisabled line-through">{product.price.toLocaleString()}</span>
-            <span>{calculatePrice(product.price, product.discount).toLocaleString()}</span>
+            <span className="text-textDisabled line-through">
+              {product.price.toLocaleString()}원
+            </span>
+            <span>{calculatePrice(product.price, product.discount).toLocaleString()}원</span>
           </>
+        ) : (
+          <span> {product.price.toLocaleString()}원</span>
         )}
 
         <div className="flex items-center gap-x-4 grow mt-[10px]">
-          <div className="flex flex-col justify-center items-center ">
+          <div className="flex-col justify-center items-center ">
             <span className="text-sm font-semibold text-main">상품 수량</span>
             <AmountCounter
               amount={productQuantity}
@@ -131,7 +135,7 @@ const CartItem = ({
               size="md"
             />
           </div>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex-col justify-center items-center">
             <span className="text-sm font-semibold text-main">추가 상품 수량</span>
             <AmountCounter
               amount={additionalQuantity}

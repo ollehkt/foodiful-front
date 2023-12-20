@@ -48,7 +48,7 @@ const CalendarTimeRender = ({
   return (
     <>
       {isTimeTableModalOpen && times.length > 0 && (
-        <div className="absolute bottom-[-40px] px-4 flex flex-col items-center w-[800px] rounded-lg shadow-basic bg-[white] z-[999]">
+        <div className="absolute bottom-[-40px] px-4 flex-col items-center w-[800px] rounded-lg shadow-basic bg-[white] z-[999]">
           <div className="text-lg font-bold my-4">
             <span className="text-main">{dayjs(selectedDate).month() + 1}</span>월
             <span className="text-main"> {dayjs(selectedDate).date()}</span>일 시간 선택

@@ -3,11 +3,11 @@ import { InferGetServerSidePropsType } from 'next'
 import React, { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
+import { ReservationType } from '../../components/calendar/types/reservationType'
+import { ClassType } from '../../components/class/types/classTypes'
 import Container from '../../components/common/Container'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
-import { ClassType } from '../../types/classTypes'
-import { ReservationTypes } from '../../types/reservationTypes'
 
 // class 및 예약 내역 서버사이드 프롭으로 받아오기
 
@@ -18,7 +18,7 @@ export const getServerSideProps = async (): Promise<{
   const { data: reservations } = await api('/reservation/all')
 
   const reservedTimes: string[] = reservations.flatMap(
-    (reserve: ReservationTypes) => reserve.reserveDate
+    (reserve: ReservationType) => reserve.reserveDate
   )
   return {
     props: { classes, reservedTimes },
@@ -67,7 +67,7 @@ const Reservation = ({
         <div
           className={`w-full ${
             selectedClass ? 'mt-[40px] translate-y-0' : 'translate-y-[200px]'
-          } mx-auto flex flex-col items-center transition-translate-y duration-1000 ease-in-out`}
+          } mx-auto flex-col items-center transition-translate-y duration-1000 ease-in-out`}
         >
           <div className="text-2xl font-bold">클래스 선택하기</div>
           {classes.length > 0 && (
@@ -83,7 +83,7 @@ const Reservation = ({
         </div>
 
         <div
-          className={`mt-[60px] flex flex-col items-center ${
+          className={`mt-[60px] flex-col items-center ${
             selectedClass.name
               ? 'animate-translateUp100 opacity-1 w-[800px] h-[600px] '
               : 'hidden translate-y-[200px]'

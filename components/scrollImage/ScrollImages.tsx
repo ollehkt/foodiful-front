@@ -1,5 +1,4 @@
-import { ProductReturnType } from '../../types/productTypes'
-
+import { ProductReturnType } from '../product/types/productTypes'
 import ScrollImageItem from './ScrollImageItem'
 
 const arr = ['/photo0.jpeg']

@@ -8,7 +8,7 @@ import {
   PostReservationType,
   ReservationTypes,
   updateReservartionType,
-} from '../types/reservationTypes'
+} from '../types/reservationType'
 
 const postReservation = async (reservationData: PostReservationType) => {
   const user = getStoredUser()

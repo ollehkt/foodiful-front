@@ -8,6 +8,9 @@ import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReturnType } from './types/productTypes'
 import { Button } from '../common/Button'
 import { useAddCart } from '../cart/hooks/useCart'
+import { cartProductState } from '../../store/cartProductState'
+import useToast from '../common/hooks/useToast'
+import { calculatePrice } from '../lib/calculatePrice'
 
 interface PropsType {
   product: ProductReturnType
@@ -25,14 +28,27 @@ const ProductDetail = ({
   const [productQuantities, setProductQuantities] = useState<number>(1)
   const [additionalSelect, setadditionalSelect] = useState('')
   const [additionalQuantities, setAdditionalQuantities] = useState(1)
-  const [displayPrice, setDisplayPrice] = useState(discount ? price - price / discount : price)
+  const [displayPrice, setDisplayPrice] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
+  const cartProductLists = useAtomValue(cartProductState)
+
+  const { fireToast } = useToast()
 
   const { mutate: addCart } = useAddCart()
 
   const onClickAddCart = (productId: number, quantity: number, additionalCount: number) => {
+    if (cartProductLists.find((product) => product.productId === productId)) {
+      fireToast({
+        id: 'cartItemConflict',
+        message: '이미 카트에 존재하는 상품입니다.',
+        position: 'bottom',
+        timer: 2000,
+        type: 'failed',
+      })
+      return
+    }
     addCart({ productId, quantity, additionalCount })
   }
 
@@ -45,6 +61,10 @@ const ProductDetail = ({
   useEffect(() => {
     setTotalPrice(additionalSelect ? additionalQuantities * 5000 + displayPrice : displayPrice)
   }, [displayPrice, additionalQuantities, additionalSelect])
+
+  useEffect(() => {
+    setDisplayPrice(discount ? calculatePrice(price, discount) : price)
+  }, [])
 
   return (
     <>
@@ -97,7 +117,7 @@ const ProductDetail = ({
                   {price.toLocaleString()}원
                 </div>
                 <div className="text-2xl text-main font-bold">
-                  {(price - price * (discount / 100)).toLocaleString()}원
+                  {calculatePrice(price, discount).toLocaleString()}원
                 </div>
               </>
             ) : (
@@ -135,9 +155,9 @@ const ProductDetail = ({
             />
           </div>
 
-          <div className="mt-[40px] flex flex-col border border-disabled rounded-md">
+          <div className="mt-[40px] flex-col border border-disabled rounded-md">
             <div className="mt-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
-              <div className="flex flex-col justify-center flex-2">
+              <div className="flex-col justify-center flex-2">
                 <span className="text-lg font-bold">수량 선택하기</span>
                 <AmountCounter
                   amount={productQuantities}
@@ -150,7 +170,7 @@ const ProductDetail = ({
             {!additionalSelect ||
               (additionalSelect !== '선택 안함' && (
                 <div className="my-[20px] pt-[10px] flex items-center justify-between mx-[30px]">
-                  <div className="flex flex-col justify-center flex-2">
+                  <div className="flex-col justify-center flex-2">
                     <span className="text-base font-bold">추가 상품</span>
                     <AmountCounter
                       amount={additionalQuantities}

@@ -50,7 +50,7 @@ const ProductDetailPage = ({
   return (
     product && (
       <div
-        className="mt-8 flex flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
+        className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
         onClick={() => {
           isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
         }}

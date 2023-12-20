@@ -8,7 +8,6 @@ import { useAuth } from '../../../components/auth/hooks/useAuth'
 import { Button } from '../../../components/common/Button'
 import { SignInType } from '../../../components/auth/types/user'
 
-
 function SignIn() {
   const { state: signInValue, onChangeInput } = useInput<SignInType, string>({
     email: '',
@@ -19,6 +18,11 @@ function SignIn() {
   const { emailValidate, passwordValidate } = useValidate()
   const [isValidated, setIsValidated] = useState(false)
 
+  const REST_API_KEY = process.env.NEXT_PUBLIC_CLIENT_ID
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URL
+
+  const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
+
   useEffect(() => {
     if (emailValidate(signInValue.email) && passwordValidate(signInValue.password)) {
       setIsValidated(true)
@@ -26,7 +30,7 @@ function SignIn() {
   }, [signInValue, emailValidate, passwordValidate])
 
   return (
-    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
+    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>로그인
       <Input
         style="ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
@@ -62,12 +66,12 @@ function SignIn() {
         disabled={!isValidated}
       />
       <div className="mt-[10px]">
-        <Button
-          onClick={() => signIn(signInValue)}
-          style="mt-[20px] bg-[#fee501] text-[#000] text-xl mx-[10px] hover:bg-[#eed700]"
-          title="카카오톡 로그인"
-          size="lg"
-        />
+        <a
+          href={KAKAO_URL}
+          className="mt-[20px] bg-[#fee501] text-[#000] text-xl mx-[10px] hover:bg-[#eed700]"
+        >
+          카카오 로그인
+        </a>
         <Button
           onClick={() => signIn(signInValue)}
           style="mt-[20px] bg-primary text-[#fff] text-xl mx-[10px]"

@@ -5,8 +5,9 @@ import { User } from '../../../components/auth/types/user'
 import useToast from '../../../components/common/hooks/useToast'
 import StrongTitle from '../../../components/common/StrongTitle'
 import ProductItem from '../../../components/product/ProductItem'
+import { ProductReturnType } from '../../../components/product/types/productTypes'
 import { getStoredUser } from '../../../components/util/userStorage'
-import { ProductReturnType } from '../../../types/productTypes'
+
 import { getMyPageLayout } from '../getMyPageLayout'
 
 const MyPageFavorites = () => {
@@ -43,7 +44,7 @@ const MyPageFavorites = () => {
     })()
   }, [])
   return (
-    <div className="grow flex flex-col items-center rounded-md shadow-basic px-5 py-2">
+    <div className="grow flex-col items-center rounded-md shadow-basic px-5 py-2">
       <StrongTitle title="좋아하는 상품" />
       <div className="w-full my-12 py-2">
         {!myFavoriteProducts.length ? (

@@ -30,7 +30,7 @@ const ReviewList = ({ reviewList }: PropsType) => {
     <>
       {reviewList.length > 0 ? (
         <>
-          <div className="flex flex-col justify-center">
+          <div className="flex-col justify-center">
             {renderReviewList.map((review) => (
               <ReviewItem key={`${review.id}`} review={review} />
             ))}

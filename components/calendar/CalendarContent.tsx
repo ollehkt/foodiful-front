@@ -102,7 +102,7 @@ const CalendarContent = ({
       {/* 선택 눌렀을 때 예약하기 버튼 나오게 만들기 */}
       {isReserveTimeSelected && user && (
         <div className="w-full mx-auto flex justify-center">
-          <div className="w-[300px] shadow-basic p-2 rounded-md flex flex-col gap-1">
+          <div className="w-[300px] shadow-basic p-2 rounded-md flex-col gap-1">
             <div>
               예약자 성함: <span className="text-lg text-main font-bold">{user.name}</span>
             </div>

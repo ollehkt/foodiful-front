@@ -126,7 +126,7 @@ const UserModifyForm = ({
   }, [time])
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex-col items-start">
       <Input
         style="ml-[70px] w-[300px] outline-none py-[4px] pl-[8px]"
         labelStyle="my-[30px] text-xl"
@@ -290,7 +290,7 @@ const UserModifyForm = ({
       </>
 
       {isPasswordModifyMode ? (
-        <div className="relative flex flex-col">
+        <div className="relative flex-col">
           <Input
             style="ml-[60px] w-[300px] outline-none py-[4px] pl-[4px] border-b-2"
             labelStyle="my-[20px] relative text-xl"

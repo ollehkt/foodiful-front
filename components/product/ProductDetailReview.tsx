@@ -77,7 +77,7 @@ const ProductDetailReview = ({
           <ReviewForm productName={productName} productId={productId} userId={user.id} />
         </>
       )}
-      <div className="flex flex-col mt-[40px] border-main border-t-[1px]">
+      <div className="flex-col mt-[40px] border-main border-t-[1px]">
         <div className="mt-[10px]  text-3xl">후기 목록</div>
         {reviewList && <ReviewList reviewList={reviewList} />}
       </div>

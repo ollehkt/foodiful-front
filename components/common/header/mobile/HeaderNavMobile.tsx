@@ -15,7 +15,7 @@ const HeaderNavMobile = () => {
           className={`absolute top-0 right-0 z-[99999999] w-full h-full shadow-basic bg-[#999] bg-opacity-90`}
         >
           <div className="absolute right-0 w-[70%] h-[40%] bg-[#666]  rounded-md flex justify-end">
-            <ul className="w-[40%] flex flex-col items-center gap-y-10 mx-10 my-10">
+            <ul className="w-[40%] flex-col items-center gap-y-10 mx-10 my-10">
               {headerTitle.map(({ title, url }) => (
                 <Link
                   href={url}

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
 import { Button } from '../common/Button'
+import TitleAndLine from '../common/TitleAndLine'
 import { calculatePrice } from '../lib/calculatePrice'
 import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
@@ -54,12 +55,12 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
   return (
     <div className="shadow-basic rounded-md p-4 mt-[40px]">
-      <div className="border-b-[1px] border-main ">상품</div>
+      <TitleAndLine title="상품" />
       <div className="flex items-center justify-between my-[20px] pb-[20px] gap-2 border-b-[1px] border-disabled">
         <div className="flex items-center">
           <input
             type="checkbox"
-            className="w-[15px] h-[15px]"
+            className="w-[15px] h-[15px] mr-2"
             checked={isAllItemSelected}
             onChange={() => setIsAllItemSelected((prev) => !prev)}
             onClick={() => {
