@@ -67,7 +67,7 @@ const Reservation = ({
         <div
           className={`w-full ${
             selectedClass ? 'mt-[40px] translate-y-0' : 'translate-y-[200px]'
-          } mx-auto flex-col items-center transition-translate-y duration-1000 ease-in-out`}
+          } mx-auto flex flex-col items-center transition-translate-y duration-1000 ease-in-out`}
         >
           <div className="text-2xl font-bold">클래스 선택하기</div>
           {classes.length > 0 && (
@@ -85,7 +85,7 @@ const Reservation = ({
         <div
           className={`mt-[60px] flex-col items-center ${
             selectedClass.name
-              ? 'animate-translateUp100 opacity-1 w-[800px] h-[600px] '
+              ? 'animate-translateUp100 opacity-1 w-[800px] h-[900px] '
               : 'hidden translate-y-[200px]'
           } mx-auto`}
         >

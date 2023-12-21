@@ -2,6 +2,7 @@ import { UseMutateFunction } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { AiFillCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../../types/fileTypes'
@@ -42,6 +43,7 @@ interface PropsType {
 
 const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsType) => {
   const { onChangeRenderImgs } = useRenderImages()
+  const router = useRouter()
   const [files, setFiles] = useState<File[]>([])
   const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [imagesSrc, setImagesSrc] = useState<string[]>(
@@ -296,7 +298,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
         />
 
         <Button
-          onClick={() => {}}
+          onClick={() => router.push('/product')}
           title="취소"
           style="rounded-md bg-indigo-600 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         />

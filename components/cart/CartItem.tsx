@@ -109,7 +109,7 @@ const CartItem = ({
           className="w-[120px] h-[120px] rounded-sm"
         />
       </div>
-      <div className="flex-col w-[18%] grow">
+      <div className="flex flex-col w-[18%] grow">
         <span className="font-bold">{product.name}</span>
         <span className="text-textDisabled">
           {product.subTitle.length > 15 ? `${product.subTitle.slice(0, 15)}..` : product.subTitle}
