@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
@@ -33,7 +34,14 @@ const CartPage = () => {
     <Container>
       <div className="mt-[40px]">
         <StrongTitle title="장바구니" />
-        {cartLists.length > 0 && <CartList cartLists={cartLists} />}
+        {cartLists.length > 0 ? (
+          <CartList cartLists={cartLists} />
+        ) : (
+          <div className="flex justify-center text-textDisabled text-3xl font-bold mt-[60px]">
+            장바구니 내역이 없습니다.
+            <Link href="/product" />
+          </div>
+        )}
       </div>
     </Container>
   )

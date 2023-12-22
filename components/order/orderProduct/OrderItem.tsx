@@ -3,7 +3,7 @@ import React from 'react'
 import { CartReturnType } from '../../cart/cartTypes'
 import { calculatePrice } from '../../lib/calculatePrice'
 
-function PurchaseItem({ product }: { product: CartReturnType }) {
+function OrderItem({ product }: { product: CartReturnType }) {
   return (
     <div className="flex py-4 border-t-[1px] border-disabled">
       <div className="flex gap-x-8 w-[70%]">
@@ -34,4 +34,4 @@ function PurchaseItem({ product }: { product: CartReturnType }) {
   )
 }
 
-export default PurchaseItem
+export default OrderItem

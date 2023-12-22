@@ -17,7 +17,14 @@ const getCartList = async () => {
 }
 
 export const useGetCartList = () => {
-  const { data = [], isFetching } = useQuery({ queryKey: [queryKeys.cart], queryFn: getCartList })
+  const { data = [], isFetching } = useQuery({
+    queryKey: [queryKeys.cart],
+    queryFn: getCartList,
+    onSuccess(data) {},
+    onError: (error) => {
+      console.log(error)
+    },
+  })
   return { data, isFetching }
 }
 

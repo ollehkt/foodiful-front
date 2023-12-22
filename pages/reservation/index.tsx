@@ -55,12 +55,12 @@ const Reservation = ({
 
   return (
     <div
-      className="w-full h-screen"
+      className="w-full"
       onClick={() => {
         isClassSelectModalOpen && setIsClassSelectModalOpen(false)
       }}
     >
-      <Container style="my-[40px] h-full">
+      <Container style="my-[40px]">
         <div className="w-full mx-auto flex justify-center items-center">
           <StrongTitle title="클래스 예약하기" />
         </div>

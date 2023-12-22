@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { Button } from '../common/Button'
 import { useTimeCheck } from './hooks/useTimeCheck'
@@ -72,15 +72,15 @@ const CalendarTimeRender = ({
               )
             })}
           </div>
-          <div className="h-[40px] flex justify-center items-center text-lg font-semibold">
-            {confirmSelectedTime && (
+          {confirmSelectedTime && (
+            <div className="h-[40px] flex justify-center items-center text-lg font-semibold">
               <span>
                 <span className="text-main font-bold">{confirmSelectedTime}</span> 의 예약이
                 맞으시다면 <span className="p-1 bg-main text-[white] rounded-md">선택</span> 을
                 눌러주세요.
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="py-1 my-[20px]">
             <Button
@@ -89,6 +89,7 @@ const CalendarTimeRender = ({
               onClick={() => {
                 setIsReserveTimeSelected(true)
                 setIsTimeTableModalOpen(false)
+                scrollTo(0, 500)
               }}
             />
             <Button

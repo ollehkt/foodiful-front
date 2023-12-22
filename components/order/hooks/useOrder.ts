@@ -3,12 +3,12 @@ import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 
-const postPurchase = (purchaseData) => {
+const postOrder = (orderData) => {
   const user = getStoredUser()
   return api.post(
-    '/purchase',
+    '/order',
     {
-      ...purchaseData,
+      ...orderData,
     },
     {
       headers: {
@@ -18,10 +18,10 @@ const postPurchase = (purchaseData) => {
   )
 }
 
-const usePostPurchase = () => {
+const usePostorder = () => {
   const { fireToast } = useToast()
   const { mutate } = useMutation({
-    mutationFn: (purchaseData) => postPurchase(purchaseData),
+    mutationFn: (orderData) => postOrder(orderData),
   })
   return { mutate }
 }

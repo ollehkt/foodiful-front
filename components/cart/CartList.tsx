@@ -12,35 +12,35 @@ import { useDeleteAllCart } from './hooks/useCart'
 
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
-  const [selectedProductId, setSelectedProductId] = useAtom(cartProductState)
+  const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
 
   const onClickDeleteAll = () => {
-    setSelectedProductId([])
+    setSelectedProduct([])
     deleteAllCartItems(cartLists[0].cartId)
   }
 
   const onClickPurchaseSelectedItemBtn = () => {
-    router.push('/purchase')
+    router.push('/order')
   }
   const onClickPurchaseAllBtn = () => {
-    setSelectedProductId(cartLists)
-    router.push('/purchase')
+    setSelectedProduct(cartLists)
+    router.push('/order')
   }
 
   // selectedProductId 변경 시 마다 가격 계산
   useEffect(() => {
-    const selectedProductPrices = selectedProductId.map(
+    const selectedProductPrices = selectedProduct.map(
       (selected) => selected.product.price * selected.quantity
     )
     setTotalPrice(selectedProductPrices.reduce((acc, cur) => acc + cur, 0))
-  }, [selectedProductId])
+  }, [selectedProduct])
 
   // 첫 렌더링 때 모든 아이템 체크 된 상태 만들기
   useEffect(() => {
-    setSelectedProductId(
+    setSelectedProduct(
       cartLists.map((item) => ({
         ...item,
         product: {
@@ -65,19 +65,19 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             onChange={() => setIsAllItemSelected((prev) => !prev)}
             onClick={() => {
               if (isAllItemSelected) {
-                setSelectedProductId([])
+                setSelectedProduct([])
               } else {
-                setSelectedProductId(cartLists)
+                setSelectedProduct(cartLists)
               }
             }}
           />
           {isAllItemSelected ? (
             <div>
-              전체 해제 ({selectedProductId.length} / {cartLists.length})
+              전체 해제 ({selectedProduct.length} / {cartLists.length})
             </div>
           ) : (
             <div>
-              전체 선택 ({selectedProductId.length} / {cartLists.length})
+              전체 선택 ({selectedProduct.length} / {cartLists.length})
             </div>
           )}
         </div>
@@ -128,7 +128,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
               onClick={onClickPurchaseSelectedItemBtn}
               style="disabled:border-none border-[1px] border-main hover:bg-main hover:text-[white]"
               size="md"
-              disabled={selectedProductId.length < 1}
+              disabled={selectedProduct.length < 1}
             />
 
             <Button
