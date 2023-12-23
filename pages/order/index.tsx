@@ -9,6 +9,7 @@ import OrdererInfo from '../../components/order/orderInfo/OrderInfo'
 import OrderItem from '../../components/order/orderProduct/OrderItem'
 import OrderProduct from '../../components/order/orderProduct/OrderProduct'
 import { OrderForm } from '../../components/order/types/OrderForm'
+import { RequestPayParams, RequestPayResponse } from '../../portone'
 
 import { cartProductState } from '../../store/cartProductState'
 
@@ -35,6 +36,7 @@ import { cartProductState } from '../../store/cartProductState'
 const OrderPage = () => {
   const [orderForm, setOrderForm] = useState<OrderForm>({
     deliverName: '',
+    deliverPostalCode: '',
     deliverAddress: '',
     deliverSpecificAddress: '',
     deliverPhone: '',
@@ -58,9 +60,46 @@ const OrderPage = () => {
     }
   }, [])
 
+  const onClickPayment = () => {
+    if (!window.IMP) return
+    /* 1. 가맹점 식별하기 */
+    const { IMP } = window
+    IMP.init('imp11681327') // 가맹점 식별코드
+
+    /* 2. 결제 데이터 정의하기 */
+    const data: RequestPayParams = {
+      pg: 'html5_inicis.INIBillTst', // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
+      pay_method: 'card', // 결제수단
+      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+      amount: 1000, // 결제금액
+      name: '아임포트 결제 데이터 분석', // 주문명
+      buyer_name: orderForm.deliverName, // 구매자 이름
+      buyer_tel: orderForm.deliverPhone, // 구매자 전화번호
+      buyer_email: '', // 구매자 이메일
+      buyer_addr: `${orderForm.deliverAddress}${orderForm.deliverSpecificAddress}`, // 구매자 주소
+      buyer_postcode: '06018', // 구매자 우편번호
+    }
+
+    /* 4. 결제 창 호출하기 */
+    IMP.request_pay(data, callback)
+  }
+
+  /* 3. 콜백 함수 정의하기 */
+  function callback(response: RequestPayResponse) {
+    const { success, error_msg } = response
+    console.log(response)
+
+    if (success) {
+      alert('결제 성공')
+    } else {
+      alert(`결제 실패: ${error_msg}`)
+    }
+  }
+
   return (
     <Container style="mt-[40px]">
       <StrongTitle title="주문 / 결제" />
+      <button onClick={onClickPayment}>결재</button>
       <OrderProduct selectedProduct={selectedProduct} />
       <OrdererInfo orderForm={orderForm} setOrderForm={setOrderForm} />
     </Container>
