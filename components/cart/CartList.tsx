@@ -13,6 +13,7 @@ import { useDeleteAllCart } from './hooks/useCart'
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
+  console.log(selectedProduct)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
@@ -33,7 +34,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   // selectedProductId 변경 시 마다 가격 계산
   useEffect(() => {
     const selectedProductPrices = selectedProduct.map(
-      (selected) => selected.product.price * selected.quantity
+      (selected) => (selected.product.price * selected.quantity) + (selected.additionalCount * 5000)
     )
     setTotalPrice(selectedProductPrices.reduce((acc, cur) => acc + cur, 0))
   }, [selectedProduct])

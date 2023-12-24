@@ -13,28 +13,24 @@ interface PropsType {
   isSelectedItem: boolean
 }
 
-const CartItem = ({
-  cartList,
-
-  isSelectedItem,
-}: PropsType) => {
+const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
   const { cartId, productId, additionalCount, quantity, product } = cartList
   const [productQuantity, setProductQuantity] = useState(quantity)
   const [additionalQuantity, setAdditionalQuantity] = useState(additionalCount)
   const [isSelected, setIsSelected] = useState(false)
-  const [selectedProductId, setSelectedProductId] = useAtom(cartProductState)
+  const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
   const { mutate: updateCartMutate } = useUpdateCart()
   const { mutate: deleteCartItem } = useDeleteCart()
 
   const onClickDeleteCartItem = () => {
-    setSelectedProductId((prev) => prev.filter((selected) => selected.productId !== productId))
+    setSelectedProduct((prev) => prev.filter((selected) => selected.productId !== productId))
     deleteCartItem({ cartId, productId })
   }
 
   const onClickCheckBox = (clickedCartItem: CartReturnType) => {
-    if (!isSelected) setSelectedProductId((prev) => [...prev, clickedCartItem])
+    if (!isSelected) setSelectedProduct((prev) => [...prev, clickedCartItem])
     else
-      setSelectedProductId((prev) =>
+      setSelectedProduct((prev) =>
         prev.filter((prevItem) => prevItem.productId !== clickedCartItem.productId)
       )
   }
@@ -43,19 +39,31 @@ const CartItem = ({
     setIsSelected(isSelectedItem)
   }, [isSelectedItem])
 
-  useEffect(() => {
-    if (additionalQuantity > productQuantity) setAdditionalQuantity(productQuantity)
-  }, [productQuantity, additionalQuantity])
+  // useEffect(() => {
+  //
+  //   const newQuantityProduct = selectedProduct.map((selected) => {
+  //     if (
+  //       selected.quantity !== productQuantity ||
+  //       selected.additionalCount !== additionalQuantity
+  //     ) {
+  //       return { ...selected, quantity: productQuantity, additionalCount: additionalCount }
+  //     } else {
+  //       return selected
+  //     }
+  //   })
+  //   setSelectedProduct(newQuantityProduct)
+  // }, [productQuantity, additionalQuantity])
 
   useEffect(() => {
-    const newSelectedProduct = selectedProductId.map((selected) => {
+    if (additionalQuantity > productQuantity) setAdditionalQuantity(productQuantity)
+    const newSelectedProduct = selectedProduct.map((selected) => {
       if (selected.productId === productId) {
         return { ...selected, quantity: productQuantity, additionalCount: additionalQuantity }
       } else {
         return selected
       }
     })
-    setSelectedProductId(newSelectedProduct)
+    setSelectedProduct(newSelectedProduct)
   }, [productQuantity, additionalQuantity, productId])
   // useEffect(() => {
   //   if (productQuantity === quantity && additionalQuantity === additionalCount) return
@@ -129,6 +137,7 @@ const CartItem = ({
           <div className="flex-col justify-center items-center ">
             <span className="text-sm font-semibold text-main">상품 수량</span>
             <AmountCounter
+              minAmount={1}
               amount={productQuantity}
               setAmount={setProductQuantity}
               limit={product.limitQuantity}
@@ -138,6 +147,7 @@ const CartItem = ({
           <div className="flex-col justify-center items-center">
             <span className="text-sm font-semibold text-main">추가 상품 수량</span>
             <AmountCounter
+              minAmount={0}
               amount={additionalQuantity}
               setAmount={setAdditionalQuantity}
               limit={productQuantity}

@@ -3,22 +3,22 @@ import useToast from './hooks/useToast'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 interface PropsType {
   amount: number
+  minAmount: number
   setAmount: Dispatch<SetStateAction<number>>
   limit: number
   size?: string
 }
 
-const AmountCounter = ({ amount, setAmount, limit, size }: PropsType) => {
+const AmountCounter = ({ amount, minAmount, setAmount, limit, size }: PropsType) => {
   const { fireToast } = useToast()
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
-
-    if (Number(value) <= 1) {
+    if (Number(value) <= minAmount) {
       fireToast({
         id: '최소 수량 미만',
         position: 'bottom',
         timer: 1000,
-        message: '최소 주문 수량은 1개입니다.',
+        message: `최소 주문 수량은 ${minAmount}개입니다.`,
         type: 'failed',
       })
     }
@@ -50,21 +50,21 @@ const AmountCounter = ({ amount, setAmount, limit, size }: PropsType) => {
   }
 
   const onClickMinus = () => {
-    if (amount <= 1) return
+    if (amount <= minAmount) return
     setAmount((amount) => amount - 1)
   }
 
   const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
-    if (Number(value) === 0) {
+    if (Number(value) === minAmount) {
       fireToast({
         id: '최소 수량 미만',
         position: 'bottom',
         timer: 1000,
-        message: '최소 주문 수량은 1개입니다.',
+        message: `최소 주문 수량은 ${minAmount}개입니다.`,
         type: 'failed',
       })
-      setAmount(1)
+      setAmount(minAmount)
     }
   }
   return (
@@ -73,7 +73,9 @@ const AmountCounter = ({ amount, setAmount, limit, size }: PropsType) => {
         className={`${
           size === 'md' ? 'w-[26px] h-[26px]' : 'w-[34px] h-[34px]'
         }  border rounded-md flex justify-center items-center  ${
-          amount === 1 ? 'cursor-not-allowed' : 'cursor-pointer hover:text-[white] hover:bg-main'
+          amount === minAmount
+            ? 'cursor-not-allowed'
+            : 'cursor-pointer hover:text-[white] hover:bg-main'
         }`}
         onClick={onClickMinus}
       >
