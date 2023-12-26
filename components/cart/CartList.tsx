@@ -13,7 +13,6 @@ import { useDeleteAllCart } from './hooks/useCart'
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
-  console.log(selectedProduct)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
@@ -24,6 +23,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   }
 
   const onClickPurchaseSelectedItemBtn = () => {
+    if (selectedProduct.length === 0) return
     router.push('/order')
   }
   const onClickPurchaseAllBtn = () => {
@@ -33,25 +33,46 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
   // selectedProductId 변경 시 마다 가격 계산
   useEffect(() => {
-    const selectedProductPrices = selectedProduct.map(
-      (selected) => (selected.product.price * selected.quantity) + (selected.additionalCount * 5000)
+    // const selectedProductPrices = selectedProduct.map((selected) => {
+    //   if (selected && selected.product.discount)
+    //     return (
+    //       selected.product.price
+    //     )
+    //   else return selected.product.price * selected.quantity + selected.additionalCount * 5000
+    // })
+
+    setTotalPrice(
+      selectedProduct
+        .map((selected) => {
+          if (selected.product.discount)
+            return (
+              calculatePrice(selected.product.price, selected.product.discount) *
+                selected.quantity +
+              selected.additionalCount * 5000
+            )
+          else return selected.product.price * selected.quantity + selected.additionalCount * 5000
+        })
+        .reduce((acc, cur) => acc + cur, 0)
     )
-    setTotalPrice(selectedProductPrices.reduce((acc, cur) => acc + cur, 0))
+    if (selectedProduct.length === 0) setIsAllItemSelected(false)
+    else if (selectedProduct.length === cartLists.length) setIsAllItemSelected(true)
   }, [selectedProduct])
 
   // 첫 렌더링 때 모든 아이템 체크 된 상태 만들기
   useEffect(() => {
-    setSelectedProduct(
-      cartLists.map((item) => ({
-        ...item,
-        product: {
-          ...item.product,
-          price: item.product.discount
-            ? calculatePrice(item.product.price, item.product.discount)
-            : item.product.price,
-        },
-      }))
-    )
+    // 모든 아이템의 할인을 책정한 가격 표출
+    const productPrices = cartLists.map((selected) => {
+      if (selected.product.discount)
+        return (
+          calculatePrice(selected.product.price, selected.product.discount) * selected.quantity +
+          selected.additionalCount * 5000
+        )
+      else return selected.product.price * selected.quantity + selected.additionalCount * 5000
+    })
+    setTotalPrice(productPrices.reduce((acc, cur) => acc + cur, 0))
+
+    //
+    setSelectedProduct(cartLists)
   }, [])
 
   return (
@@ -93,7 +114,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
               <CartItem
                 cartList={cartList}
                 key={cartList.productId}
-                isSelectedItem={isAllItemSelected}
+                isAllItemSelected={isAllItemSelected}
               />
             ))}
         </div>
@@ -112,13 +133,14 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">배송비</div>
               <div className="font-bold text-main">
-                3,000<span className="text-[black] ml-2">원</span>
+                {selectedProduct.length ? '3,000' : 0}
+                <span className="text-[black] ml-2">원</span>
               </div>
             </div>
             <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">결제 예상 금액</div>
               <div className="font-bold text-main">
-                {(totalPrice + 3000).toLocaleString()}
+                {selectedProduct.length ? (totalPrice + 3000).toLocaleString() : 0}
                 <span className="text-[black] ml-2">원</span>
               </div>
             </div>

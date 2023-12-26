@@ -10,10 +10,10 @@ import { useDeleteCart, useUpdateCart } from './hooks/useCart'
 
 interface PropsType {
   cartList: CartReturnType
-  isSelectedItem: boolean
+  isAllItemSelected: boolean
 }
 
-const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
+const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
   const { cartId, productId, additionalCount, quantity, product } = cartList
   const [productQuantity, setProductQuantity] = useState(quantity)
   const [additionalQuantity, setAdditionalQuantity] = useState(additionalCount)
@@ -36,23 +36,22 @@ const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
   }
 
   useEffect(() => {
-    setIsSelected(isSelectedItem)
-  }, [isSelectedItem])
+    setIsSelected(isAllItemSelected)
+  }, [isAllItemSelected])
 
-  // useEffect(() => {
-  //
-  //   const newQuantityProduct = selectedProduct.map((selected) => {
-  //     if (
-  //       selected.quantity !== productQuantity ||
-  //       selected.additionalCount !== additionalQuantity
-  //     ) {
-  //       return { ...selected, quantity: productQuantity, additionalCount: additionalCount }
-  //     } else {
-  //       return selected
-  //     }
-  //   })
-  //   setSelectedProduct(newQuantityProduct)
-  // }, [productQuantity, additionalQuantity])
+  useEffect(() => {
+    const newQuantityProduct = selectedProduct.map((selected) => {
+      if (
+        selected.quantity !== productQuantity ||
+        selected.additionalCount !== additionalQuantity
+      ) {
+        return { ...selected, quantity: productQuantity, additionalCount: additionalCount }
+      } else {
+        return selected
+      }
+    })
+    setSelectedProduct(newQuantityProduct)
+  }, [productQuantity, additionalQuantity])
 
   useEffect(() => {
     if (additionalQuantity > productQuantity) setAdditionalQuantity(productQuantity)
@@ -65,26 +64,26 @@ const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
     })
     setSelectedProduct(newSelectedProduct)
   }, [productQuantity, additionalQuantity, productId])
-  // useEffect(() => {
-  //   if (productQuantity === quantity && additionalQuantity === additionalCount) return
-  //   const timer = setTimeout(() => {
-  //     updateCartMutate({
-  //       cartId,
-  //       quantity: productQuantity,
-  //       additionalCount: additionalQuantity,
-  //       productId,
-  //     })
-  //   }, 2000)
-  //   return () => clearTimeout(timer)
-  // }, [
-  //   productQuantity,
-  //   additionalQuantity,
-  //   additionalCount,
-  //   cartId,
-  //   productId,
-  //   quantity,
-  //   updateCartMutate,
-  // ])
+  useEffect(() => {
+    if (productQuantity === quantity && additionalQuantity === additionalCount) return
+    const timer = setTimeout(() => {
+      updateCartMutate({
+        cartId,
+        quantity: productQuantity,
+        additionalCount: additionalQuantity,
+        productId,
+      })
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [
+    productQuantity,
+    additionalQuantity,
+    additionalCount,
+    cartId,
+    productId,
+    quantity,
+    updateCartMutate,
+  ])
 
   return (
     <div className="w-full xs:w-[300px] shadow-basic rounded-md flex gap-4 my-4 p-4">
@@ -134,7 +133,7 @@ const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
         )}
 
         <div className="flex items-center gap-x-4 grow mt-[10px]">
-          <div className="flex-col justify-center items-center ">
+          <div className="flex flex-col justify-center items-center ">
             <span className="text-sm font-semibold text-main">상품 수량</span>
             <AmountCounter
               minAmount={1}
@@ -144,7 +143,7 @@ const CartItem = ({ cartList, isSelectedItem }: PropsType) => {
               size="md"
             />
           </div>
-          <div className="flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center">
             <span className="text-sm font-semibold text-main">추가 상품 수량</span>
             <AmountCounter
               minAmount={0}
