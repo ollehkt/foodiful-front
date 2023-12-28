@@ -5,10 +5,11 @@ import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
 import { Button } from '../common/Button'
 import TitleAndLine from '../common/TitleAndLine'
-import { calculatePrice } from '../lib/calculatePrice'
+
 import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
 import { useDeleteAllCart } from './hooks/useCart'
+import { useGetPrice } from './hooks/useGetPrice'
 
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
@@ -16,6 +17,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
+  const { getDiscountPrice, getTotalPrice } = useGetPrice()
 
   const onClickDeleteAll = () => {
     setSelectedProduct([])
@@ -41,19 +43,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
     //   else return selected.product.price * selected.quantity + selected.additionalCount * 5000
     // })
 
-    setTotalPrice(
-      selectedProduct
-        .map((selected) => {
-          if (selected.product.discount)
-            return (
-              calculatePrice(selected.product.price, selected.product.discount) *
-                selected.quantity +
-              selected.additionalCount * 5000
-            )
-          else return selected.product.price * selected.quantity + selected.additionalCount * 5000
-        })
-        .reduce((acc, cur) => acc + cur, 0)
-    )
+    setTotalPrice(getTotalPrice(selectedProduct))
     if (selectedProduct.length === 0) setIsAllItemSelected(false)
     else if (selectedProduct.length === cartLists.length) setIsAllItemSelected(true)
   }, [selectedProduct])
@@ -64,7 +54,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
     const productPrices = cartLists.map((selected) => {
       if (selected.product.discount)
         return (
-          calculatePrice(selected.product.price, selected.product.discount) * selected.quantity +
+          getDiscountPrice(selected.product.price, selected.product.discount) * selected.quantity +
           selected.additionalCount * 5000
         )
       else return selected.product.price * selected.quantity + selected.additionalCount * 5000

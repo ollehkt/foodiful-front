@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { ProductReturnType } from './types/productTypes'
 import FavoriteIcon from '../common/FavoriteIcon'
-import { calculatePrice } from '../lib/calculatePrice'
+import { useGetPrice } from '../cart/hooks/useGetPrice'
 
 interface PropsType {
   product: ProductReturnType
@@ -14,6 +14,7 @@ interface PropsType {
 const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
   const { name, id, descImg, price, isLiked, discount } = product
   const router = useRouter()
+  const { getDiscountPrice } = useGetPrice()
   const onClickItem = (id: number) => {
     router.push(`/product/${id}`)
   }
@@ -41,7 +42,7 @@ const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
         {/**
          * TODO: 할인율 있을 때는 할인 가격 작대기 긋고 옆에 가격
          */}
-        {discount ? calculatePrice(price, discount) : price}원
+        {discount ? getDiscountPrice(price, discount) : price}원
       </p>
     </div>
   )

@@ -10,7 +10,7 @@ import { Button } from '../common/Button'
 import { useAddCart } from '../cart/hooks/useCart'
 import { cartProductState } from '../../store/cartProductState'
 import useToast from '../common/hooks/useToast'
-import { calculatePrice } from '../lib/calculatePrice'
+import { useGetPrice } from '../cart/hooks/useGetPrice'
 
 interface PropsType {
   product: ProductReturnType
@@ -27,12 +27,13 @@ const ProductDetail = ({
     product
   const [productQuantities, setProductQuantities] = useState<number>(1)
   const [additionalSelect, setadditionalSelect] = useState('')
-  const [additionalQuantities, setAdditionalQuantities] = useState(1)
+  const [additionalQuantities, setAdditionalQuantities] = useState(0)
   const [displayPrice, setDisplayPrice] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
   const cartProductLists = useAtomValue(cartProductState)
+  const { getDiscountPrice } = useGetPrice()
 
   const { fireToast } = useToast()
 
@@ -49,7 +50,11 @@ const ProductDetail = ({
       })
       return
     }
-    addCart({ productId, quantity, additionalCount })
+    addCart({
+      productId,
+      quantity,
+      additionalCount: additionalSelect !== '선택 안함' ? additionalCount : 0,
+    })
   }
 
   const onClickPurchase = () => {}
@@ -59,11 +64,14 @@ const ProductDetail = ({
   }, [additionalSelect, productQuantities, price])
 
   useEffect(() => {
-    setTotalPrice(additionalSelect ? additionalQuantities * 5000 + displayPrice : displayPrice)
+    setTotalPrice(
+      additionalSelect !== '선택 안함' ? additionalQuantities * 5000 + displayPrice : displayPrice
+    )
+    if (additionalSelect === '선택 안함') setAdditionalQuantities(0)
   }, [displayPrice, additionalQuantities, additionalSelect])
 
   useEffect(() => {
-    setDisplayPrice(discount ? calculatePrice(price, discount) : price)
+    setDisplayPrice(discount ? getDiscountPrice(price, discount) : price)
   }, [])
 
   return (
@@ -117,7 +125,7 @@ const ProductDetail = ({
                   {price.toLocaleString()}원
                 </div>
                 <div className="text-2xl text-main font-bold">
-                  {calculatePrice(price, discount).toLocaleString()}원
+                  {getDiscountPrice(price, discount).toLocaleString()}원
                 </div>
               </>
             ) : (
@@ -161,6 +169,7 @@ const ProductDetail = ({
                 <span className="text-lg font-bold">수량 선택하기</span>
                 <AmountCounter
                   amount={productQuantities}
+                  minAmount={1}
                   setAmount={setProductQuantities}
                   limit={limitQuantity}
                 />
@@ -174,6 +183,7 @@ const ProductDetail = ({
                     <span className="text-base font-bold">추가 상품</span>
                     <AmountCounter
                       amount={additionalQuantities}
+                      minAmount={0}
                       setAmount={setAdditionalQuantities}
                       limit={productQuantities}
                     />

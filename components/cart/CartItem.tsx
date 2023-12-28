@@ -1,12 +1,13 @@
 import { useAtom } from 'jotai'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
 import AmountCounter from '../common/AmountCounter'
 import { Button } from '../common/Button'
-import { calculatePrice } from '../lib/calculatePrice'
+
 import { CartReturnType } from './cartTypes'
 import { useDeleteCart, useUpdateCart } from './hooks/useCart'
+import { useGetPrice } from './hooks/useGetPrice'
 
 interface PropsType {
   cartList: CartReturnType
@@ -21,6 +22,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
   const { mutate: updateCartMutate } = useUpdateCart()
   const { mutate: deleteCartItem } = useDeleteCart()
+  const { getDiscountPrice } = useGetPrice()
 
   const onClickDeleteCartItem = () => {
     setSelectedProduct((prev) => prev.filter((selected) => selected.productId !== productId))
@@ -126,7 +128,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
             <span className="text-textDisabled line-through">
               {product.price.toLocaleString()}원
             </span>
-            <span>{calculatePrice(product.price, product.discount).toLocaleString()}원</span>
+            <span>{getDiscountPrice(product.price, product.discount).toLocaleString()}원</span>
           </>
         ) : (
           <span> {product.price.toLocaleString()}원</span>

@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import React from 'react'
 import { CartReturnType } from '../../cart/cartTypes'
-import { calculatePrice } from '../../lib/calculatePrice'
+import { useGetPrice } from '../../cart/hooks/useGetPrice'
 
 function OrderItem({ product }: { product: CartReturnType }) {
+  const { getDiscountPrice } = useGetPrice()
   return (
     <div className="flex py-4 border-t-[1px] border-disabled">
       <div className="flex gap-x-8 w-[70%]">
@@ -27,7 +28,7 @@ function OrderItem({ product }: { product: CartReturnType }) {
           </span>
         )}
         <div className="text-main font-bold">
-          {calculatePrice(product.product.price, product.product.discount).toLocaleString()}원
+          {getDiscountPrice(product.product.price, product.product.discount).toLocaleString()}원
         </div>
       </div>
     </div>

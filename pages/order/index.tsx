@@ -1,14 +1,16 @@
 import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { useGetPrice } from '../../components/cart/hooks/useGetPrice'
 import Container from '../../components/common/Container'
 import useToast from '../../components/common/hooks/useToast'
 import StrongTitle from '../../components/common/StrongTitle'
 import TitleAndLine from '../../components/common/TitleAndLine'
+import OrderConfirm from '../../components/order/orderInfo/OrderConfirm'
 import OrdererInfo from '../../components/order/orderInfo/OrderInfo'
 import OrderItem from '../../components/order/orderProduct/OrderItem'
 import OrderProduct from '../../components/order/orderProduct/OrderProduct'
-import { OrderForm } from '../../components/order/types/OrderForm'
+import { OrderFormType } from '../../components/order/types/orderFormTypes'
 import { RequestPayParams, RequestPayResponse } from '../../portone'
 
 import { cartProductState } from '../../store/cartProductState'
@@ -34,7 +36,7 @@ import { cartProductState } from '../../store/cartProductState'
  */
 
 const OrderPage = () => {
-  const [orderForm, setOrderForm] = useState<OrderForm>({
+  const [orderForm, setOrderForm] = useState<OrderFormType>({
     deliverName: '',
     deliverPostalCode: '',
     deliverAddress: '',
@@ -43,65 +45,36 @@ const OrderPage = () => {
     requirement: '',
     totalPrice: 0,
   })
-  const [orderShipForm, setOrderShipForm] = useState({})
+  const { getTotalPrice } = useGetPrice()
+
   const selectedProduct = useAtomValue(cartProductState)
+  console.log(orderForm)
   const router = useRouter()
   const { fireToast } = useToast()
+
   useEffect(() => {
-    if (selectedProduct.length === 0) {
-      fireToast({
-        id: '주문 상품 존재하지 않음',
-        message: ' 주문하실 상품이 존재하지 않습니다.',
-        type: 'warning',
-        timer: 2000,
-        position: 'bottom',
-      })
-      router.push('/cart')
-    }
-  }, [])
-
-  const onClickPayment = () => {
-    if (!window.IMP) return
-    /* 1. 가맹점 식별하기 */
-    const { IMP } = window
-    IMP.init('imp11681327') // 가맹점 식별코드
-
-    /* 2. 결제 데이터 정의하기 */
-    const data: RequestPayParams = {
-      pg: 'html5_inicis.INIBillTst', // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
-      pay_method: 'card', // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-      amount: 1000, // 결제금액
-      name: '아임포트 결제 데이터 분석', // 주문명
-      buyer_name: orderForm.deliverName, // 구매자 이름
-      buyer_tel: orderForm.deliverPhone, // 구매자 전화번호
-      buyer_email: '', // 구매자 이메일
-      buyer_addr: `${orderForm.deliverAddress}${orderForm.deliverSpecificAddress}`, // 구매자 주소
-      buyer_postcode: '06018', // 구매자 우편번호
-    }
-
-    /* 4. 결제 창 호출하기 */
-    IMP.request_pay(data, callback)
-  }
-
-  /* 3. 콜백 함수 정의하기 */
-  function callback(response: RequestPayResponse) {
-    const { success, error_msg } = response
-    console.log(response)
-
-    if (success) {
-      alert('결제 성공')
-    } else {
-      alert(`결제 실패: ${error_msg}`)
-    }
-  }
+    setOrderForm({ ...orderForm, totalPrice: getTotalPrice(selectedProduct) + 3000 })
+  }, [selectedProduct])
+  // useEffect(() => {
+  //   if (selectedProduct.length === 0) {
+  //     fireToast({
+  //       id: '주문 상품 존재하지 않음',
+  //       message: ' 주문하실 상품이 존재하지 않습니다.',
+  //       type: 'warning',
+  //       timer: 2000,
+  //       position: 'bottom',
+  //     })
+  //     router.push('/cart')
+  //   }
+  // }, [])
 
   return (
     <Container style="mt-[40px]">
       <StrongTitle title="주문 / 결제" />
-      <button onClick={onClickPayment}>결재</button>
+      {/* <button onClick={onClickPayment}>결재</button> */}
       <OrderProduct selectedProduct={selectedProduct} />
       <OrdererInfo orderForm={orderForm} setOrderForm={setOrderForm} />
+      <OrderConfirm orderForm={orderForm} />
     </Container>
   )
 }
