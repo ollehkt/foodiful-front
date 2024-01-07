@@ -12,6 +12,8 @@ export const api = axios.create({
 })
 
 api.interceptors.response.use((response) => {
+  // 401일때 유저 로그인 검증하는 로직 작성해야함.
+  // if (response.status === 401)
   return response.data
 })
 

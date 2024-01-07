@@ -34,7 +34,6 @@ export const Input = ({
 }: PropsType) => {
   const [isValid, setIsValid] = useState(false)
   const [isBlur, setIsBlur] = useState(false)
-  const [isFocus, setIsFocus] = useState(false)
 
   useEffect(() => {
     if (minLength && maxLength) {
@@ -58,13 +57,11 @@ export const Input = ({
       <input
         onBlur={() => {
           setIsBlur(true)
-          setIsFocus(false)
         }}
         onFocus={() => {
           setIsBlur(false)
-          setIsFocus(true)
         }}
-        className={`text-lg ${style} ${isFocus ? 'border-main' : 'border-primary'} `}
+        className={`text-lg ${style} `}
         type={type}
         placeholder={placeholder}
         minLength={minLength}

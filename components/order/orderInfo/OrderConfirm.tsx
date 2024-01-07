@@ -1,9 +1,20 @@
 import React from 'react'
 import { RequestPayParams, RequestPayResponse } from '../../../portone'
+import { api } from '../../axios/axiosInstance'
+import { CartReturnType } from '../../cart/cartTypes'
 import { Button } from '../../common/Button'
+import { usePostOrder } from '../hooks/useOrder'
 import { OrderFormType } from '../types/orderFormTypes'
+import { OrderProductTypes } from '../types/orderProductTypes'
 
-function OrderConfirm({ orderForm }: { orderForm: OrderFormType }) {
+interface PropsType {
+  orderForm: OrderFormType
+  orderProduct: OrderProductTypes[]
+}
+
+function OrderConfirm({ orderForm, orderProduct }: PropsType) {
+  console.log(orderForm, orderProduct)
+  const { mutate: postOrder } = usePostOrder()
   const onClickPayment = () => {
     if (!window.IMP) return
     /* 1. 가맹점 식별하기 */
@@ -16,7 +27,10 @@ function OrderConfirm({ orderForm }: { orderForm: OrderFormType }) {
       pay_method: 'card', // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
       amount: orderForm.totalPrice, // 결제금액
-      name: '아임포트 결제 데이터 분석', // 주문명
+      name:
+        orderProduct.length > 1
+          ? `${orderProduct[0].product.name} 외 ${orderProduct.length}`
+          : orderProduct[0].product.name, // 주문명
       buyer_name: orderForm.deliverName, // 구매자 이름
       buyer_tel: orderForm.deliverPhone, // 구매자 전화번호
       buyer_email: '', // 구매자 이메일
@@ -29,12 +43,13 @@ function OrderConfirm({ orderForm }: { orderForm: OrderFormType }) {
   }
 
   /* 3. 콜백 함수 정의하기 */
-  function callback(response: RequestPayResponse) {
+  async function callback(response: RequestPayResponse) {
     const { success, error_msg } = response
     console.log(response)
 
     if (success) {
       alert('결제 성공')
+      await postOrder({ orderForm, orderProduct })
       /**
        * TODO: 결제 성공 시 아래 데이터를 기반으로 db 저장
        * apply_num

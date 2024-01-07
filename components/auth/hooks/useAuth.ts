@@ -33,7 +33,6 @@ export const useAuth = (): UseAuth => {
         })
       }
     } catch (error) {
-      console.log(error)
       if (axios.isAxiosError(error)) {
         fireToast({
           id: '로그인',

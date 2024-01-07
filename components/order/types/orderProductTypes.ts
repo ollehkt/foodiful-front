@@ -1,7 +1,7 @@
+import { ProductReturnType } from '../../product/types/productTypes'
+
 export interface OrderProductTypes {
-  id: number
-  orderId: number
-  productId: number
-  orderCount: number
-  orderPrice: number
+  product: ProductReturnType
+  quantity: number
+  additionalCount: number
 }

@@ -7,7 +7,7 @@ function OrderItem({ product }: { product: CartReturnType }) {
   const { getDiscountPrice } = useGetPrice()
   return (
     <div className="flex py-4 border-t-[1px] border-disabled">
-      <div className="flex gap-x-8 w-[70%]">
+      <div className="flex gap-x-8 w-[65%] md:w-[68%]">
         <Image
           src={product.product.descImg[0]}
           alt="상품 이미지"
@@ -21,7 +21,7 @@ function OrderItem({ product }: { product: CartReturnType }) {
         </div>
       </div>
       <div className="grow-[2]">{product.quantity}</div>
-      <div className="flex gap-2">
+      <div className="md:flex gap-2">
         {!!product.product.discount && (
           <span className="line-through text-textDisabled">
             {product.product.price.toLocaleString()}원

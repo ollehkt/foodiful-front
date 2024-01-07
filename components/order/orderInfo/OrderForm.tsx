@@ -56,6 +56,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
       },
     }).open()
   }
+  console.log(orderForm)
 
   /**
    * user 불러와서 이름, 전화번호 채워놓기

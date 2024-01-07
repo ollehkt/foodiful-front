@@ -10,7 +10,7 @@ function OrderProduct({ selectedProduct }: { selectedProduct: CartReturnType[] }
       <div className="">
         <div className="flex justify-between items-center my-[20px] px-2">
           <div className="grow-[5] text-textDisabled">상품명</div>
-          <div className="grow-[2] text-textDisabled">수량</div>
+          <div className="grow-[1.5] text-textDisabled">수량</div>
           <div className="text-textDisabled">판매가</div>
         </div>
         {selectedProduct.length > 0 &&

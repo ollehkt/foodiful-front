@@ -5,15 +5,19 @@ import { useGetPrice } from '../../components/cart/hooks/useGetPrice'
 import Container from '../../components/common/Container'
 import useToast from '../../components/common/hooks/useToast'
 import StrongTitle from '../../components/common/StrongTitle'
-import TitleAndLine from '../../components/common/TitleAndLine'
+
 import OrderConfirm from '../../components/order/orderInfo/OrderConfirm'
 import OrdererInfo from '../../components/order/orderInfo/OrderInfo'
-import OrderItem from '../../components/order/orderProduct/OrderItem'
+
 import OrderProduct from '../../components/order/orderProduct/OrderProduct'
 import { OrderFormType } from '../../components/order/types/orderFormTypes'
-import { RequestPayParams, RequestPayResponse } from '../../portone'
+import { OrderProductTypes } from '../../components/order/types/orderProductTypes'
 
 import { cartProductState } from '../../store/cartProductState'
+
+interface OrderProductType {
+  [key: string]: any
+}
 
 /**
  * OrderProduct 테이블에는 각 상품에 대한 정보
@@ -45,16 +49,26 @@ const OrderPage = () => {
     requirement: '',
     totalPrice: 0,
   })
+
+  const [orderProduct, setOrderProduct] = useState<OrderProductTypes[]>([])
   const { getTotalPrice } = useGetPrice()
 
   const selectedProduct = useAtomValue(cartProductState)
-  console.log(orderForm)
+
   const router = useRouter()
   const { fireToast } = useToast()
 
   useEffect(() => {
     setOrderForm({ ...orderForm, totalPrice: getTotalPrice(selectedProduct) + 3000 })
+    setOrderProduct(
+      selectedProduct.map((select) => ({
+        product: select.product,
+        quantity: select.quantity,
+        additionalCount: select.additionalCount,
+      }))
+    )
   }, [selectedProduct])
+
   // useEffect(() => {
   //   if (selectedProduct.length === 0) {
   //     fireToast({
@@ -74,7 +88,7 @@ const OrderPage = () => {
       {/* <button onClick={onClickPayment}>결재</button> */}
       <OrderProduct selectedProduct={selectedProduct} />
       <OrdererInfo orderForm={orderForm} setOrderForm={setOrderForm} />
-      <OrderConfirm orderForm={orderForm} />
+      <OrderConfirm orderForm={orderForm} orderProduct={orderProduct} />
     </Container>
   )
 }
