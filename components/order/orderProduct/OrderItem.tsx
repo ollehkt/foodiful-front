@@ -4,7 +4,7 @@ import { CartReturnType } from '../../cart/cartTypes'
 import { useGetPrice } from '../../cart/hooks/useGetPrice'
 
 function OrderItem({ product }: { product: CartReturnType }) {
-  const { getDiscountPrice } = useGetPrice()
+  const { getDiscountedPrice } = useGetPrice()
   return (
     <div className="flex py-4 border-t-[1px] border-disabled">
       <div className="flex gap-x-8 w-[65%] md:w-[68%]">
@@ -28,7 +28,7 @@ function OrderItem({ product }: { product: CartReturnType }) {
           </span>
         )}
         <div className="text-main font-bold">
-          {getDiscountPrice(product.product.price, product.product.discount).toLocaleString()}원
+          {getDiscountedPrice(product.product.price, product.product.discount).toLocaleString()}원
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
   const { mutate: updateCartMutate } = useUpdateCart()
   const { mutate: deleteCartItem } = useDeleteCart()
-  const { getDiscountPrice } = useGetPrice()
+  const { getDiscountedPrice } = useGetPrice()
 
   const onClickDeleteCartItem = () => {
     setSelectedProduct((prev) => prev.filter((selected) => selected.productId !== productId))
@@ -128,7 +128,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
             <span className="text-textDisabled line-through">
               {product.price.toLocaleString()}원
             </span>
-            <span>{getDiscountPrice(product.price, product.discount).toLocaleString()}원</span>
+            <span>{getDiscountedPrice(product.price, product.discount).toLocaleString()}원</span>
           </>
         ) : (
           <span> {product.price.toLocaleString()}원</span>

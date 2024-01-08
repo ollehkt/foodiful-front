@@ -33,7 +33,7 @@ const ProductDetail = ({
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
   const cartProductLists = useAtomValue(cartProductState)
-  const { getDiscountPrice } = useGetPrice()
+  const { getDiscountedPrice } = useGetPrice()
 
   const { fireToast } = useToast()
 
@@ -71,7 +71,7 @@ const ProductDetail = ({
   }, [displayPrice, additionalQuantities, additionalSelect])
 
   useEffect(() => {
-    setDisplayPrice(discount ? getDiscountPrice(price, discount) : price)
+    setDisplayPrice(discount ? getDiscountedPrice(price, discount) : price)
   }, [])
 
   return (
@@ -125,7 +125,7 @@ const ProductDetail = ({
                   {price.toLocaleString()}원
                 </div>
                 <div className="text-2xl text-main font-bold">
-                  {getDiscountPrice(price, discount).toLocaleString()}원
+                  {getDiscountedPrice(price, discount).toLocaleString()}원
                 </div>
               </>
             ) : (

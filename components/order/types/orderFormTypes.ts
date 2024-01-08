@@ -3,7 +3,12 @@ export interface OrderFormType {
   deliverAddress: string
   deliverSpecificAddress: string
   deliverPhone: string
-  deliverPostalCode: string
+  postalCode: string
   requirement: string
   totalPrice: number
+  quantity: number
+}
+
+export interface OrderPostType extends OrderFormType {
+  id: string
 }

@@ -17,7 +17,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
-  const { getDiscountPrice, getTotalPrice } = useGetPrice()
+  const { getDiscountedPrice, getTotalPrice } = useGetPrice()
 
   const onClickDeleteAll = () => {
     setSelectedProduct([])
@@ -54,7 +54,8 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
     const productPrices = cartLists.map((selected) => {
       if (selected.product.discount)
         return (
-          getDiscountPrice(selected.product.price, selected.product.discount) * selected.quantity +
+          getDiscountedPrice(selected.product.price, selected.product.discount) *
+            selected.quantity +
           selected.additionalCount * 5000
         )
       else return selected.product.price * selected.quantity + selected.additionalCount * 5000

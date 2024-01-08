@@ -1,7 +1,7 @@
 import { CartReturnType } from '../cartTypes'
 
 export const useGetPrice = () => {
-  const getDiscountPrice = (price: number, discount: number) => {
+  const getDiscountedPrice = (price: number, discount: number) => {
     return price - price * (discount / 100)
   }
 
@@ -10,7 +10,7 @@ export const useGetPrice = () => {
       .map((selected) => {
         if (selected.product.discount)
           return (
-            getDiscountPrice(selected.product.price, selected.product.discount) *
+            getDiscountedPrice(selected.product.price, selected.product.discount) *
               selected.quantity +
             selected.additionalCount * 5000
           )
@@ -18,5 +18,5 @@ export const useGetPrice = () => {
       })
       .reduce((acc, cur) => acc + cur, 0)
   }
-  return { getDiscountPrice, getTotalPrice }
+  return { getDiscountedPrice, getTotalPrice }
 }

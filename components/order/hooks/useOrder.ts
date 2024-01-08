@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
-import { OrderFormType } from '../types/orderFormTypes'
+import { OrderPostType } from '../types/orderFormTypes'
 import { OrderProductTypes } from '../types/orderProductTypes'
 
 /**
@@ -24,14 +24,14 @@ const postOrder = ({
   orderForm,
   orderProduct,
 }: {
-  orderForm: OrderFormType
+  orderForm: OrderPostType
   orderProduct: OrderProductTypes[]
 }) => {
   const user = getStoredUser()
   return api.post(
     '/order',
     {
-      ...orderForm,
+      orderForm: { ...orderForm, quantity: orderProduct.length },
       orderProduct,
     },
     {
@@ -49,7 +49,7 @@ export const usePostOrder = () => {
       orderForm,
       orderProduct,
     }: {
-      orderForm: OrderFormType
+      orderForm: OrderPostType
       orderProduct: OrderProductTypes[]
     }) => postOrder({ orderForm, orderProduct }),
     onSuccess: () => {},

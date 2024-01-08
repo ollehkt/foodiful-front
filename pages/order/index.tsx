@@ -42,7 +42,7 @@ interface OrderProductType {
 const OrderPage = () => {
   const [orderForm, setOrderForm] = useState<OrderFormType>({
     deliverName: '',
-    deliverPostalCode: '',
+    postalCode: '',
     deliverAddress: '',
     deliverSpecificAddress: '',
     deliverPhone: '',

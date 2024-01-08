@@ -13,7 +13,6 @@ interface PropsType {
 }
 
 function OrderConfirm({ orderForm, orderProduct }: PropsType) {
-  console.log(orderForm, orderProduct)
   const { mutate: postOrder } = usePostOrder()
   const onClickPayment = () => {
     if (!window.IMP) return
@@ -35,7 +34,7 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
       buyer_tel: orderForm.deliverPhone, // 구매자 전화번호
       buyer_email: '', // 구매자 이메일
       buyer_addr: `${orderForm.deliverAddress}${orderForm.deliverSpecificAddress}`, // 구매자 주소
-      buyer_postcode: orderForm.deliverPostalCode, // 구매자 우편번호
+      buyer_postcode: orderForm.postalCode, // 구매자 우편번호
     }
 
     /* 4. 결제 창 호출하기 */
@@ -43,41 +42,39 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
   }
 
   /* 3. 콜백 함수 정의하기 */
-  async function callback(response: RequestPayResponse) {
+  function callback(response: RequestPayResponse) {
     const { success, error_msg } = response
     console.log(response)
 
     if (success) {
       alert('결제 성공')
-      await postOrder({ orderForm, orderProduct })
+      postOrder({ orderForm: { ...orderForm, id: response.merchant_uid }, orderProduct })
       /**
        * TODO: 결제 성공 시 아래 데이터를 기반으로 db 저장
-       * apply_num
-: 
-"51754876"
-bank_name: null
-buyer_addr: "부산 수영구 광안로 12105-501"
-buyer_email: ""
-buyer_name: "이경택"
-buyer_postcode: "48298"
-buyer_tel: "01016703643"
-card_name: "BC카드"
-card_number: "514876*********7"
-card_quota: 0
-currency: "KRW"
-custom_data: null
-imp_uid: "imp_188073388759"
-merchant_uid: "mid_1703766070866"
-name: "아임포트 결제 데이터 분석"
-paid_amount: 208000
-paid_at: 1703766110
-pay_method: "card"
-pg_provider: "html5_inicis"
-pg_tid: "StdpayCARDINIBillTst20231228212148925358"
-pg_type: "payment"
-receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIBillTst20231228212148925358&noMethod=1"
-status: "paid"
-success: true
+       * apply_num:"51754876"
+          bank_name: null
+          buyer_addr: "부산 수영구 광안로 12105-501"
+          buyer_email: ""
+          buyer_name: "이경택"
+          buyer_postcode: "48298"
+          buyer_tel: "01016703643"
+          card_name: "BC카드"
+          card_number: "514876*********7"
+          card_quota: 0
+          currency: "KRW"
+          custom_data: null
+          imp_uid: "imp_188073388759"
+          merchant_uid: "mid_1703766070866"
+          name: "아임포트 결제 데이터 분석"
+          paid_amount: 208000
+          paid_at: 1703766110
+          pay_method: "card"
+          pg_provider: "html5_inicis"
+          pg_tid: "StdpayCARDINIBillTst20231228212148925358"
+          pg_type: "payment"
+          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIBillTst20231228212148925358&noMethod=1"
+          status: "paid"
+          success: true
        */
     } else {
       alert(`결제 실패: ${error_msg}`)

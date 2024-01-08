@@ -51,12 +51,11 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
         setOrderForm({
           ...orderForm,
           deliverAddress: data.address,
-          deliverPostalCode: data.zonecode,
+          postalCode: data.zonecode,
         })
       },
     }).open()
   }
-  console.log(orderForm)
 
   /**
    * user 불러와서 이름, 전화번호 채워놓기
@@ -84,7 +83,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           type="text"
           minLength={3}
           maxLength={10}
-          value={orderForm.deliverPostalCode}
+          value={orderForm.postalCode}
           name="deliverPostalCode"
           onChangeInput={onChangeInput}
           placeholder="우편번호를 입력해주세요"
