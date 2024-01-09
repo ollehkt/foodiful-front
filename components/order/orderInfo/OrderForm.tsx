@@ -65,7 +65,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
       <Input
         style="ml-[20px] lg:ml-[120px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
         labelStyle="my-[30px] text-lg"
-        labelName="이름"
+        labelName="이름*"
         type="text"
         minLength={3}
         maxLength={10}
@@ -77,9 +77,9 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
 
       <div className="flex flex-col lg:flex-row justify-center lg:items-center lg:justify-start">
         <Input
-          style="mt-[10px] lg:mt-0 ml-[20px] lg:ml-[120px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
+          style="mt-[10px] lg:mt-0 ml-[12px] lg:ml-[110px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
           labelStyle="my-[20px] text-lg"
-          labelName="주소"
+          labelName="주소*"
           type="text"
           minLength={3}
           maxLength={10}
@@ -124,9 +124,9 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
       </div>
       <div className="flex items-center w-full">
         <Input
-          style="ml-[10px] lg:ml-[100px] w-[30%] lg:w-[15%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
+          style="ml-[10px] lg:ml-[92px] w-[30%] lg:w-[15%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
           labelStyle="my-[30px] text-lg mr-[-60px] lg:mr-[-150px]"
-          labelName="휴대폰"
+          labelName="휴대폰*"
           type="text"
           minLength={3}
           maxLength={10}

@@ -3,7 +3,7 @@ import AmountCounter from '../common/AmountCounter'
 import Select from '../common/Select'
 import SubSlider from '../common/DetailSlider'
 import Image from 'next/image'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReturnType } from './types/productTypes'
 import { Button } from '../common/Button'
@@ -11,6 +11,7 @@ import { useAddCart } from '../cart/hooks/useCart'
 import { cartProductState } from '../../store/cartProductState'
 import useToast from '../common/hooks/useToast'
 import { useGetPrice } from '../cart/hooks/useGetPrice'
+import { orderProductState } from '../../store/orderProductState'
 
 interface PropsType {
   product: ProductReturnType
@@ -33,6 +34,7 @@ const ProductDetail = ({
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
   const cartProductLists = useAtomValue(cartProductState)
+  const setOrderProduct = useSetAtom(orderProductState)
   const { getDiscountedPrice } = useGetPrice()
 
   const { fireToast } = useToast()
@@ -57,7 +59,12 @@ const ProductDetail = ({
     })
   }
 
-  const onClickPurchase = () => {}
+  const onClickPurchase = () => {
+    //
+    setOrderProduct([
+      { product: product, quantity: productQuantities, additionalCount: additionalQuantities },
+    ])
+  }
 
   useEffect(() => {
     if (productQuantities > 0) setDisplayPrice(productQuantities * price)

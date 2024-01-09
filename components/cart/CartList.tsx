@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
+import { orderProductState } from '../../store/orderProductState'
 import { Button } from '../common/Button'
 import TitleAndLine from '../common/TitleAndLine'
 
@@ -14,6 +15,7 @@ import { useGetPrice } from './hooks/useGetPrice'
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
+  const setOrderProduct = useSetAtom(orderProductState)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
@@ -26,10 +28,23 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
   const onClickPurchaseSelectedItemBtn = () => {
     if (selectedProduct.length === 0) return
+    setOrderProduct(
+      selectedProduct.map((select) => ({
+        product: select.product,
+        quantity: select.quantity,
+        additionalCount: select.additionalCount,
+      }))
+    )
     router.push('/order')
   }
   const onClickPurchaseAllBtn = () => {
-    setSelectedProduct(cartLists)
+    setOrderProduct(
+      cartLists.map((select) => ({
+        product: select.product,
+        quantity: select.quantity,
+        additionalCount: select.additionalCount,
+      }))
+    )
     router.push('/order')
   }
 

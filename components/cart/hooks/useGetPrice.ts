@@ -1,3 +1,4 @@
+import { OrderProductTypes } from '../../order/types/orderProductTypes'
 import { CartReturnType } from '../cartTypes'
 
 export const useGetPrice = () => {
@@ -5,7 +6,7 @@ export const useGetPrice = () => {
     return price - price * (discount / 100)
   }
 
-  const getTotalPrice = (selectedProduct: CartReturnType[]) => {
+  const getTotalPrice = (selectedProduct: CartReturnType[] | OrderProductTypes[]) => {
     return selectedProduct
       .map((selected) => {
         if (selected.product.discount)

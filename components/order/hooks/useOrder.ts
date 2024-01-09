@@ -1,4 +1,5 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
@@ -55,4 +56,20 @@ export const usePostOrder = () => {
     onSuccess: () => {},
   })
   return { mutate }
+}
+
+const getOrderByUserId = async () => {
+  const user = getStoredUser()
+
+  const { data } = await api(`/user/order/${user?.id}`)
+  return data
+}
+
+export const useGetOrderByUserId = () => {
+  const { data } = useQuery({
+    queryKey: [queryKeys.order],
+    queryFn: getOrderByUserId,
+    staleTime: 10000,
+  })
+  return { data }
 }
