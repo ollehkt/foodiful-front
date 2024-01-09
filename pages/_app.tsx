@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'jotai'
+import { Provider, useSetAtom } from 'jotai'
 import ToastList from '../components/common/toast/ToastList'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React, { ReactElement, ReactNode, useEffect } from 'react'
@@ -13,6 +13,7 @@ import { getStoredUser, removeStoredUser, setStoreUser } from '../components/uti
 import { useUser } from '../components/auth/hooks/useUser'
 
 import { useRouter } from 'next/router'
+import { getQueryClient } from '../components/util/getQueryClient'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -37,13 +38,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     })()
   }, [])
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  })
+  const queryClient = getQueryClient()
+
   const getLayout =
     Component.getLayout ||
     ((page: React.ReactElement) => (
@@ -57,7 +53,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             </Layout>
           </Provider>
         </Hydrate>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={true} />
       </QueryClientProvider>
     ))
 
