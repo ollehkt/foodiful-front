@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
-import { orderProductState } from '../../store/orderProductState'
+import { postOrderProductState } from '../../store/postOrderProductState'
 import { Button } from '../common/Button'
 import TitleAndLine from '../common/TitleAndLine'
 
@@ -15,7 +15,7 @@ import { useGetPrice } from './hooks/useGetPrice'
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useAtom(cartProductState)
-  const setOrderProduct = useSetAtom(orderProductState)
+  const setOrderProduct = useSetAtom(postOrderProductState)
   const [isAllItemSelected, setIsAllItemSelected] = useState(true)
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()

@@ -1,4 +1,4 @@
-import { OrderProductTypes } from './orderProductTypes'
+import { PostOrderProductTypes } from './postOrderProductTypes'
 
 export interface OrderTypes {
   id: number
@@ -7,7 +7,7 @@ export interface OrderTypes {
   deliverPhone: string
   deliverSpecificAddress: string
   orderDate: string
-  orderProduct: OrderProductTypes[]
+  orderProduct: PostOrderProductTypes[]
   orderStatus: boolean
   quantity: number
   requirement: string

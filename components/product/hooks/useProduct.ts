@@ -2,7 +2,7 @@ import { QueryFunctionContext, useMutation, useQuery, UseQueryResult } from '@ta
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
-import { api, getJWTToken } from '../../axios/axiosInstance'
+import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 
@@ -11,17 +11,15 @@ import { ProductReturnType, ProductType } from '../types/productTypes'
 const addProduct = async (product: ProductType) => {
   const user = getStoredUser()
   if (user) {
-    const res = await api.post(
+    return api.post(
       '/product',
       {
         ...product,
       },
       {
-        headers: getJWTToken(user?.token),
+        headers: { Authorization: `Bearer ${user?.token}` },
       }
     )
-
-    return res
   }
 }
 
@@ -59,7 +57,7 @@ export const updateProductById = async (productId: number, product: ProductType)
     const { data } = await api.patch(
       `/product/${productId}`,
       { ...product },
-      { headers: getJWTToken(user?.token) }
+      { headers: { Authorization: `Bearer ${user?.token}` } }
     )
     return data
   }
@@ -94,11 +92,12 @@ export const useUpdateProductById = () => {
 }
 
 export const getProducts = async (): Promise<ProductReturnType[]> => {
-  const storedUser = getStoredUser()
+  const user = getStoredUser()
 
   const { data } = await api.get(`product/all`, {
-    headers:
-      storedUser && getJWTToken(storedUser?.token) ? getJWTToken(storedUser?.token) : undefined,
+    headers: {
+      Authorization: user ? `Bearer ${user?.token}` : undefined,
+    },
   })
 
   return data

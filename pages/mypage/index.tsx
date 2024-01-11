@@ -12,12 +12,14 @@ import { api } from '../../components/axios/axiosInstance'
 import ProductItem from '../../components/product/ProductItem'
 import Link from 'next/link'
 import { ProductReturnType } from '../../components/product/types/productTypes'
+import { useGetOrderByUserId } from '../../components/order/hooks/useOrder'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>()
   const [myFavoriteProducts, setMyFavoriteProducts] = useState<ProductReturnType[]>([])
   const [myComments, setMyComments] = useState([])
-  const [myPurchasedProducts, setMyPurchasedProducts] = useState([])
+  const { data: myPurchasedProducts } = useGetOrderByUserId()
+  console.log(myPurchasedProducts)
   const [myReservations, setMyReservations] = useState([])
 
   const router = useRouter()
@@ -86,6 +88,7 @@ function MyPage() {
       </div>
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="상품 구매내역" />
+        {/* {myPurchasedProducts && myPurchasedProducts.map} */}
       </div>
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="예약 내역" />

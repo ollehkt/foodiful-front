@@ -16,9 +16,3 @@ api.interceptors.response.use((response) => {
   // if (response.status === 401)
   return response.data
 })
-
-export const getJWTToken = (token: string) => {
-  return {
-    Authorization: `Bearer ${token}`,
-  }
-}

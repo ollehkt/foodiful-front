@@ -50,9 +50,11 @@ export const useUser = (): any => {
               if (error?.response?.status === 401) {
                 removeStoredUser()
                 alert('다시 로그인 해주세요')
+                router.push('/')
               } else if (error?.response?.status === 404) {
                 removeStoredUser()
                 alert('다시 로그인 해주세요')
+                router.push('/')
                 router.reload()
               }
             }

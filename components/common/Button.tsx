@@ -3,10 +3,15 @@ interface PropsType {
   style: string
   size?: string
   disabled?: boolean
-  onClick: () => void
+  onClick?: () => void
+  onClickWithEvent?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export const Button = ({ title, style, size, disabled, onClick }: PropsType) => {
+export const Button = ({ title, style, size, disabled, onClick, onClickWithEvent }: PropsType) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (onClickWithEvent) onClickWithEvent(event)
+    else onClick && onClick()
+  }
   return (
     <button
       disabled={disabled}
@@ -17,7 +22,7 @@ export const Button = ({ title, style, size, disabled, onClick }: PropsType) => 
           ? 'w-[140px] h-[40px]'
           : 'w-[100px] h-[30px]'
       } hover:bg-active hover:text-[white] disabled:bg-disabled disabled:text-textDisabled ${style}`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {title}
     </button>

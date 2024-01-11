@@ -63,7 +63,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
   return (
     <div className="flex flex-col">
       <Input
-        style="ml-[20px] lg:ml-[120px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
+        style="ml-[20px] lg:ml-[110px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
         labelStyle="my-[30px] text-lg"
         labelName="이름*"
         type="text"
@@ -84,7 +84,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           minLength={3}
           maxLength={10}
           value={orderForm.postalCode}
-          name="deliverPostalCode"
+          name="postalCode"
           onChangeInput={onChangeInput}
           placeholder="우편번호를 입력해주세요"
         />

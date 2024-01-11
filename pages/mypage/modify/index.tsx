@@ -5,7 +5,7 @@ import { ModifyUserType, User } from '../../../components/auth/types/user'
 import { useInput } from '../../../components/common/hooks/useInput'
 import useToast from '../../../components/common/hooks/useToast'
 import StrongTitle from '../../../components/common/StrongTitle'
-import UserModifyForm from '../../../components/myPage/UserModifyForm'
+import UserModifyForm from '../../../components/myPage/modify/UserModifyForm'
 
 import { getStoredUser } from '../../../components/util/userStorage'
 import { getMyPageLayout } from '../getMyPageLayout'
@@ -60,9 +60,9 @@ const MyPageModify = () => {
   // useEffect(() => {}, [isPhoneModifyMode, modifyUserState.phone])
 
   return (
-    <div className="grow flex-col items-center rounded-md shadow-basic py-2">
-      <StrongTitle title="내 정보 수정" />
-      <div className="w-[90%] mx-auto mt-[20px]">
+    <div className="grow flex-col items-center">
+      <StrongTitle title="내 정보 수정" style="pb-4 border-b-2 border-main" />
+      <div className="w-[90%] mx-auto mt-[40px]">
         <UserModifyForm
           user={user}
           modifyUserState={modifyUserState}

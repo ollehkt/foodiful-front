@@ -11,7 +11,8 @@ import { useAddCart } from '../cart/hooks/useCart'
 import { cartProductState } from '../../store/cartProductState'
 import useToast from '../common/hooks/useToast'
 import { useGetPrice } from '../cart/hooks/useGetPrice'
-import { orderProductState } from '../../store/orderProductState'
+import { postOrderProductState } from '../../store/postOrderProductState'
+import Router, { useRouter } from 'next/router'
 
 interface PropsType {
   product: ProductReturnType
@@ -34,10 +35,11 @@ const ProductDetail = ({
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
   const cartProductLists = useAtomValue(cartProductState)
-  const setOrderProduct = useSetAtom(orderProductState)
+  const setOrderProduct = useSetAtom(postOrderProductState)
   const { getDiscountedPrice } = useGetPrice()
 
   const { fireToast } = useToast()
+  const router = useRouter()
 
   const { mutate: addCart } = useAddCart()
 
@@ -60,10 +62,10 @@ const ProductDetail = ({
   }
 
   const onClickPurchase = () => {
-    //
     setOrderProduct([
       { product: product, quantity: productQuantities, additionalCount: additionalQuantities },
     ])
+    router.push('/order')
   }
 
   useEffect(() => {
@@ -214,7 +216,7 @@ const ProductDetail = ({
             />
             <Button
               title="구매하기"
-              onClick={() => {}}
+              onClick={onClickPurchase}
               style="border-2 border-main hover:border-[white] w-full"
               size="lg"
             />

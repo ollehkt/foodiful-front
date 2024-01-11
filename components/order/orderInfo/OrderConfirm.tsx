@@ -3,20 +3,34 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { RequestPayParams, RequestPayResponse } from '../../../portone'
 import { Button } from '../../common/Button'
+import useToast from '../../common/hooks/useToast'
 import { usePostOrder } from '../hooks/useOrder'
 import { OrderFormType } from '../types/orderFormTypes'
-import { OrderProductTypes } from '../types/orderProductTypes'
+import { PostOrderProductTypes } from '../types/postOrderProductTypes'
 
 interface PropsType {
   orderForm: OrderFormType
-  orderProduct: OrderProductTypes[]
+  orderProduct: PostOrderProductTypes[]
 }
 
 function OrderConfirm({ orderForm, orderProduct }: PropsType) {
   const { mutate: postOrder } = usePostOrder()
+  const { fireToast } = useToast()
   const router = useRouter()
   const onClickPayment = () => {
     if (!window.IMP) return
+    const { deliverName, deliverAddress, deliverPhone } = orderForm
+    if (!deliverName || !deliverAddress || !deliverPhone) {
+      fireToast({
+        id: '폼 미 입력',
+        type: 'failed',
+        position: 'bottom',
+        timer: 2000,
+        message: '주문/배송 필수 정보를 입력해주세요',
+      })
+      return
+    }
+
     /* 1. 가맹점 식별하기 */
     const { IMP } = window
     IMP.init('imp11681327') // 가맹점 식별코드
@@ -37,9 +51,10 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
       buyer_addr: `${orderForm.deliverAddress}${orderForm.deliverSpecificAddress}`, // 구매자 주소
       buyer_postcode: orderForm.postalCode, // 구매자 우편번호
     }
+    postOrder({ orderForm: { ...orderForm, id: data.merchant_uid }, orderProduct })
     router.push(`/order/confirm?id=${data.merchant_uid}&date=${dayjs().format('YYYY-MM-DD HH:mm')}`)
     /* 4. 결제 창 호출하기 */
-    IMP.request_pay(data, callback)
+    // IMP.request_pay(data, callback)
   }
 
   /* 3. 콜백 함수 정의하기 */
@@ -49,6 +64,7 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
     if (success) {
       alert('결제 성공')
       postOrder({ orderForm: { ...orderForm, id: response.merchant_uid }, orderProduct })
+      // 카트에서 주문한 상품과 id같으면 삭제
       router.push(`/order/confirm?id=${response.merchant_uid}`)
     } else {
       alert(`결제 실패: ${error_msg}`)

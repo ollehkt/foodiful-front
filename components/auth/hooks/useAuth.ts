@@ -80,6 +80,7 @@ export const useAuth = (): UseAuth => {
         message: '로그아웃이 완료되었습니다.',
         timer: 2000,
       })
+      router.push('/')
       router.reload()
     }
   }
