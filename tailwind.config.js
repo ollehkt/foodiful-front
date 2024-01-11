@@ -10,7 +10,7 @@ module.exports = {
       main: '#711b98',
       link: '#000000',
       primary: '#F777FA',
-      hover: '#E851EB',
+      hover: '#D200D7',
       active: '#B33CB6',
       disabled: '#E0DCE0',
       textDisabled: '#605D5D',
