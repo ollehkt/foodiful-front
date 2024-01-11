@@ -3,30 +3,16 @@ import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
+import { GetOrderType } from '../types/getOrderType'
 import { OrderPostType } from '../types/orderFormTypes'
-import { OrderProductTypes } from '../types/orderProductTypes'
-
-/**
-  orderForm
-    deliverAddress:"부산 수영구 광안로 12"
-    deliverName:"전민지"
-    deliverPhone:"01054710182"
-    deliverPostalCode:"48298"
-    deliverSpecificAddress:"105-501"
-    requirement:"잘 부탁드려요~!"
-    totalPrice:208000
-  orderProduct
-    product: {}
-    quantity: 1
-    additionalCount: 1
- */
+import { PostOrderProductTypes } from '../types/postOrderProductTypes'
 
 const postOrder = ({
   orderForm,
   orderProduct,
 }: {
   orderForm: OrderPostType
-  orderProduct: OrderProductTypes[]
+  orderProduct: PostOrderProductTypes[]
 }) => {
   const user = getStoredUser()
   return api.post(
@@ -51,9 +37,18 @@ export const usePostOrder = () => {
       orderProduct,
     }: {
       orderForm: OrderPostType
-      orderProduct: OrderProductTypes[]
+      orderProduct: PostOrderProductTypes[]
     }) => postOrder({ orderForm, orderProduct }),
-    onSuccess: () => {},
+    onSuccess: () => {
+      fireToast({
+        type: 'success',
+        id: '주문 성공',
+        position: 'bottom',
+        timer: 2000,
+        message: '주문 해주셔서 감사합니다.',
+      })
+    },
+    onError: () => {},
   })
   return { mutate }
 }
@@ -61,15 +56,29 @@ export const usePostOrder = () => {
 const getOrderByUserId = async () => {
   const user = getStoredUser()
 
-  const { data } = await api(`/user/order/${user?.id}`)
+  const { data } = await api('/order', {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
   return data
 }
 
-export const useGetOrderByUserId = () => {
-  const { data } = useQuery({
+export const useGetOrderByUserId = (): { data: GetOrderType[] } => {
+  const { fireToast } = useToast()
+  const { data = [], isError } = useQuery({
     queryKey: [queryKeys.order],
     queryFn: getOrderByUserId,
-    staleTime: 10000,
+    onSuccess: () => {},
+    onError: (error) => {
+      fireToast({
+        type: 'failed',
+        id: '주문 목록 조회 실패',
+        position: 'bottom',
+        timer: 2000,
+        message: '주문 목록 조회에 실패했습니다. 다시 시도해주세요.',
+      })
+    },
   })
   return { data }
 }

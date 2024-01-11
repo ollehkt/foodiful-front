@@ -1,6 +1,6 @@
 import { ProductReturnType } from '../../product/types/productTypes'
 
-export interface OrderProductTypes {
+export interface PostOrderProductTypes {
   product: ProductReturnType
   quantity: number
   additionalCount: number
