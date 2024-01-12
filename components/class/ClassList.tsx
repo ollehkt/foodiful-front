@@ -1,6 +1,6 @@
 import React from 'react'
-import { ClassType } from '../../types/classTypes'
 import ClassItem from './ClassItem'
+import { ClassType } from './types/classTypes'
 
 interface PropsType {
   classList: ClassType[]

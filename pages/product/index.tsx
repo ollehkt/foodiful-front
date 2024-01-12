@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router'
 import { Button } from '../../components/common/Button'
-
 import { getStoredUser } from '../../components/util/userStorage'
 import ProductList from '../../components/product/ProductList'
-
 import { api } from '../../components/axios/axiosInstance'
 import { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
@@ -11,8 +9,6 @@ import { User } from '../../components/auth/types/user'
 import { useGetProducts } from '../../components/product/hooks/useProduct'
 import useToast from '../../components/common/hooks/useToast'
 import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query'
-import { queryKeys } from '../../query-keys/queryKeys'
 import { ProductReturnType } from '../../components/product/types/productTypes'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {

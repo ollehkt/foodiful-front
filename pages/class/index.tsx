@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { api } from '../../components/axios/axiosInstance'
 import ClassList from '../../components/class/ClassList'
+import { ClassType } from '../../components/class/types/classTypes'
 import { getStoredUser } from '../../components/util/userStorage'
-import { ClassType } from '../../types/classTypes'
 
 export const getServerSideProps = async (): Promise<{ props: { classes: ClassType[] } }> => {
   const { data: classes } = await api('/class/all')

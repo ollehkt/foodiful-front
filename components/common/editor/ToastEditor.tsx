@@ -6,7 +6,7 @@ import 'tui-color-picker/dist/tui-color-picker.css'
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css'
 import '@toast-ui/editor/dist/i18n/ko-kr'
 import { useGetPresignedUrl } from '../hooks/useGetPresignedUrl'
-import { ProductType } from '../../../types/productTypes'
+import { ProductType } from '../../product/types/productTypes'
 
 type HookCallback = (url: string, text?: string) => void
 

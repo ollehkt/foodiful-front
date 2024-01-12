@@ -7,8 +7,6 @@ export interface CartType {
 }
 
 export interface CartReturnType extends CartType {
-  cartId: number
+  id: number
   product: ProductReturnType
 }
-
-

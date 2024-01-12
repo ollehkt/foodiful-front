@@ -6,7 +6,7 @@ import { api } from '../../../components/axios/axiosInstance'
 import useToast from '../../../components/common/hooks/useToast'
 import { useUpdateProductById } from '../../../components/product/hooks/useProduct'
 import ProductForm from '../../../components/product/ProductForm'
-import { ProductReturnType, ProductType, PromiseProductType } from '../../../types/productTypes'
+import { ProductReturnType } from '../../../components/product/types/productTypes'
 
 interface PropsType {
   product: ProductReturnType

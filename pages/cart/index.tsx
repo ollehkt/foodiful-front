@@ -1,10 +1,7 @@
-import { AxiosResponse } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { api } from '../../components/axios/axiosInstance'
+import { useEffect } from 'react'
 import CartList from '../../components/cart/CartList'
-import { CartReturnType } from '../../components/cart/cartTypes'
 import { useGetCartList } from '../../components/cart/hooks/useCart'
 import Container from '../../components/common/Container'
 import useToast from '../../components/common/hooks/useToast'
@@ -16,6 +13,7 @@ const CartPage = () => {
   const router = useRouter()
 
   const { data: cartLists, isFetching } = useGetCartList()
+  console.log(cartLists)
   useEffect(() => {
     const user = getStoredUser()
     if (!user) {

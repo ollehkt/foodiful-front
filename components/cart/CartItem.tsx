@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
-  const { cartId, productId, additionalCount, quantity, product } = cartList
+  const { id, productId, additionalCount, quantity, product } = cartList
   const [productQuantity, setProductQuantity] = useState(quantity)
   const [additionalQuantity, setAdditionalQuantity] = useState(additionalCount)
   const [isSelected, setIsSelected] = useState(false)
@@ -26,7 +26,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
 
   const onClickDeleteCartItem = () => {
     setSelectedProduct((prev) => prev.filter((selected) => selected.productId !== productId))
-    deleteCartItem({ cartId, productId })
+    deleteCartItem(id)
   }
 
   const onClickCheckBox = (clickedCartItem: CartReturnType) => {
@@ -70,7 +70,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
     if (productQuantity === quantity && additionalQuantity === additionalCount) return
     const timer = setTimeout(() => {
       updateCartMutate({
-        cartId,
+        id,
         quantity: productQuantity,
         additionalCount: additionalQuantity,
         productId,
@@ -81,7 +81,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
     productQuantity,
     additionalQuantity,
     additionalCount,
-    cartId,
+    id,
     productId,
     quantity,
     updateCartMutate,

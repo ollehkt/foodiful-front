@@ -23,7 +23,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
   const onClickDeleteAll = () => {
     setSelectedProduct([])
-    deleteAllCartItems(cartLists[0].cartId)
+    deleteAllCartItems()
   }
 
   const onClickPurchaseSelectedItemBtn = () => {

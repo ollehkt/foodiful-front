@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import React from 'react'
 import { api } from '../../components/axios/axiosInstance'
-import { ClassType } from '../../types/classTypes'
+import { ClassType } from '../../components/class/types/classTypes'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
