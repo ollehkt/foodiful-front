@@ -54,7 +54,7 @@ const Select = <T extends string | number>({
         <ul
           className={`absolute top-20 shadow-basic w-[240px] ${
             options.length < 2 ? 'h-[120px]' : 'h-[180px]'
-          }  bg-[white] rounded-md z-[9999] overflow-y-scroll`}
+          }  bg-white rounded-md z-[9999] overflow-y-scroll`}
         >
           {options.map((option: T, idx) => (
             <li

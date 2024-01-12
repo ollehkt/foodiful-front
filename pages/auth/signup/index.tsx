@@ -159,7 +159,7 @@ function SignUp() {
               {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
             </span>
             <button
-              className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
+              className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
               onClick={() => {
                 checkVerifySms(signUpValue.phone, signUpValue.verify, resetSignUpValue)
                 setTime(-1)

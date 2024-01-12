@@ -1,25 +1,24 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { getStoredUser } from '../../components/util/userStorage'
-import Layout from '../../components/layout/Layout'
-import MyPageLayout from '../../components/layout/MyPageLayout'
 import { getMyPageLayout } from './getMyPageLayout'
-import { useUser } from '../../components/auth/hooks/useUser'
 import StrongTitle from '../../components/common/StrongTitle'
 import { useRouter } from 'next/router'
 import useToast from '../../components/common/hooks/useToast'
-import { api } from '../../components/axios/axiosInstance'
 import ProductItem from '../../components/product/ProductItem'
 import Link from 'next/link'
 import { ProductReturnType } from '../../components/product/types/productTypes'
-import { useGetOrderByUserId } from '../../components/order/hooks/useOrder'
+import { useGetOrder } from '../../components/order/hooks/useOrder'
+import PurchasedTitle from '../../components/purchase/PurchasedTitle'
+import PurchasedOrderItem from '../../components/purchase/PurchasedOrderItem'
+import { Button } from '../../components/common/Button'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>()
   const [myFavoriteProducts, setMyFavoriteProducts] = useState<ProductReturnType[]>([])
   const [myComments, setMyComments] = useState([])
-  const { data: myPurchasedProducts } = useGetOrderByUserId()
-  console.log(myPurchasedProducts)
+  const { data: myPurchasedList } = useGetOrder()
+
   const [myReservations, setMyReservations] = useState([])
 
   const router = useRouter()
@@ -88,7 +87,21 @@ function MyPage() {
       </div>
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="상품 구매내역" />
+        <PurchasedTitle />
+        {myPurchasedList.length &&
+          myPurchasedList
+            .slice(0, 5)
+            .map((purchased) => <PurchasedOrderItem key={purchased.id} order={purchased} />)}
         {/* {myPurchasedProducts && myPurchasedProducts.map} */}
+        <div className="flex justify-content my-2">
+          <Button
+            title="더 보기"
+            onClick={() => {
+              router.push('/mypage/purchased')
+            }}
+            style="mx-auto bg-main text-white"
+          />
+        </div>
       </div>
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="예약 내역" />

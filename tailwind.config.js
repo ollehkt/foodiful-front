@@ -6,16 +6,16 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    colors: {
-      main: '#711b98',
-      link: '#000000',
-      primary: '#F777FA',
-      hover: '#D200D7',
-      active: '#B33CB6',
-      disabled: '#E0DCE0',
-      textDisabled: '#605D5D',
-    },
     extend: {
+      colors: {
+        main: '#711b98',
+        link: '#000000',
+        primary: '#F777FA',
+        hover: '#D200D7',
+        active: '#B33CB6',
+        disabled: '#E0DCE0',
+        textDisabled: '#605D5D',
+      },
       fontFamily: {
         roboto: ['Noto Sans KR', 'Roboto Condensed', 'sans-serif'],
       },

@@ -159,7 +159,7 @@ const CartItem = ({ cartList, isAllItemSelected }: PropsType) => {
       </div>
       <div className="flex items-start gap-2 mr-2">
         <button
-          className="bg-[white] text-textDisabled hover:text-disabled"
+          className="bg-white text-textDisabled hover:text-disabled"
           onClick={onClickDeleteCartItem}
         >
           삭제

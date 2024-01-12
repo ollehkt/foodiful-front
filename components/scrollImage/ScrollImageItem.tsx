@@ -14,7 +14,7 @@ const ScrollImageItem = ({ src, name, categories, price, discount, id }: PropsTy
   return (
     <Link
       href={`/product/${id}`}
-      className="flex-col border-[white] shadow-md rounded-md cursor-pointer overflow-hidden"
+      className="flex-col border-white shadow-md rounded-md cursor-pointer overflow-hidden"
     >
       <div className="my-[10px] h-[250px] relative hover:scale-105">
         <Image

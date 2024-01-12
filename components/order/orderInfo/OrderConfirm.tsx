@@ -87,12 +87,7 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
         </div>
       </div>
 
-      <Button
-        title="결제하기"
-        onClick={onClickPayment}
-        style="my-4 bg-main text-[white]"
-        size="lg"
-      />
+      <Button title="결제하기" onClick={onClickPayment} style="my-4 bg-main text-white" size="lg" />
     </div>
   )
 }

@@ -12,7 +12,7 @@ function AuthPage() {
       </div>
 
       <Link
-        className={`w-[300px] h-[80px] mt-[40px] rounded-md bg-[#b363ec] hover:bg-[#fff] hover:text-[#b363ec] text-[#fff] flex  items-center text-2xl cursor-pointer ${
+        className={`w-[300px] h-[80px] mt-[40px] rounded-md bg-main hover:bg-white hover:text-main text-white flex items-center text-2xl cursor-pointer ${
           viewLoginMoveText ? 'justify-between font-bold' : 'justify-center'
         } `}
         onMouseEnter={() => setViewLoginMoveText(true)}
@@ -28,7 +28,7 @@ function AuthPage() {
       </Link>
 
       <Link
-        className={`w-[300px] h-[80px] mt-[40px] rounded-md bg-[#b363ec] hover:bg-[#fff] hover:text-[#b363ec] text-[#fff] flex  items-center text-2xl cursor-pointer ${
+        className={`w-[300px] h-[80px] mt-[40px] rounded-md bg-main hover:bg-white hover:text-main text-white flex items-center text-2xl cursor-pointer ${
           viewSignupMoveText ? 'justify-between font-bold' : 'justify-center'
         } `}
         onMouseEnter={() => setViewSignupMoveText(true)}

@@ -48,7 +48,7 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
   }, [index, total])
 
   return (
-    <div className={`flex w-[90%] mb-[100px] mx-auto border-[white] rounded-md h-[600px] relative`}>
+    <div className={`flex w-[90%] mb-[100px] mx-auto border-white rounded-md h-[600px] relative`}>
       <Image src={imgs[index]} alt="slider-image" fill />
 
       <button
@@ -56,7 +56,7 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
         className={`flex justify-center items-center absolute top-[45%] left-10 ${
           hoverState.left
             ? 'bg-main scale-125 ease-in duration-120 transition-all'
-            : 'bg-[white] scale-100 ease-in duration-120 transition-all'
+            : 'bg-white scale-100 ease-in duration-120 transition-all'
         } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
         onClick={scrollPrev}
         onMouseEnter={(e) => onMouseEnter(e)}
@@ -69,7 +69,7 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
         className={`flex justify-center items-center absolute top-[45%] right-10 ${
           hoverState.right
             ? 'bg-main scale-125 ease-in duration-120 transition-all'
-            : 'bg-[white] scale-100 ease-in duration-120 transition-all border-[white]'
+            : 'bg-white scale-100 ease-in duration-120 transition-all border-white'
         } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
         onClick={scrollNext}
         onMouseEnter={onMouseEnter}

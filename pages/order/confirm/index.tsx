@@ -30,13 +30,13 @@ function OrderConfirmPage() {
         <div className="flex gap-6 mt-[20px]">
           <Button
             title="주문내역 보기"
-            style="bg-main text-[white]"
+            style="bg-main text-white"
             size="lg"
             onClick={() => router.push('/mypage/purchased')}
           />
           <Button
             title="홈으로 가기"
-            style="bg-textDisabled text-[white] hover:bg-disabled hover:text-[black]"
+            style="bg-textDisabled text-white hover:bg-disabled hover:text-black"
             size="lg"
             onClick={() => router.push('/')}
           />

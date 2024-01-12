@@ -53,7 +53,7 @@ export const usePostOrder = () => {
   return { mutate }
 }
 
-const getOrderByUserId = async () => {
+const getOrder = async () => {
   const user = getStoredUser()
 
   const { data } = await api('/order', {
@@ -64,11 +64,11 @@ const getOrderByUserId = async () => {
   return data
 }
 
-export const useGetOrderByUserId = (): { data: GetOrderType[] } => {
+export const useGetOrder = (): { data: GetOrderType[] } => {
   const { fireToast } = useToast()
   const { data = [], isError } = useQuery({
     queryKey: [queryKeys.order],
-    queryFn: getOrderByUserId,
+    queryFn: getOrder,
     onSuccess: () => {},
     onError: (error) => {
       fireToast({

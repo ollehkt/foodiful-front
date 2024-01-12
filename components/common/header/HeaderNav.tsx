@@ -39,7 +39,7 @@ const HeaderNav = () => {
         >
           <div
             className={`${activeIdx === idx && 'text-main'} ${
-              pathName?.startsWith(url) ? 'text-active' : 'text-[black]'
+              pathName?.startsWith(url) ? 'text-active' : 'text-black'
             }`}
           >
             <Link href={url}>{title}</Link>

@@ -30,7 +30,7 @@ const Header = () => {
   }, [router])
 
   return (
-    <div className={`w-full sticky top-0 z-[999999] bg-[white] shadow-md`}>
+    <div className={`w-full sticky top-0 z-[999999] bg-white shadow-md`}>
       <div className={`w-[90%] h-[100px] mx-auto flex justify-between items-center  `}>
         <div className="cursor-pointer rounded-md overflow-hidden" onClick={onClickLogo}>
           <Image src="/foodiful.jpeg" alt="logo" width={72} height={72} priority />

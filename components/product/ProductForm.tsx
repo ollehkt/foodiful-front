@@ -188,7 +188,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                     <span
                       key={`${title}-${index}`}
                       className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer ${
-                        isClicked ? 'bg-main text-[white]' : ''
+                        isClicked ? 'bg-main text-white' : ''
                       }`}
                       onClick={() => onSelectCategory(title)}
                     >
@@ -207,14 +207,14 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                   <span
                     onClick={() => setDeliverState(true)}
                     className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
-                         ${deliverState ? 'bg-main text-[white]' : ''}`}
+                         ${deliverState ? 'bg-main text-white' : ''}`}
                   >
                     배달 가능
                   </span>
                   <span
                     onClick={() => setDeliverState(false)}
                     className={`mx-2 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
-                    ${!deliverState ? 'bg-main text-[white]' : ''}`}
+                    ${!deliverState ? 'bg-main text-white' : ''}`}
                   >
                     배달 불가능
                   </span>
@@ -258,7 +258,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                           className="mx-4 rounded-md"
                         />
                         <span
-                          className="cursor-pointer text-main hover:text-[white]"
+                          className="cursor-pointer text-main hover:text-white"
                           onClick={() => onClickDeleteFile(img)}
                         >
                           <AiFillCloseCircle />

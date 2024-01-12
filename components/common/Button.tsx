@@ -21,7 +21,7 @@ export const Button = ({ title, style, size, disabled, onClick, onClickWithEvent
           : size == 'md'
           ? 'w-[140px] h-[40px]'
           : 'w-[100px] h-[30px]'
-      } hover:bg-active hover:text-[white] disabled:bg-disabled disabled:text-textDisabled ${style}`}
+      } hover:bg-active hover:text-white disabled:bg-disabled disabled:text-textDisabled ${style}`}
       onClick={handleClick}
     >
       {title}

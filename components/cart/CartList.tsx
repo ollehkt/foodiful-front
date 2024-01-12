@@ -133,21 +133,21 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
               <div className="font-bold text-main">
                 {totalPrice.toLocaleString()}
-                <span className="text-[black] ml-2">원</span>
+                <span className="text-black ml-2">원</span>
               </div>
             </div>
             <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">배송비</div>
               <div className="font-bold text-main">
                 {selectedProduct.length ? '3,000' : 0}
-                <span className="text-[black] ml-2">원</span>
+                <span className="text-black ml-2">원</span>
               </div>
             </div>
             <div className="flex items-center justify-between mt-[20px]">
               <div className="font-bold">결제 예상 금액</div>
               <div className="font-bold text-main">
                 {selectedProduct.length ? (totalPrice + 3000).toLocaleString() : 0}
-                <span className="text-[black] ml-2">원</span>
+                <span className="text-black ml-2">원</span>
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             <Button
               title={`선택 상품 구매`}
               onClick={onClickPurchaseSelectedItemBtn}
-              style="disabled:border-none border-[1px] border-main hover:bg-main hover:text-[white]"
+              style="disabled:border-none border-[1px] border-main hover:bg-main hover:text-white"
               size="md"
               disabled={selectedProduct.length < 1}
             />
@@ -163,7 +163,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             <Button
               title="전체 상품 구매"
               onClick={onClickPurchaseAllBtn}
-              style="bg-main border-[1px] border-main text-[white] hover:bg-active  hover:text-[white] hover:border-active"
+              style="bg-main border-[1px] border-main text-white hover:bg-active  hover:text-white hover:border-active"
               size="md"
             />
           </div>

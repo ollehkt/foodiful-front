@@ -126,10 +126,10 @@ const UserModifyForm = ({
   }, [time])
 
   return (
-    <div className="flex-col items-start">
+    <div className="flex flex-col items-start">
       <Input
         style="ml-[70px] w-[300px] outline-none py-[4px] pl-[8px]"
-        labelStyle="my-[30px] text-xl"
+        labelStyle="my-[30px] text-lg"
         labelName="이메일"
         type="text"
         minLength={3}
@@ -142,8 +142,10 @@ const UserModifyForm = ({
       />
       <div className="flex items-center">
         <Input
-          style="ml-[90px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
-          labelStyle="my-[30px] relative text-xl"
+          style={`ml-[90px] w-[300px] outline-none py-[4px] pl-[8px] ${
+            isNameModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+          }`}
+          labelStyle="my-[30px] relative text-lg"
           labelName="이름"
           type="text"
           minLength={3}
@@ -187,8 +189,10 @@ const UserModifyForm = ({
       <>
         <div className="relative">
           <Input
-            style="ml-[76px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-b-2"
-            labelStyle="my-[30px] relative text-xl"
+            style={`ml-[76px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] ${
+              isPhoneModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+            }`}
+            labelStyle="my-[30px] relative text-lg"
             labelName="휴대폰"
             type="tel"
             isDisabled={isPhoneInputDisabled || !isPhoneModifyMode}
@@ -227,6 +231,7 @@ const UserModifyForm = ({
                   setIsPhoneModifyMode(false)
                   setModifyUserState({ ...modifyUserState, phone: user.phone })
                   setTime(-1)
+                  setPhoneCheckErrorMsg('')
                 }}
               />
             </>
@@ -243,8 +248,10 @@ const UserModifyForm = ({
           <>
             <div className="flex items-center mt-[20px] ml-[0px]">
               <Input
-                style="mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-b-2"
-                labelStyle=" mb-[10px] relative text-xl"
+                style={`mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] ${
+                  isClickedVerifyPhone ? 'border-b-2' : 'border-b-2 border-b-white'
+                }`}
+                labelStyle="mb-[10px] relative text-lg"
                 type="tel"
                 minLength={3}
                 maxLength={10}
@@ -257,7 +264,7 @@ const UserModifyForm = ({
                 {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
               </span>
               <button
-                className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-[white] hover:text-[white] hover:bg-main"
+                className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
                 onClick={() => {
                   if (!modifyUserState.verify) {
                     fireToast({
@@ -290,10 +297,12 @@ const UserModifyForm = ({
       </>
 
       {isPasswordModifyMode ? (
-        <div className="relative flex-col">
+        <div className="relative flex flex-col">
           <Input
-            style="ml-[60px] w-[300px] outline-none py-[4px] pl-[4px] border-b-2"
-            labelStyle="my-[20px] relative text-xl"
+            style={`ml-[64px] w-[300px] outline-none py-[4px] pl-[4px] ${
+              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+            }`}
+            labelStyle="my-[20px] relative text-lg"
             labelName="패스워드"
             type="password"
             minLength={3}
@@ -306,8 +315,10 @@ const UserModifyForm = ({
             validate={passwordValidate}
           />
           <Input
-            style="ml-[38px] w-[300px] outline-none py-[4px] pl-[4px] border-b-2"
-            labelStyle="my-[10px] relative text-xl"
+            style={`ml-[42px] w-[300px] outline-none py-[4px] pl-[4px] ${
+              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+            }`}
+            labelStyle="my-[10px] relative text-lg"
             labelName="새 패스워드"
             type="password"
             minLength={3}
@@ -315,13 +326,15 @@ const UserModifyForm = ({
             value={modifyUserState.changePassword || ''}
             name="changePassword"
             onChangeInput={onChangeInput}
-            placeholder="변경하려면 새로운 패스워드를 입력하세요"
+            placeholder="새로운 패스워드를 입력하세요"
             errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
             validate={passwordValidate}
           />
           <Input
-            style="ml-[24px] w-[300px] outline-none py-[4px] pl-[4px] border-b-2"
-            labelStyle="my-[20px] relative text-xl"
+            style={`ml-[24px] w-[300px] outline-none py-[4px] pl-[4px] ${
+              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+            }`}
+            labelStyle="my-[20px] relative text-lg"
             labelName="패스워드 확인"
             type="password"
             minLength={3}
@@ -333,10 +346,17 @@ const UserModifyForm = ({
             errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
             validate={passwordValidate}
           />
-          <div className="w-full absolute bottom-4 right-[-52px] flex justify-end">
+          <div className="absolute bottom-4 right-[-52px] flex justify-end">
             <Button
               title="취소"
-              onClick={() => setIsPasswordModifyMode(false)}
+              onClick={() => {
+                setIsPasswordModifyMode(false)
+                setModifyUserState({
+                  ...modifyUserState,
+                  changePassword: '',
+                  confirmChangePassword: '',
+                })
+              }}
               style="w-[50px] ml-[30px]"
               size="md"
             />
@@ -344,10 +364,10 @@ const UserModifyForm = ({
         </div>
       ) : (
         <div className="w-full flex items-center mt-[20px]">
-          <div className="text-xl">패스워드</div>
-          <div className="ml-[60px] text-xl flex gap-2">
+          <div className="text-lg">패스워드</div>
+          <div className="ml-[60px] text-lg flex gap-2">
             {new Array(7).fill(0).map((_, idx) => (
-              <div key={idx} className="bg-[black] w-[6px] h-[6px] rounded-full"></div>
+              <div key={idx} className="bg-black w-[6px] h-[6px] rounded-full"></div>
             ))}
           </div>
           <Button

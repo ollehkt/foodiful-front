@@ -7,15 +7,17 @@ import PurchasedProductItem from './PurchasedProductItem'
 
 interface PropsType {
   order: GetOrderType
+  viewArrow?: boolean
 }
 /**
  * TODO: 주문 취소 로직 작성
  */
-function PurchasedItem({ order }: PropsType) {
+function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   const [orderStatus, setOrderStatus] = useState('')
   const [isDetailOpened, setIsDetailOpened] = useState(false)
 
   const onClickOrder = () => {
+    if (!viewArrow) return
     setIsDetailOpened(!isDetailOpened)
   }
 
@@ -38,11 +40,13 @@ function PurchasedItem({ order }: PropsType) {
         break
     }
   }, [order.orderStatus])
-  console.log(order)
+
   return (
     <>
       <div
-        className="flex items-center justify-between my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm cursor-pointer"
+        className={`flex items-center justify-between my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
+          viewArrow && 'cursor-pointer'
+        }`}
         onClick={onClickOrder}
       >
         <div className="hidden md:block md:grow-[0.7]">
@@ -57,13 +61,13 @@ function PurchasedItem({ order }: PropsType) {
             <Button
               title="주문 취소"
               onClickWithEvent={onClickCancelOrder}
-              style="bg-main text-[white]"
+              style="bg-main text-white"
               size="sm"
             />
           </div>
         </div>
         <span className="text-main text-xl font-extrabold mr-4 cursor-pointer hover:text-hover">
-          {isDetailOpened ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          {viewArrow && (isDetailOpened ? <IoIosArrowUp /> : <IoIosArrowDown />)}
         </span>
       </div>
       {isDetailOpened && (
@@ -82,4 +86,4 @@ function PurchasedItem({ order }: PropsType) {
   )
 }
 
-export default PurchasedItem
+export default PurchasedOrderItem

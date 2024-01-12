@@ -75,7 +75,7 @@ const AmountCounter = ({ amount, minAmount, setAmount, limit, size }: PropsType)
         }  border rounded-md flex justify-center items-center  ${
           amount === minAmount
             ? 'cursor-not-allowed'
-            : 'cursor-pointer hover:text-[white] hover:bg-main'
+            : 'cursor-pointer hover:text-white hover:bg-main'
         }`}
         onClick={onClickMinus}
       >
@@ -97,9 +97,7 @@ const AmountCounter = ({ amount, minAmount, setAmount, limit, size }: PropsType)
         className={`${
           size === 'md' ? 'w-[26px] h-[26px]' : 'w-[34px] h-[34px]'
         } border rounded-md flex justify-center items-center ${
-          amount === limit
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer hover:text-[white] hover:bg-main'
+          amount === limit ? 'cursor-not-allowed' : 'cursor-pointer hover:text-white hover:bg-main'
         }`}
         onClick={onClickPlus}
       >

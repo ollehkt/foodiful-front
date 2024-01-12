@@ -29,10 +29,10 @@ const ToastItem = ({ message, type, timer, position }: Toast) => {
         >
           <div className=" flex justify-center items-cente">
             <IoWarningOutline size={25} color="white" />
-            <p className="text-[white] opacity-90 text-lg mx-2">WARNING!</p>
+            <p className="text-white opacity-90 text-lg mx-2">WARNING!</p>
           </div>
 
-          <div className="p-3 break-words text-[white] text-center">{message}</div>
+          <div className="p-3 break-words text-white text-center">{message}</div>
         </div>
       )}
       {viewToast && type == 'failed' && (
@@ -43,10 +43,10 @@ const ToastItem = ({ message, type, timer, position }: Toast) => {
         >
           <div className=" flex justify-center items-center rounded-t-lg">
             <IoWarning size={25} color="white" />
-            <p className="text-[white] opacity-90 text-lg mx-2">FAILED!</p>
+            <p className="text-white opacity-90 text-lg mx-2">FAILED!</p>
           </div>
 
-          <div className="p-3 break-words text-[white] text-center">{message}</div>
+          <div className="p-3 break-words text-white text-center">{message}</div>
         </div>
       )}
       {viewToast && type == 'success' && (
@@ -57,10 +57,10 @@ const ToastItem = ({ message, type, timer, position }: Toast) => {
         >
           <div className=" flex justify-center items-center">
             <SlCheck size={24} color="white" />
-            <p className="text-[white] opacity-90 text-lg mx-2">SUCCESS!</p>
+            <p className="text-white opacity-90 text-lg mx-2">SUCCESS!</p>
           </div>
 
-          <div className="p-3 break-words text-[white] text-center">{message}</div>
+          <div className="p-3 break-words text-white text-center">{message}</div>
         </div>
       )}
       {viewToast && type == 'notice' && (
@@ -71,10 +71,10 @@ const ToastItem = ({ message, type, timer, position }: Toast) => {
         >
           <div className=" flex justify-center items-cente">
             <IoWarningOutline size={25} color="white" />
-            <p className="text-[white] opacity-90 text-lg mx-2">NOTICE!</p>
+            <p className="text-white opacity-90 text-lg mx-2">NOTICE!</p>
           </div>
 
-          <div className="p-3 break-words text-[white] text-center">{message}</div>
+          <div className="p-3 break-words text-white text-center">{message}</div>
         </div>
       )}
     </div>

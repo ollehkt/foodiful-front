@@ -92,7 +92,7 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           title="우편번호 검색"
           onClick={onClickSearchAddress}
           size="md"
-          style="bg-main text-[white] ml-[54px] lg:ml-7"
+          style="bg-main text-white ml-[54px] lg:ml-7"
         />
       </div>
       <div className="flex flex-col ml-[54px] mt-[20px] lg:mt-0 lg:ml-[152px]">

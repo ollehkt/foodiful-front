@@ -9,7 +9,7 @@ import React from 'react'
 
 const ChannelSns = () => {
   return (
-    <div className="w-[90%] h-[60px] mt-[10px] flex justify-between items-center px-[10px] mx-auto rounded-2xl shadow-lg bg-[white]">
+    <div className="w-[90%] h-[60px] mt-[10px] flex justify-between items-center px-[10px] mx-auto rounded-2xl shadow-lg bg-white">
       <span>다른 방법으로 상담</span>
 
       <div className="flex gap-2 items-center">

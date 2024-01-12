@@ -7,6 +7,7 @@ import { useValidate } from '../../../components/auth/hooks/useValidate'
 import { useAuth } from '../../../components/auth/hooks/useAuth'
 import { Button } from '../../../components/common/Button'
 import { SignInType } from '../../../components/auth/types/user'
+import Link from 'next/link'
 
 function SignIn() {
   const { state: signInValue, onChangeInput } = useInput<SignInType, string>({
@@ -65,19 +66,19 @@ function SignIn() {
         size="md"
         disabled={!isValidated}
       />
-      <div className="mt-[10px]">
+      <div className="mt-[30px]">
         <a
           href={KAKAO_URL}
-          className="mt-[20px] bg-[#fee501] text-[#000] text-xl mx-[10px] hover:bg-[#eed700]"
+          className="w-[140px] h-[40px] p-4 mx-4 bg-[#fee501] rounded-md text-black text-xl hover:bg-[#eed700]"
         >
           카카오 로그인
         </a>
-        <Button
-          onClick={() => signIn(signInValue)}
-          style="mt-[20px] bg-primary text-[#fff] text-xl mx-[10px]"
-          title="구글 로그인"
-          size="lg"
-        />
+        <a
+          href={KAKAO_URL}
+          className="w-[140px] h-[40px] py-4 px-6 mx-4 bg-white rounded-md text-black text-xl hover:bg-[#eed700]"
+        >
+          구글 로그인
+        </a>
       </div>
     </div>
   )

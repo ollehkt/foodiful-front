@@ -17,7 +17,10 @@ function PurchasedProductItem({ product }: PropsType) {
     <>
       <div className="w-[90%] md:w-[60%] shadow-basic rounded-md p-2 my-1 mx-auto">
         <div className="flex items-center py-1 gap-2 text-main">
-          <div className="md:flex md:items-center w-[35%] md:w-[50%] md:gap-4 cursor-pointer">
+          <div
+            className="md:flex md:items-center w-[35%] md:w-[50%] md:gap-4 cursor-pointer hover:text-hover"
+            onClick={onClickProduct}
+          >
             <Image
               src={product.product.descImg[0]}
               alt="상품 이미지"
@@ -25,14 +28,12 @@ function PurchasedProductItem({ product }: PropsType) {
               height={100}
               className=" w-[100px] h-[100px] rounded-md"
             />
-            <div className="hover:text-hover" onClick={onClickProduct}>
-              {product.product.name}
-            </div>
+            <div className="">{product.product.name}</div>
           </div>
           <div className="grow-[2] font-bold">{product.orderPrice.toLocaleString()}원</div>
           <div className="grow-[1] font-bold">
             {product.orderCount}
-            <span className="text-[black]">({product.additionalCount})</span>
+            <span className="text-black">({product.additionalCount})</span>
           </div>
           <div className="grow-[1]"></div>
         </div>

@@ -33,13 +33,13 @@ const CalendarDatesRender = ({ currentDate, selectedDate, onClickSelectDate }: P
             key={day}
             className={`shadow-basic m-1 rounded-md  ${
               dayjs(day).day() === 0
-                ? 'bg-[#ee2222] text-[white]'
+                ? 'bg-[#ee2222] text-white'
                 : dayjs(day).isBefore(dayjs(), 'D') // 현재 실제 날짜보다 현재 for문의 날짜가 뒤라면
                 ? 'bg-disabled cursor-not-allowed'
                 : !dayjs(day).isSame(dayjs(selectedDate), 'D') // for문의 날짜와 고른 날이 같지 않다면
                 ? 'cursor-pointer'
                 : dayjs(day).isSame(dayjs(selectedDate), 'D') // for문의 날짜와 고른 날이 같다면
-                ? 'text-[white] font-bold bg-active cursor-pointer'
+                ? 'text-white font-bold bg-active cursor-pointer'
                 : dayjs(currentDate).month() !== dayjs(day).month() // 현재 달과 for문 날짜의 달이 다르다면
                 ? 'text-[#999]'
                 : ''

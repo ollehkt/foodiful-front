@@ -27,7 +27,7 @@ const ChannelHeader = () => {
         </div>
       </div>
       {isOpenViewTime && (
-        <div className="absolute z-[9999] bottom-0 w-full h-[120px] rounded-t-3xl bg-[white]">
+        <div className="absolute z-[9999] bottom-0 w-full h-[120px] rounded-t-3xl bg-white">
           <div className="flex justify-between mx-[20px] my-[20px] items-center">
             <span className="text-[#666]">운영시간</span>
             <span onClick={onClickViewTime} className="cursor-pointer text-main hover:text-active">

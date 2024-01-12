@@ -11,7 +11,7 @@ import { User } from '../components/auth/types/user'
 import { useGetProducts } from '../components/product/hooks/useProduct'
 import { ProductSkeleton } from '../components/common/skeleton/Skeleton'
 import { ProductReturnType } from '../components/product/types/productTypes'
-import { useGetOrderByUserId } from '../components/order/hooks/useOrder'
+import { useGetOrder } from '../components/order/hooks/useOrder'
 
 export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
   const { data } = await api('/product/all')
@@ -23,8 +23,8 @@ export const getServerSideProps = async (): Promise<{ props: { data: ProductRetu
 const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [user, setUser] = useState<User>()
 
-  const { data: myPurchasedProducts } = useGetOrderByUserId()
-  console.log(myPurchasedProducts)
+  const { data: myPurchasedProducts } = useGetOrder()
+
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) {
