@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import React, { Dispatch, SetStateAction } from 'react'
 
 import { BsFillArrowRightSquareFill, BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { MdAdsClick } from 'react-icons/md'

@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react'
-import useToast from '../common/hooks/useToast'
 
 interface Params {
   currentDate: string
