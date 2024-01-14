@@ -15,7 +15,7 @@ const MyPageFavorites = () => {
   const router = useRouter()
   const [user, setUser] = useState<User>()
   const [myFavoriteProducts, setMyFavoriteProducts] = useState<ProductReturnType[]>([])
-  const [isProductsLoading, setIsProductsLoading] = useState()
+
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) {
@@ -45,7 +45,7 @@ const MyPageFavorites = () => {
   }, [])
   return (
     <div className="grow flex-col items-center rounded-md shadow-basic px-5 py-2">
-      <StrongTitle title="좋아하는 상품" />
+      <StrongTitle title="좋아하는 상품" style="border-b-2 border-main pb-2" />
       <div className="w-full my-12 py-2">
         {!myFavoriteProducts.length ? (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
