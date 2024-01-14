@@ -82,3 +82,57 @@ export const useGetOrder = (): { data: GetOrderType[] } => {
   })
   return { data }
 }
+
+const updateOrder = async (orderId: string, updateOrderData: any) => {
+  const user = getStoredUser()
+  const { data } = await api.patch(
+    `/order/${orderId}`,
+    {
+      ...updateOrderData,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+      },
+    }
+  )
+  return data
+}
+
+export const useUpdateOrder = () => {
+  const { mutate } = useMutation({
+    mutationFn: ({ orderId, updateOrderData }: any) => updateOrder(orderId, updateOrderData),
+    onSuccess: () => {},
+    onError: () => {},
+  })
+  return { mutate }
+}
+
+const deleteOrder = async (orderId: string) => {
+  const user = getStoredUser()
+  const { data } = await api.delete(`/order/${orderId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
+  return data
+}
+
+export const useDeleteOrder = () => {
+  const { fireToast } = useToast()
+
+  const { mutate } = useMutation({
+    mutationFn: (orderId: string) => deleteOrder(orderId),
+    onSuccess: () => {
+      fireToast({
+        type: 'success',
+        id: '주문 취소 성공',
+        position: 'bottom',
+        timer: 2000,
+        message: '주문이 취소되었습니다.',
+      })
+    },
+    onError: () => {},
+  })
+  return { mutate }
+}

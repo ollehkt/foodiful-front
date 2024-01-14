@@ -4,6 +4,7 @@ import { Button } from '../common/Button'
 import { GetOrderType } from '../order/types/getOrderType'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import PurchasedProductItem from './PurchasedProductItem'
+import { useDeleteOrder } from '../order/hooks/useOrder'
 
 interface PropsType {
   order: GetOrderType
@@ -15,6 +16,7 @@ interface PropsType {
 function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   const [orderStatus, setOrderStatus] = useState('')
   const [isDetailOpened, setIsDetailOpened] = useState(false)
+  const { mutate: deleteOrder } = useDeleteOrder()
 
   const onClickOrder = () => {
     if (!viewArrow) return
@@ -23,6 +25,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
 
   const onClickCancelOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
+    deleteOrder(order.id)
   }
   useEffect(() => {
     switch (order.orderStatus) {
