@@ -48,7 +48,7 @@ const OrderPage = () => {
 
   return (
     <Container style="mt-[40px]">
-      <StrongTitle title="주문 / 결제" />
+      <StrongTitle title="주문 / 결제" style="border-b-2 border-main pb-2" />
       {/* <button onClick={onClickPayment}>결재</button> */}
       <OrderProduct orderProduct={orderProduct} />
       <OrdererInfo orderForm={orderForm} setOrderForm={setOrderForm} />

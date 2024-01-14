@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { ProductReturnType } from './types/productTypes'
-import FavoriteIcon from '../common/FavoriteIcon'
+import FavoriteIcon from '../common/favorite/FavoriteIcon'
 import { useGetPrice } from '../cart/hooks/useGetPrice'
 
 interface PropsType {
@@ -15,9 +15,6 @@ const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
   const { name, id, descImg, price, isLiked, discount } = product
   const router = useRouter()
   const { getDiscountedPrice } = useGetPrice()
-  const onClickItem = (id: number) => {
-    router.push(`/product/${id}`)
-  }
 
   return (
     <div key={`${name}-${id}`} className={`flex-col  ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
@@ -30,7 +27,7 @@ const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
         className={`rounded-md  ${
           mini ? 'w-[200px] h-[200px]' : 'w-[250px] h-[250px]'
         } border-2 border-[gray] cursor-pointer`}
-        onClick={() => onClickItem(id)}
+        onClick={() => router.push(`/product/${id}`)}
       />
       <div className="flex items-center justify-between mt-4 relative">
         <h3 className=" text text-gray-700">

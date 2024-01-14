@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import Container from '../../../components/common/Container'
@@ -31,12 +32,23 @@ const MyPagePurchased = () => {
 
   return (
     <Container style="">
-      <StrongTitle title="상품 구매내역" style="pb-4 border-b-2 border-main" />
-      <PurchasedTitle />
-      {!!orderList.length &&
-        orderList.map((order) => (
-          <PurchasedOrderItem key={order.id} order={order} viewArrow={true} />
-        ))}
+      <StrongTitle title="상품 구매내역" style="border-b-2 border-main pb-2" />
+      {!!orderList.length ? (
+        <>
+          <PurchasedTitle />
+          {orderList.map((order) => (
+            <PurchasedOrderItem key={order.id} order={order} viewArrow={true} />
+          ))}
+        </>
+      ) : (
+        <div className="w-full flex flex-col items-center text-2xl font-bold my-10">
+          <div>주문 내역이 없습니다.</div>
+
+          <Link className="text-main hover:text-hover mt-10" href="/product">
+            상품 주문하러 가기
+          </Link>
+        </div>
+      )}
     </Container>
   )
 }

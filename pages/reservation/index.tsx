@@ -16,7 +16,9 @@ export const getServerSideProps = async (): Promise<{
 }> => {
   const { data: classes } = await api('/class/all')
   const { data: reservations } = await api('/reservation/all')
-
+  if (!!reservations.length) {
+    return { props: { classes, reservedTimes: [] } }
+  }
   const reservedTimes: string[] = reservations.flatMap(
     (reserve: ReservationType) => reserve.reserveDate
   )
@@ -42,6 +44,8 @@ const Reservation = ({
     classDuration: 0,
   })
 
+  useEffect(() => {}, [])
+
   useEffect(() => {
     if (selectedClassName) {
       const filteredClass = classes
@@ -62,7 +66,7 @@ const Reservation = ({
     >
       <Container style="my-[40px]">
         <div className="w-full mx-auto flex justify-center items-center">
-          <StrongTitle title="클래스 예약하기" />
+          <StrongTitle title="클래스 예약하기" style="border-b-2 border-main pb-2" />
         </div>
         <div
           className={`w-full ${
@@ -85,7 +89,7 @@ const Reservation = ({
         <div
           className={`mt-[60px] flex-col items-center ${
             selectedClass.name
-              ? 'animate-translateUp100 opacity-1 w-[800px] h-[900px] '
+              ? 'animate-translateUp100 opacity-1 md:w-[800px] md:h-[900px] '
               : 'hidden translate-y-[200px]'
           } mx-auto`}
         >

@@ -1,6 +1,4 @@
 import Image from 'next/image'
-import React, { useCallback, useEffect, useRef } from 'react'
-import useIntersectionObserver from '../common/hooks/useIntersectionObserver'
 import StrongTitle from '../common/StrongTitle'
 
 interface PropsType {

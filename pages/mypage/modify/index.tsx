@@ -61,7 +61,7 @@ const MyPageModify = () => {
 
   return (
     <div className="grow flex-col items-center">
-      <StrongTitle title="내 정보 수정" style="pb-4 border-b-2 border-main" />
+      <StrongTitle title="내 정보 수정" style="border-b-2 border-main pb-2" />
       <div className="w-[90%] mx-auto mt-[40px]">
         <UserModifyForm
           user={user}

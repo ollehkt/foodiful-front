@@ -31,7 +31,7 @@ const CartPage = () => {
   return (
     <Container>
       <div className="mt-[40px]">
-        <StrongTitle title="장바구니" />
+        <StrongTitle title="장바구니" style="border-b-2 border-main pb-2" />
         {cartLists.length > 0 ? (
           <CartList cartLists={cartLists} />
         ) : (

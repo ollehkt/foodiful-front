@@ -4,7 +4,7 @@ export const myPageNav = [
     url: '/mypage/modify',
   },
   {
-    title: '상품 구매내역',
+    title: '주문/배송 내역',
     url: '/mypage/purchased',
   },
   {

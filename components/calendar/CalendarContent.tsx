@@ -86,8 +86,8 @@ const CalendarContent = ({
     <div className="w-full">
       <div className="w-full px-4 grid grid-cols-7">
         {date.map((headerDay) => (
-          <div key={headerDay} className="text-main mx-1 bg-[#eee] rounded-sm">
-            <span className="mx-2 font-semibold">{headerDay}</span>
+          <div key={headerDay} className="text-sm text-main mx-1 bg-[#eee] rounded-sm text-center">
+            <span className="mx-0 md:mx-2 font-semibold">{headerDay}</span>
           </div>
         ))}
       </div>
@@ -102,7 +102,7 @@ const CalendarContent = ({
       {/* 선택 눌렀을 때 예약하기 버튼 나오게 만들기 */}
       {isReserveTimeSelected && user && (
         <div className="w-full mx-auto flex justify-center">
-          <div className="w-[300px] shadow-basic p-2 rounded-md flex-col gap-1">
+          <div className="md:w-[300px] shadow-basic p-2 rounded-md flex-col gap-1">
             <div>
               예약자 성함: <span className="text-lg text-main font-bold">{user.name}</span>
             </div>

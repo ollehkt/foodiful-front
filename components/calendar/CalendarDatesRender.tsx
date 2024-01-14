@@ -65,7 +65,7 @@ const CalendarDatesRender = ({ currentDate, selectedDate, onClickSelectDate }: P
         day = dayjs(day).add(1, 'day').format()
       }
       rowsData.push(
-        <div className="grid grid-cols-7 h-[100px]" key={day}>
+        <div className="grid grid-cols-7 h-[50px] md:h-[100px]" key={day}>
           {days}
         </div>
       )

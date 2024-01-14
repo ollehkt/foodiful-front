@@ -48,7 +48,7 @@ const CalendarTimeRender = ({
   return (
     <>
       {isTimeTableModalOpen && times.length > 0 && (
-        <div className="absolute bottom-[-40px] px-4 flex flex-col items-center w-[800px] rounded-lg shadow-basic bg-white z-[999]">
+        <div className="absolute bottom-[-40px]  px-4 flex flex-col items-center md:w-[800px] mx-2 rounded-lg shadow-basic bg-white z-[999]">
           <div className="text-lg font-bold my-4">
             <span className="text-main">{dayjs(selectedDate).month() + 1}</span>월
             <span className="text-main"> {dayjs(selectedDate).date()}</span>일 시간 선택
@@ -73,7 +73,7 @@ const CalendarTimeRender = ({
             })}
           </div>
           {confirmSelectedTime && (
-            <div className="h-[40px] flex justify-center items-center text-lg font-semibold">
+            <div className="mt-8 md:mt-0 h-[40px] flex justify-center items-center text-lg font-semibold">
               <span>
                 <span className="text-main font-bold">{confirmSelectedTime}</span> 의 예약이
                 맞으시다면 <span className="p-1 bg-main text-white rounded-md">선택</span> 을
@@ -82,7 +82,7 @@ const CalendarTimeRender = ({
             </div>
           )}
 
-          <div className="py-1 my-[20px]">
+          <div className="py-4  md:py-1 my-[20px]">
             <Button
               title="선택"
               style="w-[120px] h-[40px] bg-main text-white font-bold mx-[10px]"
