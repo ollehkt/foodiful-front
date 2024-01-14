@@ -14,6 +14,7 @@ import { useUser } from '../components/auth/hooks/useUser'
 
 import { useRouter } from 'next/router'
 import { getQueryClient } from '../components/util/getQueryClient'
+import ModalContainer from '../components/common/modal/ModalContainer'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -48,6 +49,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <Provider>
             <ToastList />
             <HeaderNavMobile />
+            <ModalContainer />
             <Layout>
               <div className="w-full mx-auto">{page}</div>
             </Layout>

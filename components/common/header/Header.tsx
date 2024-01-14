@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -12,6 +12,8 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { mobileNavState } from '../../../store/mobileNavState'
 import { User } from '../../auth/types/user'
 import { FaShoppingCart } from 'react-icons/fa'
+import { useModal } from '../modal/useModal'
+import { modalState } from '../../../store/modalState'
 
 const Header = () => {
   const { signOut } = useAuth()
@@ -19,10 +21,26 @@ const Header = () => {
   const isMobile = useAtomValue(isMobileDisplay)
   const setIsMenuOpened = useSetAtom(mobileNavState)
   const [user, setUser] = useState<User>()
+  const [modal, setModal] = useAtom(modalState)
 
-  const onClickLogo = useCallback(() => {
-    router.push('/')
-  }, [router])
+  const onClickLogo = () => {
+    setModal({
+      ...modal,
+      isOpen: true,
+      title: '제목',
+      content: '내용',
+      confirmFunc: () => {
+        router.push('/')
+      },
+    })
+    // router.push('/')
+  }
+  // const onClickLogo = useCallback(() => {
+  //   openModal()
+  //   setTitle('제목')
+  //   setContent('내용')
+  //   // router.push('/')
+  // }, [router])
 
   useEffect(() => {
     const storedUser = getStoredUser()
