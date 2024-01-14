@@ -1,15 +1,15 @@
 import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { isMobileDisplay } from '../../store/isMobileDisplay'
-import { User } from '../auth/types/user'
-import { getStoredUser } from '../util/userStorage'
-import useToast from './hooks/useToast'
+import { isMobileDisplay } from '../../../store/isMobileDisplay'
+import { User } from '../../auth/types/user'
+import { getStoredUser } from '../../util/userStorage'
+import useToast from '../hooks/useToast'
+import { useAddFavoriteProduct, useDeleteFavoriteProduct } from './hooks/useFavorite'
 
 interface PropsType {
   productId: number
   isLiked?: boolean
-  
 }
 
 const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
@@ -18,6 +18,9 @@ const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
   const router = useRouter()
   const { fireToast } = useToast()
   const isMobile = useAtomValue(isMobileDisplay)
+  const { mutate: deleteFavoriteProduct } = useDeleteFavoriteProduct()
+  const { mutate: addFavoriteProduct } = useAddFavoriteProduct()
+
   const onClickHeart = () => {
     if (!user) {
       fireToast({
@@ -32,8 +35,10 @@ const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
     }
     if (onHeartAnimation) {
       setOnHeartAnimation(false)
+      deleteFavoriteProduct(productId)
     } else {
       setOnHeartAnimation(true)
+      addFavoriteProduct(productId)
     }
   }
 
