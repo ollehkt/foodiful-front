@@ -91,6 +91,7 @@ const CalendarTimeRender = ({
                 setIsTimeTableModalOpen(false)
                 scrollTo(0, 500)
               }}
+              disabled={!selectedTimes}
             />
             <Button
               title="닫기"
