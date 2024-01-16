@@ -74,7 +74,7 @@ const Reservation = ({
           } mx-auto flex flex-col items-center transition-translate-y duration-1000 ease-in-out`}
         >
           <div className="text-2xl font-bold">클래스 선택하기</div>
-          {classes.length > 0 && (
+          {!!classes.length && (
             <Select<string>
               options={classes.map((item) => item.name)}
               selected={selectedClassName}

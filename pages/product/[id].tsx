@@ -10,6 +10,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
 import { getReviews, useGetReviews } from '../../components/review/hooks/useReviews'
 import { getProductById, useGetProductById } from '../../components/product/hooks/useProduct'
+import { useGetOrder } from '../../components/order/hooks/useOrder'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -46,6 +47,7 @@ const ProductDetailPage = ({
   /**isFetching 사용 */
   const { data: reviewList, isFetching } = useGetReviews(productId)
   const { data: product, isFetching: productFetching } = useGetProductById(productId)
+  const { data: orderLists } = useGetOrder()
 
   return (
     product && (
@@ -90,11 +92,13 @@ const ProductDetailPage = ({
         </div>
 
         {!!viewDescTab ? (
-          reviewList && (
+          !!reviewList.length &&
+          !!orderLists.length && (
             <ProductDetailReview
               reviewList={reviewList}
               productName={product.name}
               productId={product.id}
+              orderLists={orderLists}
             />
           )
         ) : (

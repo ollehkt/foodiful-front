@@ -48,7 +48,7 @@ const DetailSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
         />
         <div className="w-[450px] h-[120px] mt-2">
           <ul ref={ulRef} className="flex absolute overflow-hidden gap-[10px]">
-            {items.length > 0 &&
+            {!!items.length &&
               items.map((item, idx) => (
                 <li
                   key={`${item}-${idx}`}

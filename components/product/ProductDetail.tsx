@@ -72,8 +72,8 @@ const ProductDetail = ({
   const onClickPurchase = () => {
     setModal({
       isOpen: true,
-      title: '장바구니 추가',
-      content: '장바구니에 추가하시겠습니까?',
+      title: '주문 / 결제',
+      content: '결제창으로 이동하시겠습니까?',
       confirmFunc: () => {
         setOrderProduct([
           { product: product, quantity: productQuantities, additionalCount: additionalQuantities },
@@ -111,7 +111,7 @@ const ProductDetail = ({
                 width={300}
                 height={300}
               />
-              {descImg && (
+              {!!descImg.length && (
                 <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
                   {descImg.map((img) => (
                     <Image
@@ -127,7 +127,7 @@ const ProductDetail = ({
               )}
             </div>
           </>
-        ) : descImg.length > 0 ? (
+        ) : !!descImg.length ? (
           <SubSlider items={descImg} btn slidePx={110} btnSize={24} />
         ) : (
           <Image

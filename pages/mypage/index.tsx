@@ -12,13 +12,14 @@ import { useGetOrder } from '../../components/order/hooks/useOrder'
 import PurchasedTitle from '../../components/purchase/PurchasedTitle'
 import PurchasedOrderItem from '../../components/purchase/PurchasedOrderItem'
 import { Button } from '../../components/common/Button'
+import { useGetFavoriteProducts } from '../../components/common/favorite/hooks/useFavorite'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>()
-  const [myFavoriteProducts, setMyFavoriteProducts] = useState<ProductReturnType[]>([])
+
   const [myComments, setMyComments] = useState([])
   const { data: myPurchasedList } = useGetOrder()
-
+  const { data: myFavoriteProducts } = useGetFavoriteProducts()
   const [myReservations, setMyReservations] = useState([])
 
   const router = useRouter()
@@ -37,18 +38,6 @@ function MyPage() {
       })
       router.push('/')
     }
-
-    ;(async () => {
-      if (storedUser) {
-        // const { data: myFavoriteProducts } = await api(`/favorite-product/${storedUser.id}`)
-        const myFavoriteProducts = await fetch(
-          'https://633010e5591935f3c8893690.mockapi.io/lenssis/api/v1/event'
-        ).then((res) => res.json())
-
-        setMyFavoriteProducts(myFavoriteProducts)
-        // setMyFavoriteProducts(myFavoriteProducts)
-      }
-    })()
   }, [])
 
   return (
@@ -68,12 +57,7 @@ function MyPage() {
           <>
             <div className="grid justify-center md:justify-start md:grid-cols-3 my-12 items-center">
               {myFavoriteProducts.slice(0, 4).map((product) => (
-                <ProductItem
-                  key={product.id}
-                  product={product}
-                  mini={true}
-                  hideFavoriteIcon={true}
-                />
+                <ProductItem key={product.id} product={product} mini={true} />
               ))}
             </div>
             <div className="flex justify-content my-2">

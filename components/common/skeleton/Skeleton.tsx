@@ -2,7 +2,7 @@ export const ProductSkeleton = ({ count }: { count: number }) => {
   const arr = new Array(count).fill(0)
   return (
     <>
-      {arr &&
+      {!!arr.length &&
         arr.map((_, idx) => (
           <div
             key={idx}

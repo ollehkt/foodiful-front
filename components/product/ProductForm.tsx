@@ -244,7 +244,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                 </label>
               </div>
 
-              {imagesSrc && imagesSrc.length > 0 && (
+              {imagesSrc && !!imagesSrc.length && (
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
                   <div className="p-2 flex justify-between overflow-x-scroll">
                     {imagesSrc.map((img, idx) => (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { User } from '../auth/types/user'
+import { GetOrderType } from '../order/types/getOrderType'
 import { useDeleteReview } from '../review/hooks/useReviews'
 import ReviewForm from '../review/PostReview'
 import ReviewItem from '../review/ReviewItem'
@@ -11,10 +12,12 @@ const ProductDetailReview = ({
   productName,
   productId,
   reviewList,
+  orderLists,
 }: {
   productName: string
   productId: number
   reviewList: ProductReviewTypes[]
+  orderLists: GetOrderType[]
 }) => {
   const [userReviewed, setUserReviewed] = useState<ProductReviewTypes>()
   const [userPurchased, setUserPurchased] = useState(false)
@@ -22,16 +25,23 @@ const ProductDetailReview = ({
   const [user, setUser] = useState<User>()
 
   const { mutate: deleteReview } = useDeleteReview(productId)
+  console.log(orderLists)
 
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
-    if (storedUser && reviewList.length > 0) {
+    if (storedUser && !!reviewList.length) {
       const userReview = reviewList.find((review: ProductReviewTypes) => {
         return review.userId === storedUser.id
       })
       setUserReviewed(userReview)
-      setUserPurchased(true)
+    }
+    if (!!orderLists.length) {
+      orderLists.forEach((orderList) => {
+        orderList.orderProduct.forEach((product) => {
+          if (product.productId === productId) setUserPurchased(true)
+        })
+      })
     }
   }, [])
 
@@ -79,7 +89,7 @@ const ProductDetailReview = ({
       )}
       <div className="flex-col mt-[40px] border-main border-t-[1px]">
         <div className="mt-[10px]  text-3xl">후기 목록</div>
-        {reviewList && <ReviewList reviewList={reviewList} />}
+        {!!reviewList.length && <ReviewList reviewList={reviewList} />}
       </div>
     </div>
   )

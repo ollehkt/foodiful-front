@@ -14,7 +14,7 @@ function OrderProduct({ orderProduct }: { orderProduct: PostOrderProductTypes[] 
           <div className="grow-[1.8] text-textDisabled">수량</div>
           <div className="text-textDisabled">판매가</div>
         </div>
-        {orderProduct.length > 0 &&
+        {!!orderProduct.length &&
           orderProduct.map((product) => (
             <OrderItem
               key={product.product.id}

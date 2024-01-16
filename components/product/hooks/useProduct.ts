@@ -125,7 +125,7 @@ export const useGetProducts = (): {
       if (axios.isAxiosError(error))
         fireToast({
           id: '상품 조회',
-          message: error.response?.data.message,
+          message: '새로고침을 눌러주세요',
           type: 'failed',
           position: 'bottom',
           timer: 2000,

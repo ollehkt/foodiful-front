@@ -15,7 +15,7 @@ const ChannelContent = () => {
     <div className="w-[90%] h-[300px] mx-auto flex flex-col items-center rounded-2xl shadow-lg bg-white">
       <div className="mt-[10px] h-[240px]">
         <div className="text-sm text-[#666]">운영시간에만 채팅이 가능합니다</div>
-        {messages.length > 0 && (
+        {!!messages.length && (
           <div className="w-full">
             {messages.map((message, idx) => (
               <div key={`${message}-${idx}`}>{message}</div>

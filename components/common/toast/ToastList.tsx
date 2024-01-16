@@ -7,7 +7,7 @@ const ToastList = () => {
 
   return (
     <div className="bottom-0 left-0 fixed z-[999999]">
-      {toasts && toasts.map((toast) => <ToastItem key={toast.id} {...toast} />)}
+      {!!toasts.length && toasts.map((toast) => <ToastItem key={toast.id} {...toast} />)}
     </div>
   )
 }

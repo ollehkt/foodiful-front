@@ -8,16 +8,15 @@ import { useGetPrice } from '../cart/hooks/useGetPrice'
 interface PropsType {
   product: ProductReturnType
   mini?: boolean
-  hideFavoriteIcon?: boolean
 }
 
-const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
+const ProductItem = ({ product, mini }: PropsType) => {
   const { name, id, descImg, price, isLiked, discount } = product
   const router = useRouter()
   const { getDiscountedPrice } = useGetPrice()
 
   return (
-    <div key={`${name}-${id}`} className={`flex-col  ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
+    <div key={`${name}-${id}`} className={`flex flex-col ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
       <Image
         key={descImg[0]}
         src={descImg.length > 0 ? descImg[0] : '/foodiful.jpeg'}
@@ -30,10 +29,10 @@ const ProductItem = ({ product, mini, hideFavoriteIcon }: PropsType) => {
         onClick={() => router.push(`/product/${id}`)}
       />
       <div className="flex items-center justify-between mt-4 relative">
-        <h3 className=" text text-gray-700">
+        <h3 className="text text-gray-700">
           {mini ? `${name.slice(0, 10)}...` : name.slice(0, 10).slice(0, 12)}
         </h3>
-        {!hideFavoriteIcon && <FavoriteIcon productId={id} isLiked={isLiked} />}
+        <FavoriteIcon productId={id} isLiked={isLiked} />
       </div>
       <p className="mt-1 text-lg font-medium text-gray-900">
         {/**

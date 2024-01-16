@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
@@ -43,7 +43,7 @@ const postReview = async (
  * @TODO: productID 어떻게 넘겨 줄 것인지,
  */
 export const usePostReview = (productId: number) => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const { fireToast } = useToast()
   const router = useRouter()
   const { mutate } = useMutation({
@@ -81,7 +81,7 @@ export const usePostReview = (productId: number) => {
       router.push(`/product/${productId}`)
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
     },
   })
   return { mutate }
@@ -104,7 +104,7 @@ const updateReview = async (updateReviewData: UpdateReviewTypes) => {
 }
 
 export const useUpdateReview = (productId: number) => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const { fireToast } = useToast()
   const { mutate } = useMutation({
     mutationFn: ({
@@ -135,7 +135,7 @@ export const useUpdateReview = (productId: number) => {
       })
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
     },
   })
   return { mutate }
@@ -153,7 +153,7 @@ const deleteReview = async (reviewId: number) => {
 
 export const useDeleteReview = (productId: number) => {
   const { fireToast } = useToast()
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: (reviewId: number) => deleteReview(reviewId),
     onMutate: async (reviewId) => {
@@ -164,7 +164,7 @@ export const useDeleteReview = (productId: number) => {
         productId,
       ])
 
-      const filteredReviews = prevReviews && prevReviews.filter((review) => review.id !== reviewId)
+      const filteredReviews = prevReviews?.length && prevReviews.filter((review) => review.id !== reviewId)
 
       queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
         return { filteredReviews }

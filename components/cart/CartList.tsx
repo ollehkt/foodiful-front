@@ -59,7 +59,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
     // })
 
     setTotalPrice(getTotalPrice(selectedProduct))
-    if (selectedProduct.length === 0) setIsAllItemSelected(false)
+    if (!selectedProduct.length) setIsAllItemSelected(false)
     else if (selectedProduct.length === cartLists.length) setIsAllItemSelected(true)
   }, [selectedProduct])
 
@@ -115,7 +115,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
       </div>
       <div className="flex gap-3">
         <div className="flex-col grow-[4]">
-          {cartLists &&
+          {!!cartLists.length &&
             cartLists.map((cartList) => (
               <CartItem
                 cartList={cartList}

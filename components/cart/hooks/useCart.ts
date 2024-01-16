@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios, { AxiosResponse } from 'axios'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
@@ -87,7 +87,7 @@ const updateCart = async (updateCartData: Partial<CartReturnType>) => {
 }
 
 export const useUpdateCart = () => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: (updateCartData: Partial<CartReturnType>) => updateCart(updateCartData),
     onSuccess: () => {},
@@ -129,7 +129,7 @@ const deleteAllCart = async () => {
 }
 
 export const useDeleteAllCart = () => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: () => deleteAllCart(),
     onSuccess: () => {},

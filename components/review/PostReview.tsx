@@ -26,7 +26,6 @@ const ReviewForm = ({
   productId,
   userId,
   userReviewed,
-  isModifyMode,
   setIsModifyMode,
 }: PropsType) => {
   const [reviewState, setReviewState] = useState<PostReviewTypes>(
@@ -114,13 +113,14 @@ const ReviewForm = ({
       isOpen: true,
       title: '후기 추가',
       content: '후기를 추가하시겠습니까?',
-      confirmFunc: () =>
+      confirmFunc: () => {
         postReviewMutation({
           ...postReview,
           comment: postReview.comment.trim(),
           productId,
           userId,
-        }),
+        })
+      },
     })
   }
 
@@ -174,7 +174,7 @@ const ReviewForm = ({
             />
           </label>
           <div className="ml-[20px] h-[200px] flex items-center gap-x-2 overflow-y-hidden overflow-x-scroll">
-            {imgSrc.length > 0 &&
+            {!!imgSrc.length &&
               imgSrc.map((img) => <Image key={img} src={img} alt={img} width={200} height={200} />)}
           </div>
         </div>
