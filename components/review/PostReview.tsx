@@ -9,6 +9,8 @@ import { useRenderImages } from '../common/hooks/useRenderImages'
 import useToast from '../common/hooks/useToast'
 import { usePostReview, useUpdateReview } from './hooks/useReviews'
 import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from './types/productReviewTypes'
+import { useSetAtom } from 'jotai'
+import { modalState } from '../../store/modalState'
 
 interface PropsType {
   productName: string
@@ -45,7 +47,8 @@ const ReviewForm = ({
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const { fireToast } = useToast()
   const router = useRouter()
-  console.log(userReviewed)
+  const setModal = useSetAtom(modalState)
+
   const { mutate: postReviewMutation } = usePostReview(productId)
   const { mutate: updateReviewMutation } = useUpdateReview(productId)
 
@@ -107,7 +110,18 @@ const ReviewForm = ({
       })
       return
     }
-    postReviewMutation({ ...postReview, comment: postReview.comment.trim(), productId, userId })
+    setModal({
+      isOpen: true,
+      title: '후기 추가',
+      content: '후기를 추가하시겠습니까?',
+      confirmFunc: () =>
+        postReviewMutation({
+          ...postReview,
+          comment: postReview.comment.trim(),
+          productId,
+          userId,
+        }),
+    })
   }
 
   const updateReview = async (updatedReview: UpdateReviewTypes) => {
@@ -121,11 +135,17 @@ const ReviewForm = ({
       })
       return
     }
-    updateReviewMutation({
-      ...updatedReview,
-      comment: updatedReview.comment.trim(),
-      productId,
-      userId,
+    setModal({
+      isOpen: true,
+      title: '후기 업데이트',
+      content: '후기를 업데이트 하시겠습니까?',
+      confirmFunc: () =>
+        updateReviewMutation({
+          ...updatedReview,
+          comment: updatedReview.comment.trim(),
+          productId,
+          userId,
+        }),
     })
   }
   return (

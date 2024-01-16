@@ -13,6 +13,7 @@ import useToast from '../common/hooks/useToast'
 import { useGetPrice } from '../cart/hooks/useGetPrice'
 import { postOrderProductState } from '../../store/postOrderProductState'
 import Router, { useRouter } from 'next/router'
+import { modalState } from '../../store/modalState'
 
 interface PropsType {
   product: ProductReturnType
@@ -37,6 +38,7 @@ const ProductDetail = ({
   const cartProductLists = useAtomValue(cartProductState)
   const setOrderProduct = useSetAtom(postOrderProductState)
   const { getDiscountedPrice } = useGetPrice()
+  const setModal = useSetAtom(modalState)
 
   const { fireToast } = useToast()
   const router = useRouter()
@@ -54,18 +56,31 @@ const ProductDetail = ({
       })
       return
     }
-    addCart({
-      productId,
-      quantity,
-      additionalCount: additionalSelect !== '선택 안함' ? additionalCount : 0,
+    setModal({
+      isOpen: true,
+      title: '장바구니 추가',
+      content: '장바구니에 추가하시겠습니까?',
+      confirmFunc: () =>
+        addCart({
+          productId,
+          quantity,
+          additionalCount: additionalSelect !== '선택 안함' ? additionalCount : 0,
+        }),
     })
   }
 
   const onClickPurchase = () => {
-    setOrderProduct([
-      { product: product, quantity: productQuantities, additionalCount: additionalQuantities },
-    ])
-    router.push('/order')
+    setModal({
+      isOpen: true,
+      title: '장바구니 추가',
+      content: '장바구니에 추가하시겠습니까?',
+      confirmFunc: () => {
+        setOrderProduct([
+          { product: product, quantity: productQuantities, additionalCount: additionalQuantities },
+        ])
+        router.push('/order')
+      },
+    })
   }
 
   useEffect(() => {

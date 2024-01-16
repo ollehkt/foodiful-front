@@ -5,14 +5,12 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { isMobileDisplay } from '../../../store/isMobileDisplay'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { useUser } from '../../auth/hooks/useUser'
 import { getStoredUser } from '../../util/userStorage'
 import HeaderNav from './HeaderNav'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { mobileNavState } from '../../../store/mobileNavState'
 import { User } from '../../auth/types/user'
 import { FaShoppingCart } from 'react-icons/fa'
-import { useModal } from '../modal/useModal'
 import { modalState } from '../../../store/modalState'
 
 const Header = () => {
@@ -21,26 +19,20 @@ const Header = () => {
   const isMobile = useAtomValue(isMobileDisplay)
   const setIsMenuOpened = useSetAtom(mobileNavState)
   const [user, setUser] = useState<User>()
-  const [modal, setModal] = useAtom(modalState)
+  const setModal = useSetAtom(modalState)
+
+  const onClickSignOut = () => {
+    setModal({
+      isOpen: true,
+      title: '로그아웃',
+      content: '로그아웃 하시겠습니까?',
+      confirmFunc: signOut,
+    })
+  }
 
   const onClickLogo = () => {
-    setModal({
-      ...modal,
-      isOpen: true,
-      title: '제목',
-      content: '내용',
-      confirmFunc: () => {
-        router.push('/')
-      },
-    })
-    // router.push('/')
+    router.push('/')
   }
-  // const onClickLogo = useCallback(() => {
-  //   openModal()
-  //   setTitle('제목')
-  //   setContent('내용')
-  //   // router.push('/')
-  // }, [router])
 
   useEffect(() => {
     const storedUser = getStoredUser()
@@ -78,7 +70,7 @@ const Header = () => {
                   님
                 </div>
                 <button
-                  onClick={signOut}
+                  onClick={onClickSignOut}
                   className="text-xl no-underline text-[#666] hover:text-[#000]"
                 >
                   로그아웃

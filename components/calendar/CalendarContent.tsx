@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
+import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { modalState } from '../../store/modalState'
 import { User } from '../auth/types/user'
 import { Button } from '../common/Button'
 import useToast from '../common/hooks/useToast'
@@ -37,6 +39,7 @@ const CalendarContent = ({
   const [isReserveTimeSelected, setIsReserveTimeSelected] = useState(false)
   const [selectedTimes, setSelectedTimes] = useState('')
   const [user, setUser] = useState<User | null>(null)
+  const setModal = useSetAtom(modalState)
   const { mutate: postReservation } = useMutateReservation()
 
   useEffect(() => {
@@ -66,7 +69,12 @@ const CalendarContent = ({
       })
       return
     }
-    postReservation({ classId: selectedClass.id, reserveDate: selectedTimes })
+    setModal({
+      isOpen: true,
+      title: '예약 추가',
+      content: '예약을 추가하시겠습니까?',
+      confirmFunc: () => postReservation({ classId: selectedClass.id, reserveDate: selectedTimes }),
+    })
   }
 
   useEffect(() => {
