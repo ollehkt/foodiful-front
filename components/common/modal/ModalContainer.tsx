@@ -1,7 +1,8 @@
 import { useAtom } from 'jotai'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { modalState } from '../../../store/modalState'
 import { Button } from '../Button'
+import { MdInfo } from 'react-icons/md'
 
 function ModalContainer() {
   const [modal, setModal] = useAtom(modalState)
@@ -13,16 +14,20 @@ function ModalContainer() {
   const onClickCancel = () => {
     setModal({ ...modal, isOpen: false })
   }
+
   return (
     <>
       {modal.isOpen && (
         <div
-          className={`absolute top-[20%] left-1/2 -translate-x-1/2 w-[250px] h-[150px] bg-[#eee] border-main border-2 rounded-md z-[999999]`}
+          className={`fixed top-1/3 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-[#fff] shadow-basic rounded-md z-[999999]`}
         >
-          <div className="text-main text-center text-xl font-bold my-2">{modal.title}</div>
-          <div className="font-semibold my-4">{modal.content}</div>
-          <div className="flex justify-center items-center my-4">
-            <Button title="확인" onClick={onClickConfirm} style="" size="sm" />
+          <div className="flex justify-center text-2xl text-red my-4">
+            <MdInfo />
+          </div>
+          <div className="text-center text-main text-xl font-bold my-2">{modal.title}</div>
+          <div className="text-center font-semibold my-4">{modal.content}</div>
+          <div className="flex justify-center items-center gap-4 my-4">
+            <Button title="확인" onClick={onClickConfirm} style="bg-main text-white" size="sm" />
             <Button title="취소" onClick={onClickCancel} style="" size="sm" />
           </div>
         </div>
