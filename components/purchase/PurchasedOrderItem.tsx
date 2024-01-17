@@ -4,7 +4,7 @@ import { Button } from '../common/Button'
 import { GetOrderType } from '../order/types/getOrderType'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import PurchasedProductItem from './PurchasedProductItem'
-import { useDeleteOrder } from '../order/hooks/useOrder'
+import { useCancelOrder } from '../order/hooks/useOrder'
 
 interface PropsType {
   order: GetOrderType
@@ -16,7 +16,7 @@ interface PropsType {
 function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   const [orderStatus, setOrderStatus] = useState('')
   const [isDetailOpened, setIsDetailOpened] = useState(false)
-  const { mutate: deleteOrder } = useDeleteOrder()
+  const { mutate: cancelOrder } = useCancelOrder()
 
   const onClickOrder = () => {
     if (!viewArrow) return
@@ -25,7 +25,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
 
   const onClickCancelOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    deleteOrder(order.id)
+    cancelOrder(order.id)
   }
   useEffect(() => {
     switch (order.orderStatus) {
@@ -60,21 +60,24 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
         <div className="md:grow-[0.8]">{order.totalPrice.toLocaleString()}원</div>
         <div className="md:flex md:items-center md:grow-[0.4] md:gap-8">
           <div className="text-center">{orderStatus}</div>
-          <div className="mt-2 md:mt-0">
-            <Button
-              title="주문 취소"
-              onClickWithEvent={onClickCancelOrder}
-              style="bg-main text-white"
-              size="sm"
-            />
-          </div>
+          {orderStatus !== '주문 취소' ? (
+            <div className="mt-2 md:mt-0">
+              <Button
+                title="주문 취소"
+                onClickWithEvent={onClickCancelOrder}
+                style="bg-main text-white"
+              />
+            </div>
+          ) : (
+            <div className="w-[100px]"></div>
+          )}
         </div>
         <span className="text-main text-xl font-extrabold mr-4 cursor-pointer hover:text-hover">
           {viewArrow && (isDetailOpened ? <IoIosArrowUp /> : <IoIosArrowDown />)}
         </span>
       </div>
       {isDetailOpened && (
-        <div className="flex flex-col mx-auto">
+        <div className="flex flex-col mx-auto animate-translateYDown">
           <div className="flex mx-auto w-[90%] md:w-[60%] text-[13px] md:text-sm p-2">
             <div className="grow-[5]">상품 정보</div>
             <div className="grow-[1]">상품 가격</div>

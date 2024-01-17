@@ -49,8 +49,12 @@ module.exports = {
           '100%': { transform: 'translateY(0)', opacity: '100' },
         },
         translateYDown: {
-          '0%': { transform: 'translateY(0)' },
-          '100%': { transform: 'translateY(100px)' },
+          '0%': { transform: 'translateY(-50px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '100' },
+        },
+        translateYUp: {
+          '0%': { transform: 'translateY(0px)', opacity: '100' },
+          '100%': { transform: 'translateY(-50px)', opacity: '0' },
         },
         click: {
           '0%': { transform: 'scale(1.5)' },
@@ -64,7 +68,7 @@ module.exports = {
         left: 'left .6s ease',
         translateUp: 'translateY10 1s ease-in-out',
         translateUp100: 'translateY100 1s ease-in-out',
-        translateYDown: 'translateDown 1s ease-in-out',
+        translateYDown: 'translateYDown 0.5s ease-in-out',
         click: 'click 1s ease-in-out',
       },
     },
