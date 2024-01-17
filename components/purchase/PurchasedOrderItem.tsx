@@ -4,7 +4,9 @@ import { Button } from '../common/Button'
 import { GetOrderType } from '../order/types/getOrderType'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import PurchasedProductItem from './PurchasedProductItem'
-import { useCancelOrder } from '../order/hooks/useOrder'
+import { useRouter } from 'next/router'
+import { useSetAtom } from 'jotai'
+import { modalState } from '../../store/modalState'
 
 interface PropsType {
   order: GetOrderType
@@ -16,7 +18,8 @@ interface PropsType {
 function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   const [orderStatus, setOrderStatus] = useState('')
   const [isDetailOpened, setIsDetailOpened] = useState(false)
-  const { mutate: cancelOrder } = useCancelOrder()
+  const router = useRouter()
+  const setModal = useSetAtom(modalState)
 
   const onClickOrder = () => {
     if (!viewArrow) return
@@ -25,8 +28,18 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
 
   const onClickCancelOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    cancelOrder(order.id)
+    setModal({
+      isOpen: true,
+      title: '주문 취소',
+      content: '주문을 취소하시겠습니까?',
+      confirmFunc: () => {
+        router.push(
+          `/mypage/purchased/cancel?orderId=${order.id}&date=${dayjs().format('YYYY-MM-DD HH:mm')}`
+        )
+      },
+    })
   }
+
   useEffect(() => {
     switch (order.orderStatus) {
       case 'SHIPPING':
