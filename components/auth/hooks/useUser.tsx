@@ -36,7 +36,6 @@ export const useUser = (): any => {
           try {
             const { refreshUser }: { refreshUser: User } = await api.post('/auth/refresh')
             setStoreUser(refreshUser)
-            // router.reload()
             fireToast({
               id: '재 로그인',
               type: 'success',

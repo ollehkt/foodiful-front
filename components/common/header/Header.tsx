@@ -18,7 +18,7 @@ const Header = () => {
   const router = useRouter()
   const isMobile = useAtomValue(isMobileDisplay)
   const setIsMenuOpened = useSetAtom(mobileNavState)
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(null)
   const setModal = useSetAtom(modalState)
 
   const onClickSignOut = () => {
@@ -26,7 +26,10 @@ const Header = () => {
       isOpen: true,
       title: '로그아웃',
       content: '로그아웃 하시겠습니까?',
-      confirmFunc: signOut,
+      confirmFunc: () => {
+        signOut()
+        setUser(null)
+      },
     })
   }
 
@@ -37,6 +40,7 @@ const Header = () => {
   useEffect(() => {
     const storedUser = getStoredUser()
     if (storedUser) setUser(storedUser)
+    else setUser(null)
   }, [router])
 
   return (
