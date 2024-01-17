@@ -4,6 +4,7 @@ import Layout from '../../components/layout/Layout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { getQueryClient } from '../../components/util/getQueryClient'
+import ModalContainer from '../../components/common/modal/ModalContainer'
 
 export function getMyPageLayout(page: ReactElement) {
   const queryClient = getQueryClient()
@@ -11,6 +12,7 @@ export function getMyPageLayout(page: ReactElement) {
   return (
     <Layout>
       <QueryClientProvider client={queryClient}>
+        <ModalContainer />
         <MyPageLayout>{page}</MyPageLayout>
         <ReactQueryDevtools initialIsOpen={true} />
       </QueryClientProvider>
