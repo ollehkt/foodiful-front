@@ -108,21 +108,25 @@ export const useUpdateOrder = () => {
   return { mutate }
 }
 
-const deleteOrder = async (orderId: string) => {
+const cancelOrder = async (orderId: string) => {
   const user = getStoredUser()
-  const { data } = await api.delete(`/order/${orderId}`, {
-    headers: {
-      Authorization: `Bearer ${user?.token}`,
-    },
-  })
+  const { data } = await api.patch(
+    `/order/cancel/${orderId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+      },
+    }
+  )
   return data
 }
 
-export const useDeleteOrder = () => {
+export const useCancelOrder = () => {
   const { fireToast } = useToast()
 
   const { mutate } = useMutation({
-    mutationFn: (orderId: string) => deleteOrder(orderId),
+    mutationFn: (orderId: string) => cancelOrder(orderId),
     onSuccess: () => {
       fireToast({
         type: 'success',
