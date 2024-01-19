@@ -1,35 +1,51 @@
+import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { Button } from '../../../../components/common/Button'
+import Container from '../../../../components/common/Container'
+import StrongTitle from '../../../../components/common/StrongTitle'
 import { useCancelOrder } from '../../../../components/order/hooks/useOrder'
+import { modalState } from '../../../../store/modalState'
 
 function OrderCancelForm() {
   const [cancelReason, setCancelReason] = useState('')
   const {
-    query: { orderId },
+    query: { orderId, date },
+    back,
   } = useRouter()
+  const setModal = useSetAtom(modalState)
 
   const { mutate: cancelOrder } = useCancelOrder()
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCancelReason(e.currentTarget.value)
   }
   const onClickCancel = () => {
-    cancelOrder(orderId as string)
+    setModal({
+      isOpen: true,
+      title: '주문 취소',
+      content: '정말 주문을 취소하시겠습니까?',
+      confirmFunc: () => cancelOrder({ orderId: orderId as string, cancelReason }),
+    })
   }
   return (
-    <div>
-      <div>주문 취소</div>
-      <div className="flex">
+    <Container style="my-8">
+      <StrongTitle title="주문 취소" style="my-5 border-b-2 border-main pb-2" />
+
+      <div className="flex justify-start items-center gap-4 my-8">
         <div>주문 ID</div>
-        <div>{orderId}</div>
+        <div className="ml-4 lg:ml-[40px]">{orderId}</div>
       </div>
-      <div>
-        <div>취소 사유</div>
-        <label htmlFor="" className="flex ml-[-4px] lg:ml-0">
+      <div className="flex justify-start items-center gap-4 my-8">
+        <div>주문 일자</div>
+        <div className="ml-0 lg:ml-[28px]">{date}</div>
+      </div>
+      <div className="flex justify-start itmes-center gap-4">
+        <label htmlFor="cancel" className="flex">
           취소 사유
           <textarea
-            className="resize-none border-2 border-disabled rounded-md ml-2 lg:ml-[90px] h-[100px]"
+            className="resize-none border-2 border-disabled rounded-md ml-4 lg:ml-[40px] h-[100px]"
             name="requirement"
-            id=""
+            id="cancel"
             cols={35}
             rows={10}
             value={cancelReason}
@@ -38,7 +54,11 @@ function OrderCancelForm() {
           />
         </label>
       </div>
-    </div>
+      <div className="flex justify-center md:justify-start items-center gap-4 my-10 mx-auto lg:ml-16">
+        <Button title="주문취소" onClick={onClickCancel} size="md" />
+        <Button title="돌아가기" onClick={() => back()} size="md" style="bg-main text-white" />
+      </div>
+    </Container>
   )
 }
 

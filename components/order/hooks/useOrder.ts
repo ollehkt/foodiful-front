@@ -108,11 +108,13 @@ export const useUpdateOrder = () => {
   return { mutate }
 }
 
-const cancelOrder = async (orderId: string) => {
+const cancelOrder = async (orderId: string, cancelReason: string) => {
   const user = getStoredUser()
   const { data } = await api.patch(
     `/order/cancel/${orderId}`,
-    {},
+    {
+      cancelReason,
+    },
     {
       headers: {
         Authorization: `Bearer ${user?.token}`,
@@ -126,7 +128,8 @@ export const useCancelOrder = () => {
   const { fireToast } = useToast()
 
   const { mutate } = useMutation({
-    mutationFn: (orderId: string) => cancelOrder(orderId),
+    mutationFn: ({ orderId, cancelReason }: { orderId: string; cancelReason: string }) =>
+      cancelOrder(orderId, cancelReason),
     onSuccess: () => {
       fireToast({
         type: 'success',
