@@ -6,7 +6,7 @@ import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 import {
   PostReservationType,
-  ReservationTypes,
+  ReservationType,
   updateReservartionType,
 } from '../types/reservationType'
 
@@ -64,7 +64,7 @@ const getReservations = async () => {
 export const useGetReservations = () => {
   const { fireToast } = useToast()
   const router = useRouter()
-  const { data, isFetching } = useQuery({
+  const { data = [] } = useQuery({
     queryKey: [queryKeys.reservation],
     queryFn: getReservations,
 
@@ -79,19 +79,26 @@ export const useGetReservations = () => {
       router.push('/')
     },
   })
+  return { data }
 }
 
-const getReservationsByUserId = async (userId: number): Promise<ReservationTypes[]> => {
-  const { data } = await api(`/user/reservation/${userId}`)
+const getReservationsByUserId = async (userId?: number): Promise<ReservationType[]> => {
+  const user = getStoredUser()
+  const { data } = await api(`/user/reservation/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
   return data
 }
 
 export const useGetReservationByUserId = (
-  userId: number
-): { data: ReservationTypes[]; isFetching: boolean } => {
+  userId?: number
+): { data: ReservationType[]; isFetching: boolean } => {
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.reservation, userId],
     queryFn: () => getReservationsByUserId(userId),
+    enabled: !!userId,
   })
   return { data, isFetching }
 }
