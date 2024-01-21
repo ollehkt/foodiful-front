@@ -8,7 +8,7 @@ import { useCancelOrder } from '../../../../components/order/hooks/useOrder'
 import { modalState } from '../../../../store/modalState'
 
 function OrderCancelForm() {
-  const [cancelReason, setCancelReason] = useState('')
+  const [refundReason, setRefundReason] = useState('')
   const {
     query: { orderId, date },
     back,
@@ -17,14 +17,14 @@ function OrderCancelForm() {
 
   const { mutate: cancelOrder } = useCancelOrder()
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCancelReason(e.currentTarget.value)
+    setRefundReason(e.currentTarget.value)
   }
   const onClickCancel = () => {
     setModal({
       isOpen: true,
       title: '주문 취소',
       content: '정말 주문을 취소하시겠습니까?',
-      confirmFunc: () => cancelOrder({ orderId: orderId as string, cancelReason }),
+      confirmFunc: () => cancelOrder({ orderId: orderId as string, refundReason }),
     })
   }
   return (
@@ -48,7 +48,7 @@ function OrderCancelForm() {
             id="cancel"
             cols={35}
             rows={10}
-            value={cancelReason}
+            value={refundReason}
             placeholder="취소 사유를 입력해주세요."
             onChange={onChange}
           />

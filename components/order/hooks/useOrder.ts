@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
@@ -48,7 +49,15 @@ export const usePostOrder = () => {
         message: '주문 해주셔서 감사합니다.',
       })
     },
-    onError: () => {},
+    onError: () => {
+      fireToast({
+        type: 'failed',
+        id: '주문 실패',
+        position: 'bottom',
+        timer: 2000,
+        message: '다시 주문해주세요.',
+      })
+    },
   })
   return { mutate }
 }
@@ -108,12 +117,12 @@ export const useUpdateOrder = () => {
   return { mutate }
 }
 
-const cancelOrder = async (orderId: string, cancelReason: string) => {
+const cancelOrder = async (orderId: string, refundReason: string) => {
   const user = getStoredUser()
   const { data } = await api.patch(
     `/order/cancel/${orderId}`,
     {
-      cancelReason,
+      refundReason,
     },
     {
       headers: {
@@ -128,8 +137,8 @@ export const useCancelOrder = () => {
   const { fireToast } = useToast()
 
   const { mutate } = useMutation({
-    mutationFn: ({ orderId, cancelReason }: { orderId: string; cancelReason: string }) =>
-      cancelOrder(orderId, cancelReason),
+    mutationFn: ({ orderId, refundReason }: { orderId: string; refundReason: string }) =>
+      cancelOrder(orderId, refundReason),
     onSuccess: () => {
       fireToast({
         type: 'success',

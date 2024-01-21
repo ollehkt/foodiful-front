@@ -6,21 +6,21 @@ import StrongTitle from '../../components/common/StrongTitle'
 import { useRouter } from 'next/router'
 import useToast from '../../components/common/hooks/useToast'
 import ProductItem from '../../components/product/ProductItem'
-import Link from 'next/link'
-import { ProductReturnType } from '../../components/product/types/productTypes'
 import { useGetOrder } from '../../components/order/hooks/useOrder'
 import PurchasedTitle from '../../components/purchase/PurchasedTitle'
 import PurchasedOrderItem from '../../components/purchase/PurchasedOrderItem'
 import { Button } from '../../components/common/Button'
 import { useGetFavoriteProducts } from '../../components/common/favorite/hooks/useFavorite'
+import { useGetReservationByUserId } from '../../components/calendar/hooks/useReservation'
+import { useGetReviewByUserId } from '../../components/review/hooks/useReviews'
 
 function MyPage() {
-  const [user, setUser] = useState<User | null>()
+  const [user, setUser] = useState<User>()
 
-  const [myComments, setMyComments] = useState([])
+  const { data: myReviews } = useGetReviewByUserId(user?.id)
   const { data: myPurchasedList } = useGetOrder()
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
-  const [myReservations, setMyReservations] = useState([])
+  const { data: myReservations } = useGetReservationByUserId(user?.id)
 
   const router = useRouter()
   const { fireToast } = useToast()
@@ -78,7 +78,7 @@ function MyPage() {
       </div>
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="내 후기 보기" />
-        {!!myComments.length ? (
+        {!!myReviews.length ? (
           <></>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
@@ -114,7 +114,11 @@ function MyPage() {
       <div className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="예약 내역" />
         {!!myReservations.length ? (
-          <></>
+          <div>
+            {myReservations.map((reservation) => (
+              <div key={reservation.id}>{reservation.reserveDate}</div>
+            ))}
+          </div>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
             예약 내역이 없습니다.

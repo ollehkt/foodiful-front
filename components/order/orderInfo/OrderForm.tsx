@@ -8,23 +8,7 @@ interface PropsType {
   orderForm: OrderFormType
   setOrderForm: Dispatch<SetStateAction<OrderFormType>>
 }
-/**
- * 
- * @returns 
- * <Input
-        style="ml-[70px] w-[300px] outline-none py-[4px] pl-[8px]"
-        labelStyle="my-[30px] text-xl"
-        labelName="이메일"
-        type="text"
-        minLength={3}
-        maxLength={10}
-        value={modifyUserState.email}
-        name="email"
-        isDisabled={true}
-        onChangeInput={onChangeInput}
-        placeholder="이름을 입력해주세요"
-      />
- */
+
 function OrderForm({ orderForm, setOrderForm }: PropsType) {
   const [phoneNum, setPhoneNum] = useState({
     '1st': '',
@@ -98,8 +82,6 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
       <div className="flex flex-col ml-[54px] mt-[20px] lg:mt-0 lg:ml-[152px]">
         <Input
           style="w-full py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main "
-          labelStyle=""
-          labelName=""
           type="text"
           minLength={3}
           maxLength={10}
@@ -112,7 +94,6 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
         <Input
           style="w-full py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
           labelStyle="mt-[20px] mb-[30px]"
-          labelName=""
           type="text"
           minLength={3}
           maxLength={10}
@@ -139,7 +120,6 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
         <Input
           style="w-[45%] lg:w-[30%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
           labelStyle="mr-[-70px] lg:mr-[-145px]"
-          labelName=""
           type="text"
           minLength={3}
           maxLength={10}
@@ -151,8 +131,6 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
         <div className="mx-2 lg:mx-4 text-2xl font-bold pb-2">-</div>
         <Input
           style="w-[45%] lg:w-[30%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
-          labelStyle=""
-          labelName=""
           type="text"
           minLength={3}
           maxLength={10}
@@ -162,23 +140,11 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           placeholder=""
         />
       </div>
-
-      {/* <Input
-        style="ml-[10px] lg:ml-[86px] w-[70%] lg:w-[40%] h-[100px] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
-        labelStyle="my-[30px]"
-        labelName="요구 사항"
-        type="text"
-        value={orderForm.requirement}
-        name="requirement"
-        onChangeInput={onChangeInput}
-        placeholder="택배사에 전달되는 요구 사항입니다."
-      /> */}
-      <label htmlFor="" className="flex ml-[-4px] lg:ml-0">
+      <label className="flex ml-[-4px] lg:ml-0">
         요구사항
         <textarea
           className="resize-none border-2 border-disabled rounded-md ml-2 lg:ml-[90px] h-[100px]"
           name="requirement"
-          id=""
           cols={35}
           rows={10}
           value={orderForm.requirement}
