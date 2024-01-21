@@ -6,7 +6,26 @@ import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from '../types/productReviewTypes'
 
-export const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
+const getReviewByUserId = async (userId?: number): Promise<ProductReviewTypes[]> => {
+  const user = getStoredUser()
+  const { data } = await api(`/user/product-review/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`,
+    },
+  })
+  return data
+}
+
+export const useGetReviewByUserId = (userId?: number): { data: ProductReviewTypes[] } => {
+  const { data = [] } = useQuery({
+    queryKey: [queryKeys.review, userId],
+    queryFn: () => getReviewByUserId(userId),
+    enabled: !!userId,
+  })
+  return { data }
+}
+
+const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
   const { data } = await api(`/product-review/${id}`)
   return data
 }
@@ -18,7 +37,6 @@ export const useGetReviews = (
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.review, productId],
     queryFn: () => getReviews(productId),
-    staleTime: 1000000,
     onSuccess: () => {},
     onError: () => {},
   })
@@ -164,7 +182,8 @@ export const useDeleteReview = (productId: number) => {
         productId,
       ])
 
-      const filteredReviews = prevReviews?.length && prevReviews.filter((review) => review.id !== reviewId)
+      const filteredReviews =
+        prevReviews?.length && prevReviews.filter((review) => review.id !== reviewId)
 
       queryClient.setQueryData([queryKeys.review, productId], (old: any) => {
         return { filteredReviews }
