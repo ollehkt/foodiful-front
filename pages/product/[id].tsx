@@ -57,11 +57,7 @@ const ProductDetailPage = ({
           isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
         }}
       >
-        <Button
-          style=""
-          title="update"
-          onClick={() => router.push(`/product/update/${product.id}`)}
-        />
+        <Button title="update" onClick={() => router.push(`/product/update/${product.id}`)} />
         <ProductDetail
           product={product && product}
           isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}

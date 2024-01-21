@@ -1,6 +1,6 @@
 interface PropsType {
   title: string
-  style: string
+  style?: string
   size?: string
   disabled?: boolean
   onClick?: () => void

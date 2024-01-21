@@ -31,7 +31,7 @@ const MyPagePurchased = () => {
   }, [])
 
   return (
-    <Container style="">
+    <Container>
       <StrongTitle title="상품 구매내역" style="border-b-2 border-main pb-2" />
       {!!orderList.length ? (
         <>

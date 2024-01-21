@@ -28,7 +28,7 @@ function ModalContainer() {
             <div className="text-center font-semibold my-4">{modal.content}</div>
             <div className="flex justify-center items-center gap-4 my-4">
               <Button title="확인" onClick={onClickConfirm} style="bg-main text-white" size="sm" />
-              <Button title="취소" onClick={onClickCancel} style="" size="sm" />
+              <Button title="취소" onClick={onClickCancel} size="sm" />
             </div>
           </div>
         </>

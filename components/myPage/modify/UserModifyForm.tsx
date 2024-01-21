@@ -237,7 +237,7 @@ const UserModifyForm = ({
             </>
           ) : (
             <Button
-              style=" w-[50px]"
+              style="w-[50px]"
               onClick={() => setIsPhoneModifyMode(true)}
               size="md"
               title="변경"
@@ -382,7 +382,6 @@ const UserModifyForm = ({
       <div className="w-full flex justify-center mt-[40px]">
         <Button
           title="수정하기"
-          style=""
           size="md"
           disabled={user.name === modifyUserState.name && user.phone === modifyUserState.phone}
           onClick={() => {
