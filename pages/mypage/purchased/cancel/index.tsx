@@ -12,6 +12,7 @@ function OrderCancelForm() {
   const {
     query: { orderId, date },
     back,
+    push,
   } = useRouter()
   const setModal = useSetAtom(modalState)
 
@@ -24,7 +25,10 @@ function OrderCancelForm() {
       isOpen: true,
       title: '주문 취소',
       content: '정말 주문을 취소하시겠습니까?',
-      confirmFunc: () => cancelOrder({ orderId: orderId as string, refundReason }),
+      confirmFunc: () => {
+        cancelOrder({ orderId: orderId as string, refundReason })
+        push('/mypage/refund')
+      },
     })
   }
   return (

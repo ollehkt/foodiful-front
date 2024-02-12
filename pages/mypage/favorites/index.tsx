@@ -44,7 +44,7 @@ const MyPageFavorites = () => {
     })()
   }, [])
   return (
-    <div className="grow flex-col items-center rounded-md shadow-basic px-5 py-2">
+    <section className="grow flex-col items-center px-5">
       <StrongTitle title="좋아하는 상품" style="border-b-2 border-main pb-2" />
       <div className="w-full my-12 py-2">
         {!myFavoriteProducts.length ? (
@@ -59,7 +59,7 @@ const MyPageFavorites = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

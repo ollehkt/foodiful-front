@@ -31,7 +31,7 @@ const MyPagePurchased = () => {
   }, [])
 
   return (
-    <Container>
+    <section className="grow flex-col items-center px-5">
       <StrongTitle title="상품 구매내역" style="border-b-2 border-main pb-2" />
       {!!orderList.length ? (
         <>
@@ -49,7 +49,7 @@ const MyPagePurchased = () => {
           </Link>
         </div>
       )}
-    </Container>
+    </section>
   )
 }
 MyPagePurchased.getLayout = getMyPageLayout
