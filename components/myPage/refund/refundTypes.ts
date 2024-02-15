@@ -12,4 +12,5 @@ export interface RefundType {
     name: string
     count: number
   }[]
+  status: string
 }
