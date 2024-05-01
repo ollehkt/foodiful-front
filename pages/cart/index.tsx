@@ -13,7 +13,6 @@ const CartPage = () => {
   const router = useRouter()
 
   const { data: cartLists, isFetching } = useGetCartList()
-  console.log(cartLists)
   useEffect(() => {
     const user = getStoredUser()
     if (!user) {

@@ -25,7 +25,7 @@ export const useGetReviewByUserId = (userId?: number): { data: ProductReviewType
   return { data }
 }
 
-const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
+export const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
   const { data } = await api(`/product-review/${id}`)
   return data
 }

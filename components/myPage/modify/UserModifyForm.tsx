@@ -118,12 +118,13 @@ const UserModifyForm = ({
         setTime((prev) => prev - 1)
       }, 1000)
     }
-    if (time == 0) {
+    if (time === 1) {
       setVerifyExpiredTxt('인증번호를 다시 요청해주세요')
       setIsClickedVerifyPhone(false)
+      setTime(0)
     }
     return () => clearInterval(count)
-  }, [time])
+  }, [time, setTime, setVerifyExpiredTxt, setIsClickedVerifyPhone])
 
   return (
     <div className="flex flex-col items-start">
@@ -142,8 +143,8 @@ const UserModifyForm = ({
       />
       <div className="flex items-center">
         <Input
-          style={`ml-[90px] w-[300px] outline-none py-[4px] pl-[8px] ${
-            isNameModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+          style={`ml-[90px] w-[300px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+            isNameModifyMode ? 'border-main ' : 'border-gray-300 '
           }`}
           labelStyle="my-[30px] relative text-lg"
           labelName="이름"
@@ -189,8 +190,8 @@ const UserModifyForm = ({
       <>
         <div className="relative">
           <Input
-            style={`ml-[76px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] ${
-              isPhoneModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
+            style={`ml-[74px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+              isPhoneModifyMode ? 'border-main' : 'border-gray-300'
             }`}
             labelStyle="my-[30px] relative text-lg"
             labelName="휴대폰"
@@ -230,7 +231,7 @@ const UserModifyForm = ({
                   setIsPhoneInputDisabled(false)
                   setIsPhoneModifyMode(false)
                   setModifyUserState({ ...modifyUserState, phone: user.phone })
-                  setTime(-1)
+                  setTime(0)
                   setPhoneCheckErrorMsg('')
                 }}
               />
@@ -248,8 +249,8 @@ const UserModifyForm = ({
           <>
             <div className="flex items-center mt-[20px] ml-[0px]">
               <Input
-                style={`mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] ${
-                  isClickedVerifyPhone ? 'border-b-2' : 'border-b-2 border-b-white'
+                style={`mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+                  isClickedVerifyPhone ? 'border-main' : 'border-gray-300'
                 }`}
                 labelStyle="mb-[10px] relative text-lg"
                 type="tel"

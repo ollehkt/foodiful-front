@@ -60,7 +60,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   return (
     <>
       <div
-        className={`flex items-center justify-between my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
+        className={`grid grid-cols-3 md:grid-cols-6 items-center  my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
           viewArrow && 'cursor-pointer'
         }`}
         onClick={onClickOrder}
@@ -73,7 +73,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
         <div className="md:grow-[0.8]">{order.totalPrice.toLocaleString()}원</div>
         <div className="md:flex md:items-center md:grow-[0.4] md:gap-8">
           <div className="text-center">{orderStatus}</div>
-          {orderStatus !== '주문 취소' ? (
+          {orderStatus !== '주문 취소' && (
             <div className="mt-2 md:mt-0">
               <Button
                 title="주문 취소"
@@ -81,14 +81,13 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
                 style="bg-main text-white"
               />
             </div>
-          ) : (
-            <div className="w-[100px]"></div>
           )}
         </div>
-        <span className="text-main text-xl font-extrabold mr-4 cursor-pointer hover:text-hover">
+        <span className="hidden md:block text-main text-xl font-extrabold mr-4 cursor-pointer hover:text-hover">
           {viewArrow && (isDetailOpened ? <IoIosArrowUp /> : <IoIosArrowDown />)}
         </span>
       </div>
+
       {isDetailOpened && (
         <div className="flex flex-col mx-auto animate-translateYDown">
           <div className="flex mx-auto w-[90%] md:w-[60%] text-[13px] md:text-sm p-2">

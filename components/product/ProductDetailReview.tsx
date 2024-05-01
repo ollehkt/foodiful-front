@@ -25,7 +25,6 @@ const ProductDetailReview = ({
   const [user, setUser] = useState<User>()
 
   const { mutate: deleteReview } = useDeleteReview(productId)
-  console.log(orderLists)
 
   useEffect(() => {
     const storedUser = getStoredUser()
@@ -39,7 +38,8 @@ const ProductDetailReview = ({
     if (!!orderLists.length) {
       orderLists.forEach((orderList) => {
         orderList.orderProduct.forEach((product) => {
-          if (product.productId === productId) setUserPurchased(true)
+          if (orderList.orderStatus !== 'CANCEL' && product.productId === productId)
+            setUserPurchased(true)
         })
       })
     }
@@ -89,7 +89,14 @@ const ProductDetailReview = ({
       )}
       <div className="flex-col mt-[40px] border-main border-t-[1px]">
         <div className="mt-[10px]  text-3xl">후기 목록</div>
-        {!!reviewList.length && <ReviewList reviewList={reviewList} />}
+        {!!reviewList.length ? (
+          <ReviewList reviewList={reviewList} />
+        ) : (
+          <div className="flex justify-center text-center my-[50px] text-main text-xl font-bold">
+            후기가 없습니다. <br />
+            구매 후 후기를 등록해주세요.
+          </div>
+        )}
       </div>
     </div>
   )

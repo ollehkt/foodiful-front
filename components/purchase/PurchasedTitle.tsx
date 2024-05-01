@@ -2,13 +2,12 @@ import React from 'react'
 
 function PurchasedTitle() {
   return (
-    <div className="flex items-center justify-between px-1 mt-3 text-sm text-textDisabled">
-      <div className="hidden md:block md:grow-[1.5]">주문 일자</div>
-      <div className="md:grow-[1.6]">주문 번호</div>
-      <div className="hidden md:block md:grow-[0.7] xl:grow-[1]">주문자 성함</div>
-      <div className="md:grow-[1]">주문 가격</div>
-      <div className="mr-8 md:mr-0 md:grow-[0.9]">주문 현황</div>
-      <div className="hidden md:block md:grow-[1.5] 2xl:grow-[1.0]"></div>
+    <div className="grid grid-cols-3 md:grid-cols-6 items-center px-1 mt-3 text-sm text-textDisabled">
+      <div className="hidden md:block">주문 일자</div>
+      <div className="">주문 번호</div>
+      <div className="hidden md:block">주문자 성함</div>
+      <div className="">주문 가격</div>
+      <div className="mr-8 md:mr-0 ">주문 현황</div>
     </div>
   )
 }

@@ -42,14 +42,16 @@ function MyPage() {
 
   return (
     <div className="grow shadow-basic rounded-md px-5">
-      <div className="border-t-2 border-t-active py-2 my-12">
+      <section className="border-t-2 border-t-active py-2 my-12">
         <StrongTitle title="로그인 정보" />
         <div className="my-4">
           <div className="text-main text-lg font-bold">{user?.email}</div>
-          <div className="text-main text-lg font-bold">{user?.name}</div>님
+          <div className="text-lg">
+            <span className="text-main font-bold">{user?.name}</span> 님
+          </div>
         </div>
-      </div>
-      <div className="w-full my-12 border-t-2 border-t-active py-2">
+      </section>
+      <section className="w-full my-12 border-t-2 border-t-active py-2">
         <div className="flex justify-between">
           <StrongTitle title="좋아하는 상품" />
         </div>
@@ -60,23 +62,25 @@ function MyPage() {
                 <ProductItem key={product.id} product={product} mini={true} />
               ))}
             </div>
-            <div className="flex justify-content my-2">
-              <Button
-                title="더 보기"
-                onClick={() => {
-                  router.push('/mypage/purchased')
-                }}
-                style="mx-auto bg-main text-white"
-              />
-            </div>
+            {myFavoriteProducts.length > 4 && (
+              <div className="flex justify-content my-2">
+                <Button
+                  title="전체 보기"
+                  onClick={() => {
+                    router.push('/mypage/favorites')
+                  }}
+                  style="mx-auto bg-main text-white"
+                />
+              </div>
+            )}
           </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
             좋아요 누른 상품이 없습니다.
           </div>
         )}
-      </div>
-      <div className="w-full my-12 border-t-2 border-t-active py-2">
+      </section>
+      <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="내 후기 보기" />
         {!!myReviews.length ? (
           <></>
@@ -85,8 +89,8 @@ function MyPage() {
             작성하신 후기가 없습니다.
           </div>
         )}
-      </div>
-      <div className="w-full my-12 border-t-2 border-t-active py-2">
+      </section>
+      <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="주문/배송 내역" />
         {!!myPurchasedList.length ? (
           <>
@@ -109,9 +113,9 @@ function MyPage() {
             주문 내역이 없습니다.
           </div>
         )}
-      </div>
+      </section>
 
-      <div className="w-full my-12 border-t-2 border-t-active py-2">
+      <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="예약 내역" />
         {!!myReservations.length ? (
           <div>
@@ -124,7 +128,7 @@ function MyPage() {
             예약 내역이 없습니다.
           </div>
         )}
-      </div>
+      </section>
     </div>
   )
 }

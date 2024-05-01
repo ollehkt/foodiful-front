@@ -1,20 +1,19 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider, useSetAtom } from 'jotai'
+import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
+import { Provider } from 'jotai'
 import ToastList from '../components/common/toast/ToastList'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React, { ReactElement, ReactNode, useEffect } from 'react'
 import { NextPage } from 'next'
-
 import HeaderNavMobile from '../components/common/header/mobile/HeaderNavMobile'
 import { getStoredUser, removeStoredUser, setStoreUser } from '../components/util/userStorage'
 import { useUser } from '../components/auth/hooks/useUser'
-
 import { useRouter } from 'next/router'
-import { getQueryClient } from '../components/util/getQueryClient'
+
 import ModalContainer from '../components/common/modal/ModalContainer'
+import RQProvider from '../components/util/RQProvider'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -39,12 +38,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     })()
   }, [])
 
-  const queryClient = getQueryClient()
-
   const getLayout =
     Component.getLayout ||
     ((page: React.ReactElement) => (
-      <QueryClientProvider client={queryClient}>
+      <RQProvider>
         <Hydrate state={pageProps.dehydratedState}>
           <Provider>
             <ToastList />
@@ -55,8 +52,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             </Layout>
           </Provider>
         </Hydrate>
-        <ReactQueryDevtools initialIsOpen={true} />
-      </QueryClientProvider>
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      </RQProvider>
     ))
 
   return getLayout(<Component {...pageProps} />)

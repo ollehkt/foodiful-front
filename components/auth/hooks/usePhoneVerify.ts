@@ -24,7 +24,7 @@ const usePhoneVerfiy = () => {
   // 인증 버튼 눌렀는지 여부
   const [isClickedVerifyPhone, setIsClickedVerifyPhone] = useState(false)
   // 검증 시간
-  const [time, setTime] = useState(-1) // 남은 시간 (단위: 초)
+  const [time, setTime] = useState(0) // 남은 시간 (단위: 초)
   // 만료 시 텍스트
   const [verifyExpiredTxt, setVerifyExpiredTxt] = useState('')
   // 핸드폰 인증 여부

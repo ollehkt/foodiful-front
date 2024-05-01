@@ -25,10 +25,10 @@ const ReviewList = ({ reviewList }: PropsType) => {
   useIntersectionObserver(ref, addRenderReviewCount)
 
   const [renderReviewList, setRenderReviewList] = useState<ProductReviewTypes[]>([])
-
+  console.log(renderReviewList)
   return (
     <>
-      {reviewList.length > 0 ? (
+      {!!reviewList.length ? (
         <>
           <div className="flex-col justify-center">
             {renderReviewList.map((review) => (
