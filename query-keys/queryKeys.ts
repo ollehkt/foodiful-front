@@ -6,4 +6,5 @@ export const queryKeys = {
   cart: 'cart',
   order: 'order',
   favorite: 'favorite',
+  lecture: 'lecture',
 }

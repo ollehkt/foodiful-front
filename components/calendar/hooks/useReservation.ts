@@ -16,7 +16,7 @@ const postReservation = async (reservationData: PostReservationType) => {
   const { data } = await api.post(
     '/reservation',
     {
-      classId: reservationData.classId,
+      lectureId: reservationData.lectureId,
       reserveDate: reservationData.reserveDate,
     },
     {

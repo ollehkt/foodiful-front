@@ -11,19 +11,19 @@ interface PropsType {
   isTimeTableModalOpen: boolean
   setIsTimeTableModalOpen: Dispatch<SetStateAction<boolean>>
   reservedTimes: string[] | []
-  selectedClass: { id: number; name: string; classDuration: number }
+  selectedLecture: { id: number; name: string; lectureDuration: number }
 }
 
 const Calendar = ({
   isTimeTableModalOpen,
   setIsTimeTableModalOpen,
   reservedTimes,
-  selectedClass,
+  selectedLecture,
 }: PropsType) => {
   const { fireToast } = useToast()
   const [currentDate, setCurrentDate] = useState(dayjs().format())
   const [selectedDate, setSelectedDate] = useState(dayjs().format())
-
+  console.log(isTimeTableModalOpen)
   const onClickPrevMonth = () => {
     if (dayjs(currentDate).isBefore(dayjs())) {
       fireToast({
@@ -99,7 +99,7 @@ const Calendar = ({
         isTimeTableModalOpen={isTimeTableModalOpen}
         setIsTimeTableModalOpen={setIsTimeTableModalOpen}
         reservedTimes={reservedTimes}
-        selectedClass={selectedClass}
+        selectedLecture={selectedLecture}
       />
     </>
   )

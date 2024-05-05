@@ -1,9 +1,9 @@
-export interface ClassType {
+export interface LectureType {
   name: string
   price: number
   discount: number
   description: string
-  classDuration: number
+  lectureDuration: number
   descImg: string[]
   id: number
   regular: boolean

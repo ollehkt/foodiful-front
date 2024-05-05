@@ -19,7 +19,7 @@ interface PropsType {
   isTimeTableModalOpen: boolean
   setIsTimeTableModalOpen: Dispatch<SetStateAction<boolean>>
   reservedTimes: string[] | []
-  selectedClass: { id: number; name: string; classDuration: number }
+  selectedLecture: { id: number; name: string; lectureDuration: number }
 }
 
 const CalendarContent = ({
@@ -29,7 +29,7 @@ const CalendarContent = ({
   isTimeTableModalOpen,
   setIsTimeTableModalOpen,
   reservedTimes,
-  selectedClass,
+  selectedLecture,
 }: PropsType) => {
   // 날짜 선택하면 예약 되지 않은 시간들 불러와서 DatesRender 컴포넌트로 전달
 
@@ -73,7 +73,8 @@ const CalendarContent = ({
       isOpen: true,
       title: '예약 추가',
       content: '예약을 추가하시겠습니까?',
-      confirmFunc: () => postReservation({ classId: selectedClass.id, reserveDate: selectedTimes }),
+      confirmFunc: () =>
+        postReservation({ lectureId: selectedLecture.id, reserveDate: selectedTimes }),
     })
   }
 
@@ -136,7 +137,7 @@ const CalendarContent = ({
         times={times}
         selectedDate={selectedDate}
         reservedTimes={reservedTimes}
-        selectedClass={selectedClass}
+        selectedLecture={selectedLecture}
         setIsReserveTimeSelected={setIsReserveTimeSelected}
         selectedTimes={selectedTimes}
         setSelectedTimes={setSelectedTimes}

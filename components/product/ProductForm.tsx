@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { AiFillCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../common/types/fileTypes'
-
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
 import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'

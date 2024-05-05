@@ -39,9 +39,10 @@ function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getS
   return (
     <div>
       {user && user.role === 'ADMIN' && (
-        <Button style="text-xl" title="Add" onClick={onClickAddBtn} />
+        <div className="flex justify-center pt-2">
+          <Button style="text-xl" size="md" title="상품 추가" onClick={onClickAddBtn} />
+        </div>
       )}
-
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         {isFetching ? (
           <ProductSkeleton count={4} />

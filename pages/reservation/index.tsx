@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
 import { ReservationType } from '../../components/calendar/types/reservationType'
-import { ClassType } from '../../components/class/types/classTypes'
+import { LectureType } from '../../components/class/types/lectureTypes'
 import Container from '../../components/common/Container'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
@@ -12,56 +12,54 @@ import StrongTitle from '../../components/common/StrongTitle'
 // class 및 예약 내역 서버사이드 프롭으로 받아오기
 
 export const getServerSideProps = async (): Promise<{
-  props: { classes: ClassType[]; reservedTimes: string[] }
+  props: { lectures: LectureType[]; reservedTimes: string[] }
 }> => {
-  const { data: classes } = await api('/class/all')
+  const { data: lectures } = await api('/lecture/all')
   const { data: reservations } = await api('/reservation/all')
   if (!!reservations.length) {
-    return { props: { classes, reservedTimes: [] } }
+    return { props: { lectures, reservedTimes: [] } }
   }
   const reservedTimes: string[] = reservations.flatMap(
     (reserve: ReservationType) => reserve.reserveDate
   )
   return {
-    props: { classes, reservedTimes },
+    props: { lectures, reservedTimes },
   }
 }
 
 const Reservation = ({
-  classes,
+  lectures,
   reservedTimes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [isClassSelectModalOpen, setIsClassSelectModalOpen] = useState(false)
+  const [isLectureSelectModalOpen, setIsLectureSelectModalOpen] = useState(false)
   const [isTimeTableModalOpen, setIsTimeTableModalOpen] = useState(false)
-  const [selectedClassName, setSelectedClassName] = useState('')
-  const [selectedClass, setSelectedClass] = useState<{
+  const [selectedLectureName, setSelectedLectureName] = useState('')
+  const [selectedLecture, setSelectedLecture] = useState<{
     id: number
     name: string
-    classDuration: number
+    lectureDuration: number
   }>({
     id: 0,
     name: '',
-    classDuration: 0,
+    lectureDuration: 0,
   })
 
-  useEffect(() => {}, [])
-
   useEffect(() => {
-    if (selectedClassName) {
-      const filteredClass = classes
-        .filter((item) => item.name === selectedClassName)
+    if (selectedLectureName) {
+      const filteredLecture = lectures
+        .filter((item) => item.name === selectedLectureName)
         .map((item) => {
-          return { id: item.id, name: item.name, classDuration: item.classDuration }
+          return { id: item.id, name: item.name, lectureDuration: item.lectureDuration }
         })
-      setSelectedClass(filteredClass[0])
+      setSelectedLecture(filteredLecture[0])
     }
-  }, [selectedClassName])
+  }, [selectedLectureName])
 
   return (
     <div
       className="w-full"
       onClick={() => {
-        isClassSelectModalOpen && setIsClassSelectModalOpen(false)
+        isLectureSelectModalOpen && setIsLectureSelectModalOpen(false)
       }}
     >
       <Container style="my-[40px]">
@@ -70,17 +68,17 @@ const Reservation = ({
         </div>
         <div
           className={`w-full ${
-            selectedClass ? 'mt-[40px] translate-y-0' : 'translate-y-[200px]'
+            selectedLecture ? 'mt-[40px] translate-y-0' : 'translate-y-[200px]'
           } mx-auto flex flex-col items-center transition-translate-y duration-1000 ease-in-out`}
         >
           <div className="text-2xl font-bold">클래스 선택하기</div>
-          {!!classes.length && (
+          {!!lectures.length && (
             <Select<string>
-              options={classes.map((item) => item.name)}
-              selected={selectedClassName}
-              setSelected={setSelectedClassName}
-              isSelectedModalOpen={isClassSelectModalOpen}
-              setIsSelectedModalOpen={setIsClassSelectModalOpen}
+              options={lectures.map((item) => item.name)}
+              selected={selectedLectureName}
+              setSelected={setSelectedLectureName}
+              isSelectedModalOpen={isLectureSelectModalOpen}
+              setIsSelectedModalOpen={setIsLectureSelectModalOpen}
               toastMsg="아래로 스크롤 해 모든 클래스를 보실 수 있습니다."
             />
           )}
@@ -88,22 +86,22 @@ const Reservation = ({
 
         <div
           className={`mt-[60px] flex-col items-center ${
-            selectedClass.name
+            selectedLecture.name
               ? 'animate-translateUp100 opacity-1 md:w-[800px] md:h-[900px] '
               : 'hidden translate-y-[200px]'
           } mx-auto`}
         >
           <div className="text-2xl">
-            <span className="text-main font-bold"> {selectedClass.name}</span>
+            <span className="text-main font-bold"> {selectedLecture.name}</span>
             {'('}
-            {selectedClass.classDuration / 60} 시간{')'} 예약
+            {selectedLecture.lectureDuration / 60} 시간{')'} 예약
           </div>
 
           <Calendar
             isTimeTableModalOpen={isTimeTableModalOpen}
             setIsTimeTableModalOpen={setIsTimeTableModalOpen}
             reservedTimes={reservedTimes}
-            selectedClass={selectedClass}
+            selectedLecture={selectedLecture}
           />
         </div>
       </Container>

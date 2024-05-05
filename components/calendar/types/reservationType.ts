@@ -5,7 +5,7 @@ export interface ReservationType {
 }
 
 export interface PostReservationType {
-  classId: number
+  lectureId: number
   reserveDate: string
 }
 

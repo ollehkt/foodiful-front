@@ -9,7 +9,7 @@ interface PropsType {
   times: string[]
   selectedDate: string
   reservedTimes: string[]
-  selectedClass: { id: number; name: string; classDuration: number }
+  selectedLecture: { id: number; name: string; lectureDuration: number }
   setIsReserveTimeSelected: Dispatch<SetStateAction<boolean>>
   selectedTimes: string
   setSelectedTimes: Dispatch<SetStateAction<string>>
@@ -21,7 +21,7 @@ const CalendarTimeRender = ({
   times,
   selectedDate,
   reservedTimes,
-  selectedClass,
+  selectedLecture,
   setIsReserveTimeSelected,
   selectedTimes,
   setSelectedTimes,
@@ -38,7 +38,7 @@ const CalendarTimeRender = ({
     }
 
     const filteredSameDates = reservedTimes.filter((date) => dayjs(date).isSame(time, 'D'))
-    const addedTime = reserveTimeCheck(time, filteredSameDates[0], selectedClass.classDuration)
+    const addedTime = reserveTimeCheck(time, filteredSameDates[0], selectedLecture.lectureDuration)
     if (addedTime) {
       setSelectedTimes(time)
       setConfirmSelectedTime(`${time} ~ ${addedTime}`)
