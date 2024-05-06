@@ -29,7 +29,6 @@ const CalendarTimeRender = ({
   const [confirmSelectedTime, setConfirmSelectedTime] = useState('')
   const { reserveTimeCheck } = useTimeCheck()
 
-  // 시간 클릭 시 클래스 duration 더해서 시작시간 ~ 끝 시간 체크 되게 만들기
   const onClickTime = (time: string) => {
     if (time === selectedTimes || reservedTimes.includes(time)) {
       setSelectedTimes('')

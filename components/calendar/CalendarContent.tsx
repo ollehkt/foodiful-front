@@ -31,8 +31,6 @@ const CalendarContent = ({
   reservedTimes,
   selectedLecture,
 }: PropsType) => {
-  // 날짜 선택하면 예약 되지 않은 시간들 불러와서 DatesRender 컴포넌트로 전달
-
   const { fireToast } = useToast()
   const router = useRouter()
   const [times, setTimes] = useState<string[]>([])
@@ -89,8 +87,6 @@ const CalendarContent = ({
     setTimes(timeArr)
   }, [selectedDate])
 
-  // 선택된 시간을 바탕으로 예약하기 버튼 눌렀을 때 예약
-
   return (
     <div className="w-full">
       <div className="w-full px-4 grid grid-cols-7">
@@ -108,7 +104,6 @@ const CalendarContent = ({
         setIsTimeTableModalOpen={setIsTimeTableModalOpen}
       />
 
-      {/* 선택 눌렀을 때 예약하기 버튼 나오게 만들기 */}
       {isReserveTimeSelected && user && (
         <div className="w-full mx-auto flex justify-center">
           <div className="md:w-[300px] shadow-basic p-2 rounded-md flex-col gap-1">

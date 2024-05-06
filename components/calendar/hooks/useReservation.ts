@@ -9,6 +9,7 @@ import {
   ReservationType,
   updateReservartionType,
 } from '../types/reservationType'
+import { isAxiosError } from 'axios'
 
 const postReservation = async (reservationData: PostReservationType) => {
   const user = getStoredUser()
@@ -43,7 +44,15 @@ export const useMutateReservation = () => {
       })
       router.push('/')
     },
-    onError: () => {
+    onError: (error) => {
+      if (isAxiosError(error))
+        fireToast({
+          id: '예약 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
       fireToast({
         id: '예약 실패',
         type: 'failed',

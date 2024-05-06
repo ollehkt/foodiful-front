@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
 import { ReservationType } from '../../components/calendar/types/reservationType'
-import { LectureType } from '../../components/class/types/lectureTypes'
+import { LectureType } from '../../components/lecture/types/lectureTypes'
 import Container from '../../components/common/Container'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
@@ -16,12 +16,14 @@ export const getServerSideProps = async (): Promise<{
 }> => {
   const { data: lectures } = await api('/lecture/all')
   const { data: reservations } = await api('/reservation/all')
+
   if (!!reservations.length) {
     return { props: { lectures, reservedTimes: [] } }
   }
   const reservedTimes: string[] = reservations.flatMap(
     (reserve: ReservationType) => reserve.reserveDate
   )
+
   return {
     props: { lectures, reservedTimes },
   }

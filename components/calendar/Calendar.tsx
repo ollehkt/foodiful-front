@@ -23,7 +23,7 @@ const Calendar = ({
   const { fireToast } = useToast()
   const [currentDate, setCurrentDate] = useState(dayjs().format())
   const [selectedDate, setSelectedDate] = useState(dayjs().format())
-  console.log(isTimeTableModalOpen)
+
   const onClickPrevMonth = () => {
     if (dayjs(currentDate).isBefore(dayjs())) {
       fireToast({
@@ -40,9 +40,6 @@ const Calendar = ({
   const onClickNextMonth = () => {
     setCurrentDate(dayjs(currentDate).add(1, 'M').format())
   }
-  /**
-   * TODO: 날짜 선택했을 때 날짜에 맞는 시간을 띄워줘야 한다. 비어있는 시간, 차있는 시간
-   */
 
   const onClickSelectDate = (day: string) => {
     if (dayjs(day).isSameOrBefore(dayjs(), 'd')) {
