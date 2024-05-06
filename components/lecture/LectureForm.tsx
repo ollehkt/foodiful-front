@@ -1,31 +1,35 @@
 import { UseMutateFunction } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { AiFillCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
-import { VALID_IMAGE_FILE_TYPES } from '../common/types/fileTypes'
+import React, { useState } from 'react'
+import { useRenderImages } from '../common/hooks/useRenderImages'
+import { LectureType } from './types/lectureTypes'
+import { useInput } from '../common/hooks/useInput'
+import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
 import { api } from '../axios/axiosInstance'
 import { Button } from '../common/Button'
-import { useGetPresignedUrl } from '../common/hooks/useGetPresignedUrl'
-import { useInput } from '../common/hooks/useInput'
-import { useRenderImages } from '../common/hooks/useRenderImages'
+import dynamic from 'next/dynamic'
 import { Input } from '../common/Input'
-import { PRODUCT_CATEGORIES } from '../constants/product'
-import { CategoryType, ProductReturnType, ProductType } from './types/productTypes'
+import { AiFillCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
+import { VALID_IMAGE_FILE_TYPES } from '../common/types/fileTypes'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
   ssr: false,
 })
 
+const regularBtns = [
+  { title: '정규', isClicked: true },
+  { title: '비정규', isClicked: false },
+]
+
 interface PropsType {
-  productForUpdate?: ProductReturnType
+  lectureForUpdate?: LectureType
   onSubmitAdd?: UseMutateFunction<
     AxiosResponse<any, any> | undefined,
     unknown,
     {
-      product: ProductType
+      lecture: Omit<LectureType, 'id'>
     },
     unknown
   >
@@ -33,58 +37,41 @@ interface PropsType {
     any,
     unknown,
     {
-      product: ProductType
+      lecture: Omit<LectureType, 'id'>
       id: number
     },
     unknown
   >
 }
 
-const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsType) => {
+function LectureForm({ onSubmitAdd, onSubmitUpdate, lectureForUpdate }: PropsType) {
+  const { push } = useRouter()
   const { onChangeRenderImgs } = useRenderImages()
-  const router = useRouter()
   const [files, setFiles] = useState<File[]>([])
-  const [category, setCategory] = useState<CategoryType[]>(PRODUCT_CATEGORIES)
   const [imagesSrc, setImagesSrc] = useState<string[]>(
-    (productForUpdate && productForUpdate.descImg) || []
-  )
-
-  const [deliverState, setDeliverState] = useState(
-    (productForUpdate && productForUpdate.deliver) || false
+    (lectureForUpdate && lectureForUpdate.descImg) || []
   )
 
   const {
-    state: product,
-    setState: setProduct,
+    state: lecture,
+    setState: setLecture,
     onChangeInput,
-  } = useInput<ProductType, string | number | string[] | CategoryType[] | boolean>(
-    (productForUpdate && { ...productForUpdate }) || {
+  } = useInput<Omit<LectureType, 'id'>, string | number | string[] | boolean>(
+    (lectureForUpdate && { ...lectureForUpdate }) || {
       name: '',
       subTitle: '',
-      description: '',
-      price: 0,
-      discount: 0,
-      limitQuantity: 0,
       descImg: [],
-      categories: [],
-      deliver: deliverState,
+      description: '',
+      discount: 0,
+      lectureDuration: 0,
+      price: 0,
+      regular: false,
     }
   )
-
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
-
-  const onSelectCategory = (clickedTitle: string) => {
-    const updateOption = category.map((category) =>
-      category.title === clickedTitle
-        ? { ...category, isClicked: category.isClicked ? false : true }
-        : category
-    )
-    setCategory(updateOption)
-  }
-
   const onClickDeleteFile = async (img: string) => {
     if (img.includes('kt-first-bucket')) {
-      await api.delete(`/product/image/${productForUpdate && productForUpdate.id}`, {
+      await api.delete(`/product/image/${lectureForUpdate && lectureForUpdate.id}`, {
         data: {
           img,
         },
@@ -93,17 +80,9 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
     setImagesSrc(imagesSrc.filter((image) => image !== img))
   }
 
-  useEffect(() => {
-    setProduct({
-      ...product,
-      categories: category
-        .filter((category) => {
-          return category.isClicked === true
-        })
-        .map((category) => category.title),
-    })
-  }, [category])
-
+  const onSelectRegular = (title: string) => {
+    setLecture({ ...lecture, regular: title === '정규' ? true : false })
+  }
   return (
     <div className="mx-4">
       <div className="space-y-12">
@@ -115,10 +94,24 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                   style="w-[60%] block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0  sm:leading-6 shadow-sm"
                   labelStyle="block  font-medium leading-6"
                   type="text"
-                  labelName="상품 이름"
-                  value={product.name}
+                  labelName="클래스 이름"
+                  value={lecture.name}
                   name="name"
-                  placeholder="상품 이름을 입력해주세요."
+                  placeholder="클래스 이름을 입력해주세요."
+                  onChangeInput={onChangeInput}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <div className="mt-2">
+                <Input
+                  style="w-[60%] block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0  sm:leading-6 shadow-sm"
+                  labelStyle="block  font-medium leading-6"
+                  type="text"
+                  labelName="클래스 간단 설명"
+                  value={lecture.subTitle}
+                  name="subTitle"
+                  placeholder="클래스에 대한 간단한 설명을 입력해주세요."
                   onChangeInput={onChangeInput}
                 />
               </div>
@@ -129,10 +122,10 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                   style="block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
                   labelStyle="block font-medium leading-6 "
                   type="text"
-                  labelName="상품 가격"
-                  value={product.price}
+                  labelName="클래스 가격"
+                  value={lecture.price}
                   name="price"
-                  placeholder="상품 가격을 입력해주세요."
+                  placeholder="클래스 가격을 입력해주세요."
                   onChangeInput={onChangeInput}
                 />
               </div>
@@ -143,10 +136,10 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
                   style="block flex-1 border-0 bg-transparent py-1.5 pl-1  focus:ring-0 sm:leading-6 shadow-sm"
                   labelStyle="block font-medium leading-6 "
                   type="text"
-                  labelName="상품 할인"
-                  value={product.discount}
+                  labelName="클래스 할인"
+                  value={lecture.discount}
                   name="discount"
-                  placeholder="상품 할인율을 입력해주세요."
+                  placeholder="클래스 할인율을 입력해주세요."
                   onChangeInput={onChangeInput}
                 />
               </div>
@@ -154,76 +147,45 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
             <div className="sm:col-span-4">
               <div className="mt-2">
                 <Input
-                  style="block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
-                  labelStyle="block font-medium leading-6"
+                  style="block flex-1 border-0 bg-transparent py-1.5 pl-1  focus:ring-0 sm:leading-6 shadow-sm"
+                  labelStyle="block font-medium leading-6 "
                   type="text"
-                  labelName="상품 수량"
-                  value={product.limitQuantity}
-                  name="limitQuantity"
-                  placeholder="상품 수량을 입력해주세요."
+                  labelName="클래스 진행시간(분)"
+                  value={lecture.lectureDuration}
+                  name="lectureDuration"
+                  placeholder="클래스 진행시간을 입력해주세요."
                   onChangeInput={onChangeInput}
                 />
               </div>
             </div>
             <div className="col-span-full">
-              <Input
-                style="w-full border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:leading-6 shadow-sm"
-                labelStyle="block font-medium leading-6"
-                type="text"
-                labelName="상품 설명"
-                value={product.subTitle}
-                name="subTitle"
-                placeholder="상품의 간단한 설명을 입력해주세요."
-                onChangeInput={onChangeInput}
-              />
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="product-category" className="block  font-medium leading-6">
-                상품 카테고리
+              <label htmlFor="product-category" className="block font-medium leading-6">
+                정규 클래스 여부
               </label>
               <div className="mt-2">
                 <div className="flex flex-wrap">
-                  {category.map(({ title, isClicked }, index) => (
-                    <span
-                      key={`${title}-${index}`}
-                      className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer ${
-                        isClicked ? 'bg-main text-white' : ''
-                      }`}
-                      onClick={() => onSelectCategory(title)}
-                    >
-                      {title}
-                    </span>
-                  ))}
+                  <button
+                    className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer ${
+                      !!lecture.regular ? 'bg-main text-white' : ''
+                    }`}
+                    onClick={() => setLecture({ ...lecture, regular: true })}
+                  >
+                    정규
+                  </button>
+                  <button
+                    className={`my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer ${
+                      !lecture.regular ? 'bg-main text-white' : ''
+                    }`}
+                    onClick={() => setLecture({ ...lecture, regular: false })}
+                  >
+                    비정규
+                  </button>
                 </div>
               </div>
             </div>
-            <div className="col-span-full">
-              <label htmlFor="product-category" className="block font-medium leading-6">
-                상품 배달 여부
-              </label>
-              <div className="mt-2">
-                <div className="flex">
-                  <span
-                    onClick={() => setDeliverState(true)}
-                    className={`mr-4 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
-                         ${deliverState ? 'bg-main text-white' : ''}`}
-                  >
-                    배달 가능
-                  </span>
-                  <span
-                    onClick={() => setDeliverState(false)}
-                    className={`mx-2 my-2 border-b-[1px] border-main border-[2px] rounded-md p-2 cursor-pointer
-                    ${!deliverState ? 'bg-main text-white' : ''}`}
-                  >
-                    배달 불가능
-                  </span>
-                </div>
-              </div>
-            </div>
-
             <div className="col-span-full">
               <label htmlFor="cover-photo" className="block font-medium leading-6">
-                상품 이미지
+                클래스 이미지
               </label>
               <div className="mt-2 flex justify-start">
                 <label
@@ -270,9 +232,9 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
             </div>
             <div className="col-span-full">
               <label htmlFor="cover-photo" className="block font-medium leading-6 mb-4">
-                상품 상세 설명
+                클래스 상세 설명
               </label>
-              <DynamicEditor content={product} setContent={setProduct} bucket="product" />
+              <DynamicEditor content={lecture} setContent={setLecture} bucket="lecture" />
             </div>
           </div>
         </div>
@@ -281,14 +243,14 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Button
           onClick={async () => {
-            const urls = await getPresignedUrlByFiles(files, 'product')
+            const urls = await getPresignedUrlByFiles(files, 'lecture')
             if (urls) {
-              const updatedProduct = { ...product, descImg: [...product.descImg, ...urls] }
-              setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-              if (productForUpdate?.id && onSubmitUpdate)
-                onSubmitUpdate({ product: updatedProduct, id: productForUpdate.id })
+              const updatedLecture = { ...lecture, descImg: [...lecture.descImg, ...urls] }
+              setLecture({ ...lecture, descImg: [...lecture.descImg, ...urls] })
+              if (lectureForUpdate?.id && onSubmitUpdate)
+                onSubmitUpdate({ lecture: updatedLecture, id: lectureForUpdate.id })
               else {
-                onSubmitAdd && onSubmitAdd({ product: updatedProduct })
+                onSubmitAdd && onSubmitAdd({ lecture: updatedLecture })
               }
             }
           }}
@@ -297,7 +259,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
         />
 
         <Button
-          onClick={() => router.push('/product')}
+          onClick={() => push('/lecture')}
           title="취소"
           style="rounded-md bg-indigo-600 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         />
@@ -306,4 +268,4 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
   )
 }
 
-export default ProductForm
+export default LectureForm

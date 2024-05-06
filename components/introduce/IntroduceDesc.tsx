@@ -1,11 +1,15 @@
 import Image from 'next/image'
 import StrongTitle from '../common/StrongTitle'
 
-interface PropsType {
-  descs: { title: string; desc: string; img: string }[]
-}
-
-const IntroduceDesc = ({ descs }: PropsType) => {
+const descs = [
+  {
+    img: '/profileImage.png',
+    title: '이게 푸디풀 입니다',
+    desc: '엄청난 이력의 소유자 입니다.',
+  },
+  { img: '/foodiful.jpeg', title: '푸디풀 입니다', desc: '엄청난 이력의 소유자 입니다.' },
+]
+const IntroduceDesc = () => {
   return (
     <div className="my-[120px] grid grid-cols-2 gap-y-32 justify-center items-center">
       {descs.map(

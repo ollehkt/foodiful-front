@@ -28,14 +28,14 @@ export const headerTitle = [
   },
   {
     title: '클래스 소개',
-    url: '/class',
-    subTitle: [
-      { title: '전체보기', url: '/class' },
-      { title: '쌀강정 클래스', url: '/class/ricegangjeong' },
-      { title: '다식 클래스', url: '/class/dasik' },
-      { title: '호두 클래스', url: '/class/hodu' },
-      { title: '곶감단지 클래스', url: '/class/gotgam' },
-    ],
+    url: '/lecture',
+    // subTitle: [
+    //   { title: '전체보기', url: '/lecture' },
+    //   { title: '쌀강정 클래스', url: '/lecture/ricegangjeong' },
+    //   { title: '다식 클래스', url: '/lecture/dasik' },
+    //   { title: '호두 클래스', url: '/lecture/hodu' },
+    //   { title: '곶감단지 클래스', url: '/lecture/gotgam' },
+    // ],
   },
   {
     title: '예약 하기',

@@ -7,20 +7,24 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr'
 import { useGetPresignedUrl } from '../hooks/useGetPresignedUrl'
 import { ProductType } from '../../product/types/productTypes'
+import { LectureType } from '../../lecture/types/lectureTypes'
 
 type HookCallback = (url: string, text?: string) => void
 
 interface PropsType {
-  product: ProductType
-  setProduct: Dispatch<SetStateAction<ProductType>>
+  content: ProductType | Omit<LectureType, 'id'>
+  setContent:
+    | Dispatch<SetStateAction<ProductType>>
+    | Dispatch<SetStateAction<Omit<LectureType, 'id'>>>
+  bucket: string
 }
 
-const ToastEditor = ({ product, setProduct }: PropsType) => {
+const ToastEditor = ({ content, setContent, bucket }: PropsType) => {
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const editorRef = useRef<Editor>(null)
 
   const onUploadImage = async (blob: File | Blob, cb: HookCallback) => {
-    const url = await getPresignedUrlByFiles([blob], 'product')
+    const url = await getPresignedUrlByFiles([blob], bucket)
     if (url) cb(url[0], '업로드 된 이미지')
   }
 
@@ -29,7 +33,7 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
       const data = editorRef.current?.getInstance().getHTML()
-      if (data) setProduct({ ...product, description: data })
+      if (data) setContent((prev: any) => ({ ...prev, description: data }))
     }, 1500)
   }
   const changeATag = () => {
@@ -47,7 +51,7 @@ const ToastEditor = ({ product, setProduct }: PropsType) => {
     <Editor
       ref={editorRef}
       initialValue={`${
-        product ? product.description : '여기에 사진을 포함한 상품 설명을 입력하면 됩니다.'
+        content ? content.description : '여기에 사진을 포함한 모든 설명을 입력하면 됩니다.'
       }`}
       previewStyle="vertical"
       height="600px"

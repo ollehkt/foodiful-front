@@ -14,7 +14,7 @@ const IntroducePortfolio = () => {
   return (
     <div>
       <StrongTitle title="푸디풀 이력" />
-      
+      <div></div>
     </div>
   )
 }

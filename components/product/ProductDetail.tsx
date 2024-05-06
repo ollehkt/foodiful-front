@@ -3,7 +3,7 @@ import AmountCounter from '../common/AmountCounter'
 import Select from '../common/Select'
 import SubSlider from '../common/DetailSlider'
 import Image from 'next/image'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReturnType } from './types/productTypes'
 import { Button } from '../common/Button'
@@ -12,7 +12,7 @@ import { cartProductState } from '../../store/cartProductState'
 import useToast from '../common/hooks/useToast'
 import { useGetPrice } from '../cart/hooks/useGetPrice'
 import { postOrderProductState } from '../../store/postOrderProductState'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { modalState } from '../../store/modalState'
 
 interface PropsType {
@@ -140,8 +140,11 @@ const ProductDetail = ({
         )}
 
         <div className="lg:ml-[100px] my-[10px] w-full mx-auto">
+          <h2 className="text-base font-semibold leading-7 text-gray-400 py-2">제품 &gt; {name}</h2>
           <div className="font-semibold text-3xl">{name}</div>
-          <div className="text-textDisabled text-md pb-4 border-b-2 border-main">{subTitle}</div>
+          <div className="text-textDisabled text-md pb-4 border-b-2 border-main break-keep">
+            {subTitle}
+          </div>
           <div className="mt-[10px] flex justify-end items-center gap-x-4">
             {discount ? (
               <>

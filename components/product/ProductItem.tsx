@@ -35,10 +35,15 @@ const ProductItem = ({ product, mini }: PropsType) => {
         <FavoriteIcon productId={id} isLiked={isLiked} />
       </div>
       <p className="mt-1 text-lg font-medium text-gray-900">
-        {/**
-         * TODO: 할인율 있을 때는 할인 가격 작대기 긋고 옆에 가격
-         */}
-        {discount ? getDiscountedPrice(price, discount) : price}원
+        <div className="flex gap-x-2 items-center">
+          {discount
+            ? `${getDiscountedPrice(price, discount).toLocaleString()}원`
+            : `${price.toLocaleString()}원`}
+
+          {!!discount && (
+            <div className="line-through text-gray-200">{`${price.toLocaleString()}원`}</div>
+          )}
+        </div>
       </p>
     </div>
   )

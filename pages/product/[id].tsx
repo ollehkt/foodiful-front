@@ -11,6 +11,7 @@ import { queryKeys } from '../../query-keys/queryKeys'
 import { getReviews, useGetReviews } from '../../components/review/hooks/useReviews'
 import { getProductById, useGetProductById } from '../../components/product/hooks/useProduct'
 import { useGetOrder } from '../../components/order/hooks/useOrder'
+import { ProductReturnType } from '../../components/product/types/productTypes'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -47,12 +48,11 @@ const ProductDetailPage = ({
 
   /**isFetching 사용 */
   const { data: reviewList, isFetching } = useGetReviews(productId)
-  const { data: product, isFetching: productFetching } = useGetProductById(productId)
+  const product = dehydratedState.queries[1].state.data as ProductReturnType
   const { data: orderLists } = useGetOrder()
-  console.log(reviewList, orderLists)
   return (
     <Hydrate state={dehydratedState}>
-      {product && (
+      {!!product && (
         <div
           className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
           onClick={() => {
@@ -61,7 +61,7 @@ const ProductDetailPage = ({
         >
           <Button title="update" onClick={() => router.push(`/product/update/${product.id}`)} />
           <ProductDetail
-            product={product && product}
+            product={product}
             isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}
             setIsAdditionalSelectModalOpen={setIsAdditionalSelectModalOpen}
           />
@@ -97,7 +97,9 @@ const ProductDetailPage = ({
               orderLists={orderLists}
             />
           ) : (
-            <ProductDetailDesc description={product.description} />
+            <div className="flex justify-center">
+              <ProductDetailDesc description={product.description} />
+            </div>
           )}
         </div>
       )}
