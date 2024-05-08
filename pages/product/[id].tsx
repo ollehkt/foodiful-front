@@ -5,13 +5,13 @@ import ProductDetail from '../../components/product/ProductDetail'
 import { Button } from '../../components/common/Button'
 import { useRouter } from 'next/router'
 import ProductDetailReview from '../../components/product/ProductDetailReview'
-import ProductDetailDesc from '../../components/product/ProductDetailDesc'
 import { dehydrate, Hydrate, QueryClient } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
 import { getReviews, useGetReviews } from '../../components/review/hooks/useReviews'
 import { getProductById, useGetProductById } from '../../components/product/hooks/useProduct'
 import { useGetOrder } from '../../components/order/hooks/useOrder'
 import { ProductReturnType } from '../../components/product/types/productTypes'
+import DetailDesc from '../../components/common/DetailDescription'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -98,7 +98,7 @@ const ProductDetailPage = ({
             />
           ) : (
             <div className="flex justify-center">
-              <ProductDetailDesc description={product.description} />
+              <DetailDesc description={product.description} />
             </div>
           )}
         </div>

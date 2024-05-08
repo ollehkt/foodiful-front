@@ -38,7 +38,7 @@ interface PropsType {
     unknown,
     {
       lecture: Omit<LectureType, 'id'>
-      id: number
+      lectureId: number
     },
     unknown
   >
@@ -248,7 +248,7 @@ function LectureForm({ onSubmitAdd, onSubmitUpdate, lectureForUpdate }: PropsTyp
               const updatedLecture = { ...lecture, descImg: [...lecture.descImg, ...urls] }
               setLecture({ ...lecture, descImg: [...lecture.descImg, ...urls] })
               if (lectureForUpdate?.id && onSubmitUpdate)
-                onSubmitUpdate({ lecture: updatedLecture, id: lectureForUpdate.id })
+                onSubmitUpdate({ lecture: updatedLecture, lectureId: lectureForUpdate.id })
               else {
                 onSubmitAdd && onSubmitAdd({ lecture: updatedLecture })
               }

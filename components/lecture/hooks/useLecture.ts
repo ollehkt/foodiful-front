@@ -5,6 +5,7 @@ import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 import { LectureType } from '../types/lectureTypes'
 import { useRouter } from 'next/router'
+import { isAxiosError } from 'axios'
 
 const getLectures = async () => {
   const user = getStoredUser()
@@ -103,4 +104,58 @@ export const useAddLecture = () => {
   })
 
   return { addLectureMutate }
+}
+
+const updateLecture = async (lectureId: number, lecture: Omit<LectureType, 'id'>) => {
+  const user = getStoredUser()
+  if (user) {
+    const { data } = await api.patch(
+      `/lecture/${lectureId}`,
+      {
+        ...lecture,
+      },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    )
+    return data
+  }
+}
+
+export const useUpdateLecture = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: updateLectureMutation } = useMutation({
+    mutationFn: ({ lectureId, lecture }: { lectureId: number; lecture: Omit<LectureType, 'id'> }) =>
+      updateLecture(lectureId, lecture),
+    onSuccess: () => {
+      fireToast({
+        id: '상품 업데이트',
+        type: 'success',
+        message: '상품 업데이트가 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.push('/lecture')
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        fireToast({
+          id: '상품 업데이트 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
+      fireToast({
+        id: '상품 업데이트 실패',
+        type: 'failed',
+        message: '상품 업데이트에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { updateLectureMutation }
 }
