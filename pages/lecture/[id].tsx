@@ -4,12 +4,17 @@ import { api } from '../../components/axios/axiosInstance'
 import { LectureType } from '../../components/lecture/types/lectureTypes'
 import { DehydratedState, Hydrate, QueryClient, dehydrate } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
-import { getLectureByLectureId } from '../../components/lecture/hooks/useLecture'
+import {
+  getLectureByLectureId,
+  getLectureInquiryByLectureId,
+  useGetLectureInquiry,
+} from '../../components/lecture/hooks/useLecture'
 import LectureDetail from '../../components/lecture/LectureDetail'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/common/Button'
 import DetailDesc from '../../components/common/DetailDescription'
 import LectureInquiry from '../../components/lecture/LectureInquiry'
+import { InquiryType } from '../../components/lecture/types/inquiryTypes'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -26,6 +31,11 @@ export const getServerSideProps = async (
     queryFn: () => getLectureByLectureId(lectureId),
   })
 
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.lecture, lectureId, 'inquiry'],
+    queryFn: () => getLectureInquiryByLectureId(lectureId),
+  })
+
   return { props: { lectureId, dehydratedState: dehydrate(queryClient) } }
 }
 
@@ -34,6 +44,8 @@ const LectureDetailPage = ({
   dehydratedState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const lecture = dehydratedState.queries[0].state.data as LectureType
+  const inquiry = dehydratedState.queries[1].state.data as InquiryType[]
+
   const router = useRouter()
   const [viewDescTab, setViewDescTab] = useState(0)
   return (
@@ -66,7 +78,11 @@ const LectureDetailPage = ({
             </div>
           </div>
           {!!viewDescTab ? (
-            <LectureInquiry />
+            <LectureInquiry
+              lectureName={lecture.name}
+              lectureId={lectureId}
+              inquiryList={inquiry}
+            />
           ) : (
             <div className="flex justify-center">
               <DetailDesc description={lecture.description} />

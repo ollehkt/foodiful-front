@@ -6,6 +6,7 @@ import { getStoredUser } from '../../util/userStorage'
 import { LectureType } from '../types/lectureTypes'
 import { useRouter } from 'next/router'
 import { isAxiosError } from 'axios'
+import { PostInquiryType, PostRecommentType, RecommentType } from '../types/inquiryTypes'
 
 const getLectures = async () => {
   const user = getStoredUser()
@@ -158,4 +159,229 @@ export const useUpdateLecture = () => {
     },
   })
   return { updateLectureMutation }
+}
+
+export const getLectureInquiryByLectureId = async (lectureId: string) => {
+  const { data } = await api(`/lecture/inquiry/${lectureId}`)
+  return data
+}
+
+export const useGetLectureInquiry = (id: string) => {
+  const { data } = useQuery({
+    queryKey: [queryKeys.lecture, id, 'inquiry'],
+    queryFn: () => getLectureInquiryByLectureId(id),
+  })
+  return { data }
+}
+
+const postInquiry = async (lectureInquiry: PostInquiryType) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.post(
+      '/lecture-inquiry',
+      { ...lectureInquiry },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    )
+  }
+}
+
+export const usePostInquiry = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: postInquiryMutate } = useMutation({
+    mutationFn: ({ lectureInquiry }: { lectureInquiry: PostInquiryType }) =>
+      postInquiry(lectureInquiry),
+    onSuccess: () => {
+      fireToast({
+        id: '문의 등록',
+        type: 'success',
+        message: '문의 등록이 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        fireToast({
+          id: '문의 등록 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
+      fireToast({
+        id: '문의 등록 실패',
+        type: 'failed',
+        message: '문의 등록에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { postInquiryMutate }
+}
+
+const postRecomment = async (recomment: PostRecommentType) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.post(
+      '/recomment',
+      {
+        ...recomment,
+      },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    )
+  }
+}
+
+export const usePostRecomment = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: postRecommentMutate } = useMutation({
+    mutationFn: ({ recomment }: { recomment: PostRecommentType }) => postRecomment(recomment),
+    onSuccess: () => {
+      fireToast({
+        id: '댓글 등록',
+        type: 'success',
+        message: '댓글 등록이 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        fireToast({
+          id: '댓글 등록 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
+      fireToast({
+        id: '댓글 등록 실패',
+        type: 'failed',
+        message: '댓글 등록에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { postRecommentMutate }
+}
+
+const getInquiryRecomment = async (id: number) => {
+  const { data } = await api(`/lecture-inquiry/recomment/${id}`)
+  return data
+}
+
+export const useGetInquiryRecomment = (id: number): { data: RecommentType[] } => {
+  const { data } = useQuery({
+    queryKey: [queryKeys.inquiry, id],
+    queryFn: () => getInquiryRecomment(id),
+  })
+  return { data }
+}
+
+const deleteInquiry = async (id: number) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.delete(`/lecture-inquiry/${id}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+  }
+}
+
+export const useDeleteInquiry = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: deleteInquiryMutate } = useMutation({
+    mutationFn: (id: number) => deleteInquiry(id),
+    onSuccess: () => {
+      fireToast({
+        id: '문의 삭제',
+        type: 'success',
+        message: '문의 삭제가 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        fireToast({
+          id: '문의 삭제 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
+      fireToast({
+        id: '문의 삭제 실패',
+        type: 'failed',
+        message: '문의 삭제에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { deleteInquiryMutate }
+}
+
+const deleteInquiryRecomment = async (id: number) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.delete(`/recomment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+  }
+}
+
+export const useDeleteInquiryRecomment = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: deleteInquiryRecommentMutate } = useMutation({
+    mutationFn: (id: number) => deleteInquiryRecomment(id),
+    onSuccess: () => {
+      fireToast({
+        id: '댓글 삭제',
+        type: 'success',
+        message: '댓글 삭제가 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        fireToast({
+          id: '댓글 삭제 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
+      fireToast({
+        id: '댓글 실패',
+        type: 'failed',
+        message: '댓글 삭제에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { deleteInquiryRecommentMutate }
 }

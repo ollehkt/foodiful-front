@@ -7,4 +7,5 @@ export const queryKeys = {
   order: 'order',
   favorite: 'favorite',
   lecture: 'lecture',
+  inquiry: 'inquiry',
 }
