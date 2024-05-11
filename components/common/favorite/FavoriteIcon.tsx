@@ -31,7 +31,6 @@ const FavoriteIcon = ({ id, isLiked, product, lecture }: PropsType) => {
   const { mutate: deleteFavoriteLecture } = useDeleteFavoriteLecture()
 
   const onClickHeart = () => {
-    console.log(lecture)
     if (!user) {
       fireToast({
         id: '로그인 후에 이용 가능',

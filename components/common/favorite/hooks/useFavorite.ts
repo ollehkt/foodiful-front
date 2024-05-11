@@ -3,6 +3,7 @@ import { queryKeys } from '../../../../query-keys/queryKeys'
 import { api } from '../../../axios/axiosInstance'
 import { ProductReturnType } from '../../../product/types/productTypes'
 import { getStoredUser } from '../../../util/userStorage'
+import { LectureType } from '../../../lecture/types/lectureTypes'
 
 const addFavoriteProduct = async (productId: number) => {
   const user = getStoredUser()
@@ -84,7 +85,7 @@ const getFavoriteLectures = async () => {
   }
 }
 
-export const useGetFavoriteLectures = () => {
+export const useGetFavoriteLectures = (): { data: LectureType[] } => {
   const { data = [] } = useQuery({
     queryKey: [queryKeys.favorite, queryKeys.lecture],
     queryFn: getFavoriteLectures,
