@@ -1,6 +1,8 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Button } from '../common/Button'
 import { usePostRecomment } from './hooks/useLecture'
+import { getStoredUser } from '../util/userStorage'
+import { User } from '../auth/types/user'
 
 interface PropsType {
   parentId: number
@@ -8,6 +10,7 @@ interface PropsType {
 }
 
 function InquiryReComment({ parentId, placeholder }: PropsType) {
+  const [user, setUser] = useState<User | null>(null)
   const [recommentState, setRecommentState] = useState({
     comment: '',
     isSecret: true,
@@ -23,6 +26,12 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
   const onClickPostRecomment = () => {
     postRecommentMutate({ recomment: recommentState })
   }
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    if (storedUser) {
+      setUser(storedUser)
+    }
+  }, [])
   return (
     <>
       <div>
@@ -43,9 +52,10 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
               value={recommentState.comment}
               onChange={onChangeComment}
               className="resize-none w-full h-[60px] rounded-md border-main border-2 pl-2 pr-[80px] "
-              placeholder={`${placeholder}`}
+              placeholder={`${user ? placeholder : '로그인 후 댓글을 작성해주세요.'}`}
               minLength={5}
               maxLength={149}
+              disabled={!user}
             />
             <span className="absolute bottom-1 right-2 text-textDisabled text-[15px]">
               {recommentState.comment.length} / 150
@@ -56,6 +66,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
             onClick={onClickPostRecomment}
             style="h-[60px] mx-2 font-semibold border-2 border-main hover:bg-main"
             size="md"
+            disabled={!user}
           />
         </div>
       </div>

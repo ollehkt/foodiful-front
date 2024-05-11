@@ -16,10 +16,12 @@ export const Button = ({ title, style, size, disabled, onClick, onClickWithEvent
     <button
       disabled={disabled}
       className={`rounded-md ${
-        size == 'lg'
+        size === 'lg'
           ? 'w-[200px] h-[60px]'
-          : size == 'md'
+          : size === 'md'
           ? 'w-[140px] h-[40px]'
+          : size === 'sm'
+          ? 'w-10'
           : 'w-[100px] h-[30px]'
       } hover:bg-active hover:text-white disabled:bg-disabled disabled:text-textDisabled ${style}`}
       onClick={handleClick}

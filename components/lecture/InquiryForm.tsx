@@ -1,6 +1,8 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Button } from '../common/Button'
 import { usePostInquiry } from './hooks/useLecture'
+import { User } from '../auth/types/user'
+import { getStoredUser } from '../util/userStorage'
 
 interface PropsType {
   placeholder: string
@@ -9,6 +11,7 @@ interface PropsType {
 }
 
 function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
+  const [user, setUser] = useState<User | null>(null)
   const [inquiryState, setInquiryState] = useState({
     comment: '',
     isSecret: true,
@@ -24,8 +27,13 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
     postInquiryMutate({ lectureInquiry: inquiryState })
   }
 
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    if (storedUser) setUser(storedUser)
+  }, [])
+
   return (
-    <div>
+    <>
       <div className="flex items-center gap-x-2 my-1">
         <input
           className="w-5 h-5"
@@ -41,9 +49,10 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
             value={inquiryState.comment}
             onChange={onChangeComment}
             className="resize-none w-full h-[60px] rounded-md border-main border-2 pl-2 pr-[80px] "
-            placeholder={`${placeholder}`}
+            placeholder={`${user ? placeholder : '로그인 후 문의를 남겨주세요'}`}
             minLength={5}
             maxLength={149}
+            disabled={!user}
           />
           <span className="absolute bottom-1 right-2 text-textDisabled text-[15px]">
             {inquiryState.comment.length} / 150
@@ -54,9 +63,10 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
           onClick={onClickPostBtn}
           style="h-[60px] mx-2 font-semibold border-2 border-main hover:bg-main"
           size="md"
+          disabled={!user}
         />
       </div>
-    </div>
+    </>
   )
 }
 

@@ -6,7 +6,12 @@ import { getStoredUser } from '../../util/userStorage'
 import { LectureType } from '../types/lectureTypes'
 import { useRouter } from 'next/router'
 import { isAxiosError } from 'axios'
-import { PostInquiryType, PostRecommentType, RecommentType } from '../types/inquiryTypes'
+import {
+  InquiryType,
+  PostInquiryType,
+  PostRecommentType,
+  RecommentType,
+} from '../types/inquiryTypes'
 
 const getLectures = async () => {
   const user = getStoredUser()
@@ -384,4 +389,91 @@ export const useDeleteInquiryRecomment = () => {
     },
   })
   return { deleteInquiryRecommentMutate }
+}
+
+const updateInquiryById = async (id: number, updateData: Partial<InquiryType>) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.patch(
+      `/lecture-inquiry/${id}`,
+      {
+        ...updateData,
+      },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    )
+  }
+}
+
+export const useUpdateInquiryById = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: updateInquiryByIdMutate } = useMutation({
+    mutationFn: ({ id, updateData }: { id: number; updateData: Partial<InquiryType> }) =>
+      updateInquiryById(id, updateData),
+    onSuccess: () => {
+      fireToast({
+        id: '문의 업데이트',
+        type: 'success',
+        message: '문의 업데이트가 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: () => {
+      fireToast({
+        id: '상품 업데이트 실패',
+        type: 'failed',
+        message: '상품 업데이트에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { updateInquiryByIdMutate }
+}
+const updateInquiryRecomment = async (id: number, updateData: Partial<RecommentType>) => {
+  const user = getStoredUser()
+  if (user) {
+    return api.patch(
+      `/recomment/${id}`,
+      {
+        ...updateData,
+      },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    )
+  }
+}
+
+export const useUpdateInquiryRecommentById = () => {
+  const { fireToast } = useToast()
+  const router = useRouter()
+  const { mutate: updateInquiryRecommentMutate } = useMutation({
+    mutationFn: ({ id, updateData }: { id: number; updateData: Partial<RecommentType> }) =>
+      updateInquiryRecomment(id, updateData),
+    onSuccess: () => {
+      fireToast({
+        id: '문의 업데이트',
+        type: 'success',
+        message: '문의 업데이트가 완료 되었습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+      router.reload()
+    },
+    onError: () => {
+      fireToast({
+        id: '상품 업데이트 실패',
+        type: 'failed',
+        message: '상품 업데이트에 실패했습니다.',
+        position: 'bottom',
+        timer: 2000,
+      })
+    },
+  })
+  return { updateInquiryRecommentMutate }
 }
