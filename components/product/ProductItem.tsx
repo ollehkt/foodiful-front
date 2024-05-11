@@ -32,9 +32,9 @@ const ProductItem = ({ product, mini }: PropsType) => {
         <h3 className="text text-gray-700">
           {mini ? `${name.slice(0, 10)}...` : name.slice(0, 10).slice(0, 12)}
         </h3>
-        <FavoriteIcon productId={id} isLiked={isLiked} />
+        <FavoriteIcon id={id} isLiked={isLiked} product />
       </div>
-      <p className="mt-1 text-lg font-medium text-gray-900">
+      <div className="mt-1 text-lg font-medium text-gray-900">
         <div className="flex gap-x-2 items-center">
           {discount
             ? `${getDiscountedPrice(price, discount).toLocaleString()}원`
@@ -44,7 +44,7 @@ const ProductItem = ({ product, mini }: PropsType) => {
             <div className="line-through text-gray-200">{`${price.toLocaleString()}원`}</div>
           )}
         </div>
-      </p>
+      </div>
     </div>
   )
 }

@@ -5,14 +5,21 @@ import { isMobileDisplay } from '../../../store/isMobileDisplay'
 import { User } from '../../auth/types/user'
 import { getStoredUser } from '../../util/userStorage'
 import useToast from '../hooks/useToast'
-import { useAddFavoriteProduct, useDeleteFavoriteProduct } from './hooks/useFavorite'
+import {
+  useAddFavoriteLecture,
+  useAddFavoriteProduct,
+  useDeleteFavoriteLecture,
+  useDeleteFavoriteProduct,
+} from './hooks/useFavorite'
 
 interface PropsType {
-  productId: number
+  id: number
   isLiked?: boolean
+  product?: boolean
+  lecture?: boolean
 }
 
-const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
+const FavoriteIcon = ({ id, isLiked, product, lecture }: PropsType) => {
   const [onHeartAnimation, setOnHeartAnimation] = useState(false)
   const [user, setUser] = useState<User>()
   const router = useRouter()
@@ -20,8 +27,11 @@ const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
   const isMobile = useAtomValue(isMobileDisplay)
   const { mutate: deleteFavoriteProduct } = useDeleteFavoriteProduct()
   const { mutate: addFavoriteProduct } = useAddFavoriteProduct()
+  const { mutate: addFavoriteLecture } = useAddFavoriteLecture()
+  const { mutate: deleteFavoriteLecture } = useDeleteFavoriteLecture()
 
   const onClickHeart = () => {
+    console.log(lecture)
     if (!user) {
       fireToast({
         id: '로그인 후에 이용 가능',
@@ -35,10 +45,10 @@ const FavoriteIcon = ({ productId, isLiked }: PropsType) => {
     }
     if (onHeartAnimation) {
       setOnHeartAnimation(false)
-      deleteFavoriteProduct(productId)
+      product ? deleteFavoriteProduct(id) : lecture && deleteFavoriteLecture(id)
     } else {
       setOnHeartAnimation(true)
-      addFavoriteProduct(productId)
+      product ? addFavoriteProduct(id) : lecture && addFavoriteLecture(id)
     }
   }
 

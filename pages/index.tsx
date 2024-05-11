@@ -2,22 +2,26 @@ import type { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
 import { getStoredUser } from '../components/util/userStorage'
 import MainSlider from '../components/common/MainSlider'
-import { api } from '../components/axios/axiosInstance'
 import Channel from '../components/main/channel/Channel'
 import ProductList from '../components/product/ProductList'
 import { User } from '../components/auth/types/user'
 import { useGetProducts } from '../components/product/hooks/useProduct'
-import { ProductSkeleton } from '../components/common/skeleton/Skeleton'
+import { useGetLectures } from '../components/lecture/hooks/useLecture'
+import LectureList from '../components/lecture/LectureList'
 import { ProductReturnType } from '../components/product/types/productTypes'
+import { LectureType } from '../components/lecture/types/lectureTypes'
+import { api } from '../components/axios/axiosInstance'
 
-export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  const { data } = await api('/product/all')
+export const getServerSideProps = async (): Promise<{
+  props: { products: ProductReturnType[]; lectures: LectureType[] }
+}> => {
+  const { data: products } = await api('/product/all')
+  const { data: lectures } = await api('/lecture/all')
 
-  return { props: { data } }
+  return { props: { products, lectures } }
 }
 
-// const Home = () => {
-const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
@@ -26,19 +30,22 @@ const Home = ({ data: products }: InferGetServerSidePropsType<typeof getServerSi
       setUser(storedUser)
     }
   }, [])
-  const { data: productsUserLiked, isFetching } = useGetProducts()
+  const { data: productsUserLiked } = useGetProducts()
+  const { data: lectureUserLiked } = useGetLectures()
+
   return (
     <>
       <div className="relative w-full">
         {/* <MainSlider imgs={['/photo0.jpeg', '/foodiful.jpeg']} /> */}
 
         <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          {isFetching ? (
-            <ProductSkeleton count={4} />
-          ) : (
-            <ProductList products={user && productsUserLiked ? productsUserLiked : products} />
-          )}
+          <ProductList products={user ? productsUserLiked : products} />
         </div>
+
+        <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <LectureList lectureList={user ? lectureUserLiked : lectures} />
+        </div>
+
         <Channel />
         {/**<div className="sticky w-full bottom-10 pr-[2%] z-[99999] flex justify-end "> */}
       </div>

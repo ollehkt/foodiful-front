@@ -13,7 +13,7 @@ import {
   RecommentType,
 } from '../types/inquiryTypes'
 
-const getLectures = async () => {
+export const getLectures = async () => {
   const user = getStoredUser()
   const { data } = await api('/lecture/all', {
     headers: {
@@ -477,3 +477,4 @@ export const useUpdateInquiryRecommentById = () => {
   })
   return { updateInquiryRecommentMutate }
 }
+

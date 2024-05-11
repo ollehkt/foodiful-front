@@ -52,9 +52,8 @@ function MyPage() {
         </div>
       </section>
       <section className="w-full my-12 border-t-2 border-t-active py-2">
-        <div className="flex justify-between">
-          <StrongTitle title="좋아하는 상품" />
-        </div>
+        <StrongTitle title="좋아하는 상품" />
+
         {!!myFavoriteProducts.length ? (
           <>
             <div className="grid justify-center md:justify-start md:grid-cols-3 my-12 items-center">

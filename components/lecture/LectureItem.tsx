@@ -25,14 +25,9 @@ const LectureItem = ({ lecture }: PropsType) => {
       />
       <div className="flex items-center justify-between mt-4 relative">
         <h3 className="text text-gray-700">{name.slice(0, 10).slice(0, 12)}</h3>
-        <FavoriteIcon productId={id} isLiked={isLiked} />
+        <FavoriteIcon id={id} isLiked={isLiked} lecture />
       </div>
-      <p className="mt-1 text-lg font-medium text-gray-900">
-        {/**
-         * TODO: 할인율 있을 때는 할인 가격 작대기 긋고 옆에 가격
-         */}
-        {price.toLocaleString()}원
-      </p>
+      <p className="mt-1 text-lg font-medium text-gray-900">{price.toLocaleString()}원</p>
     </div>
   )
 }

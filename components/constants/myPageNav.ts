@@ -13,7 +13,7 @@ export const myPageNav = [
   },
   { title: '취소/교환/반품 내역', url: '/mypage/refund' },
   {
-    title: '좋아요 누른 상품 보기',
+    title: '좋아요 모아보기',
     url: '/mypage/favorites',
   },
   {

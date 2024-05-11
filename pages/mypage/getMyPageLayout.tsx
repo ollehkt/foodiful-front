@@ -11,7 +11,7 @@ export function getMyPageLayout(page: ReactElement) {
       <RQProvider>
         <ModalContainer />
         <MyPageLayout>{page}</MyPageLayout>
-        <ReactQueryDevtools initialIsOpen={true} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </RQProvider>
     </Layout>
   )

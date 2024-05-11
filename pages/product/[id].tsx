@@ -48,7 +48,7 @@ const ProductDetailPage = ({
 
   /**isFetching 사용 */
   const { data: reviewList, isFetching } = useGetReviews(productId)
-  const product = dehydratedState.queries[1].state.data as ProductReturnType
+  const { data: product } = useGetProductById(productId)
   const { data: orderLists } = useGetOrder()
   return (
     <Hydrate state={dehydratedState}>
@@ -59,7 +59,13 @@ const ProductDetailPage = ({
             isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
           }}
         >
-          <Button title="update" onClick={() => router.push(`/product/update/${product.id}`)} />
+          <div className="flex justify-center">
+            <Button
+              title="update"
+              size="md"
+              onClick={() => router.push(`/product/update/${product.id}`)}
+            />
+          </div>
           <ProductDetail
             product={product}
             isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}

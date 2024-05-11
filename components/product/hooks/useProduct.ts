@@ -65,6 +65,7 @@ export const updateProductById = async (productId: number, product: ProductType)
 
 export const useUpdateProductById = () => {
   const { fireToast } = useToast()
+  const router = useRouter()
   const { mutate: updateProduct } = useMutation({
     mutationFn: ({ product, id }: { product: ProductType; id: number }) =>
       updateProductById(id, product),
@@ -77,6 +78,7 @@ export const useUpdateProductById = () => {
         position: 'bottom',
         timer: 2000,
       })
+      router.reload()
     },
     onError: () => {
       fireToast({
@@ -112,24 +114,14 @@ export const useGetProducts = (): {
     queryKey: [queryKeys.product],
     queryFn: getProducts,
 
-    onSuccess: () => {
+    onError: (error) => {
       fireToast({
         id: '상품 조회',
-        message: '상품 조회가 완료되었습니다.',
-        type: 'success',
+        message: '새로고침을 눌러주세요',
+        type: 'failed',
         position: 'bottom',
         timer: 2000,
       })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error))
-        fireToast({
-          id: '상품 조회',
-          message: '새로고침을 눌러주세요',
-          type: 'failed',
-          position: 'bottom',
-          timer: 2000,
-        })
     },
   })
 
