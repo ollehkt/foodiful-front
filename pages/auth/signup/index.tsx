@@ -50,7 +50,7 @@ function SignUp() {
     const count = setInterval(() => {
       setTime((prev) => prev - 1)
     }, 1000)
-    if (time == 0) {
+    if (time === 1) {
       setVerifyExpiredTxt('인증번호를 다시 요청해주세요')
       setIsClickedVerifyPhone(false)
     }
@@ -126,7 +126,7 @@ function SignUp() {
         {!isClickedVerifyPhone && !isVerifiedPhone && (
           <button
             disabled={signUpValue.phone.length !== 11}
-            className="absolute text-xl w-[80px] right-0 bottom-[8px] hover:text-main disabled:text-[#999] "
+            className="absolute text-xl w-[80px] right-0 bottom-[6px] hover:text-main disabled:text-[#999] "
             onClick={async () => {
               const isNotExist = await checkExistPhone(signUpValue.phone)
 
@@ -174,7 +174,7 @@ function SignUp() {
       </div>
       <Button
         disabled={!isVerifiedPhone}
-        style="mt-[40px] bg-primary text-[#fff] "
+        style="mt-[40px] bg-primary text-[#fff] text-2xl"
         title="회원가입"
         size="md"
         onClick={onClickSignUpBtn}

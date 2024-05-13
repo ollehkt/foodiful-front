@@ -6,7 +6,7 @@ import FavoriteIcon from '../common/favorite/FavoriteIcon'
 
 interface PropsType {
   lecture: LectureType
-  mini: boolean
+  mini?: boolean
 }
 
 const LectureItem = ({ lecture, mini }: PropsType) => {

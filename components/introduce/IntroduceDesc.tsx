@@ -14,7 +14,7 @@ const IntroduceDesc = () => {
     <div className="my-[120px] grid grid-cols-2 gap-y-32 justify-center items-center">
       {descs.map(
         ({ title, desc, img }: { title: string; desc: string; img: string }, idx: number) => (
-          <>
+          <div key={`${title}-${desc}`}>
             <div
               className={`${(idx + 1) % 2 === 0 && 'order-last'}`}
               key={`${title}-${img}-${idx}`}
@@ -25,7 +25,7 @@ const IntroduceDesc = () => {
             <div className="w-[80%] h-[500px] relative">
               <Image src={img} alt="main-image" priority fill />
             </div>
-          </>
+          </div>
         )
       )}
     </div>

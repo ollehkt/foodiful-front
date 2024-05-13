@@ -27,6 +27,17 @@ const ChannelSns = () => {
             <Image src="/kakao.png" alt="instagram" width={34} height={34} />
           </a>
         </Link>
+        <Link href="https://www.instagram.com/foodi_ful" legacyBehavior>
+          <a target="_blank" rel="noopener noreferrer">
+            <Image
+              src="/instagram.webp"
+              alt="insta"
+              width={34}
+              height={34}
+              className="rounded-full"
+            />
+          </a>
+        </Link>
       </div>
     </div>
   )
