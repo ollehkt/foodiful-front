@@ -8,7 +8,7 @@ import StrongTitle from '../../../components/common/StrongTitle'
 import UserModifyForm from '../../../components/myPage/modify/UserModifyForm'
 
 import { getStoredUser } from '../../../components/util/userStorage'
-import { getMyPageLayout } from '../getMyPageLayout'
+import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 const MyPageModify = () => {
   const { fireToast } = useToast()

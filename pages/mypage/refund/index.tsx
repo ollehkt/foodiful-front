@@ -7,10 +7,10 @@ import { useGetRefund } from '../../../components/myPage/refund/hooks/useRefund'
 import RefundList from '../../../components/myPage/refund/RefundList'
 import { getStoredUser } from '../../../components/util/userStorage'
 
-import { getMyPageLayout } from '../getMyPageLayout'
+import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 function RefundPage() {
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(null)
   const { data: refundList } = useGetRefund(user?.id)
   const router = useRouter()
   const { fireToast } = useToast()

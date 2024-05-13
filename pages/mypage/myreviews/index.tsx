@@ -1,6 +1,6 @@
 import React from 'react'
 import StrongTitle from '../../../components/common/StrongTitle'
-import { getMyPageLayout } from '../getMyPageLayout'
+import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 const MyPageMyComments = () => {
   // 후기 불러오기

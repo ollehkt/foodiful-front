@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import StrongTitle from '../../../components/common/StrongTitle'
-import { getMyPageLayout } from '../getMyPageLayout'
+import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 import { useGetReservationByUserId } from '../../../components/calendar/hooks/useReservation'
 import { getStoredUser } from '../../../components/util/userStorage'
 import useToast from '../../../components/common/hooks/useToast'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { User } from '../../../components/auth/types/user'
 
 const MyPageReserved = () => {
   const router = useRouter()
   const { fireToast } = useToast()
-  const user = getStoredUser()
+  const [user, setUser] = useState<User | null>(null)
+
   const { data: myReservations } = useGetReservationByUserId(user?.id)
 
   useEffect(() => {
-    const user = getStoredUser()
-    if (!user) {
+    const storedUser = getStoredUser()
+    if (!storedUser) {
       fireToast({
         id: '예약 페이지 접속 실패',
         type: 'failed',
@@ -25,6 +27,7 @@ const MyPageReserved = () => {
       })
       router.push('/auth')
     }
+    setUser(storedUser)
   }, [])
   return (
     <section className="grow flex-col items-center px-5">

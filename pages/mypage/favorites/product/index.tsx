@@ -1,10 +1,7 @@
 import StrongTitle from '../../../../components/common/StrongTitle'
 import ProductItem from '../../../../components/product/ProductItem'
-import { getMyPageLayout } from '../../getMyPageLayout'
-import {
-  useGetFavoriteLectures,
-  useGetFavoriteProducts,
-} from '../../../../components/common/favorite/hooks/useFavorite'
+import getMyPageLayout from '../../../../components/layout/getMyPageLayout'
+import { useGetFavoriteProducts } from '../../../../components/common/favorite/hooks/useFavorite'
 
 const MyPageFavoriteProducts = () => {
   const { data: favoriteProducts } = useGetFavoriteProducts()

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { getStoredUser } from '../../components/util/userStorage'
-import { getMyPageLayout } from './getMyPageLayout'
+import getMyPageLayout from '../../components/layout/getMyPageLayout'
 import StrongTitle from '../../components/common/StrongTitle'
 import { useRouter } from 'next/router'
 import useToast from '../../components/common/hooks/useToast'
@@ -15,8 +15,7 @@ import { useGetReservationByUserId } from '../../components/calendar/hooks/useRe
 import { useGetReviewByUserId } from '../../components/review/hooks/useReviews'
 
 function MyPage() {
-  const [user, setUser] = useState<User>()
-
+  const [user, setUser] = useState<User | null>(null)
   const { data: myReviews } = useGetReviewByUserId(user?.id)
   const { data: myPurchasedList } = useGetOrder()
   const { data: myFavoriteProducts } = useGetFavoriteProducts()

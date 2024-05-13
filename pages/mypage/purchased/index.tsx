@@ -7,7 +7,7 @@ import { useGetOrder } from '../../../components/order/hooks/useOrder'
 import PurchasedOrderItem from '../../../components/purchase/PurchasedOrderItem'
 import PurchasedTitle from '../../../components/purchase/PurchasedTitle'
 import { getStoredUser } from '../../../components/util/userStorage'
-import { getMyPageLayout } from '../getMyPageLayout'
+import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 const MyPagePurchased = () => {
   const router = useRouter()

@@ -1,6 +1,6 @@
 import { useGetFavoriteLectures } from '../../../../components/common/favorite/hooks/useFavorite'
 import LectureItem from '../../../../components/lecture/LectureItem'
-import { getMyPageLayout } from '../../getMyPageLayout'
+import getMyPageLayout from '../../../../components/layout/getMyPageLayout'
 import StrongTitle from '../../../../components/common/StrongTitle'
 
 const MyPageFavoriteLectures = () => {
