@@ -30,7 +30,7 @@ function InquiryItem({ inquiry }: PropsType) {
   const { data: inquiryRecomments } = useGetInquiryRecomment(inquiry.id)
   const { deleteInquiryMutate } = useDeleteInquiry()
   const { deleteInquiryRecommentMutate } = useDeleteInquiryRecomment()
-
+  console.log(inquiryRecomments)
   const onClickDelete = (e: React.MouseEvent<HTMLButtonElement>, type: string, id: number) => {
     e.stopPropagation()
     setModal({
@@ -57,36 +57,49 @@ function InquiryItem({ inquiry }: PropsType) {
         }`}
         onClick={onClickInquiry}
       >
-        <>
-          <div>{isSecret && <IoLockClosed className="text-gray-700" size={20} />}</div>
-          <p className="text-start">
-            {isSecret
-              ? '비밀글 입니다.'
-              : `${comment} (${
-                  inquiryRecomments && (!inquiryRecomments.length ? '0' : inquiryRecomments.length)
-                })`}
+        {isSecret ? (
+          user && user.id === userId ? (
+            <>
+              <span className="text-sm">나의 글</span>
+              {comment}{' '}
+              {inquiryRecomments &&
+                (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+            </>
+          ) : (
+            <>
+              <IoLockClosed className="text-gray-700" size={20} />
+              <p>비밀글 입니다.</p>
+            </>
+          )
+        ) : (
+          <>
+            {user && user.id === userId ? <span className="text-sm">나의 글</span> : <div></div>}
+            {comment}{' '}
+            {inquiryRecomments &&
+              (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+          </>
+        )}
+
+        <div className="flex items-center gap-x-4">
+          <p>
+            {user && user.role === 'ADMIN'
+              ? userId
+              : userId.toString().length > 5
+              ? `${userId.toString().slice(0, 4)}****`
+              : `${userId}****`}
           </p>
-          <div className="flex items-center gap-x-4">
-            <p>
-              {user && user.role === 'ADMIN'
-                ? userId
-                : userId.toString().length > 5
-                ? `${userId.toString().slice(0, 4)}****`
-                : `${userId}****`}
-            </p>
-            <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
-            {user && (user.id === userId || user.role === 'ADMIN') && (
-              <Button
-                title="삭제"
-                size="sm"
-                style="hover:bg-main py-[2px]"
-                onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
-                  onClickDelete(e, '문의', inquiryId)
-                }
-              />
-            )}
-          </div>
-        </>
+          <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
+          {user && (user.id === userId || user.role === 'ADMIN') && (
+            <Button
+              title="삭제"
+              size="sm"
+              style="hover:bg-main py-[2px]"
+              onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                onClickDelete(e, '문의', inquiryId)
+              }
+            />
+          )}
+        </div>
       </div>
       {isDetailOpened && (
         <div className="pb-4">
@@ -97,35 +110,64 @@ function InquiryItem({ inquiry }: PropsType) {
             />
           </div>
           {!!inquiryRecomments.length &&
-            inquiryRecomments.map(({ id: recommentId, updatedAt, comment, isSecret }) => (
-              <div
-                key={recommentId}
-                className="flex items-center justify-between mx-4 px-2 py-8 my-2 border-[1px] border-main bg-white rounded-md"
-              >
-                <p>{isSecret && <IoLockClosed className="text-gray-700" size={20} />}</p>
-                <p className="text-start">{isSecret ? '비밀글 입니다.' : comment}</p>
-                <div className="flex items-center gap-x-4">
-                  <p>
-                    {user && user.role === 'ADMIN'
-                      ? userId
-                      : userId.toString().length > 5
-                      ? `${userId.toString().slice(0, 4)}****`
-                      : `${userId}****`}
-                  </p>
-                  <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
-                  {user && (user.id === userId || user.role === 'ADMIN') && (
-                    <Button
-                      title="삭제"
-                      size="sm"
-                      style="hover:bg-main py-[2px]"
-                      onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
-                        onClickDelete(e, '댓글', recommentId)
-                      }
-                    />
+            inquiryRecomments.map(
+              ({
+                id: recommentId,
+                updatedAt,
+                comment: recomment,
+                isSecret,
+                userId: recommentUserId,
+              }) => (
+                <div
+                  key={recommentId}
+                  className="flex items-center justify-between mx-4 px-2 py-8 my-2 border-[1px] border-main bg-white rounded-md"
+                >
+                  {isSecret ? (
+                    user && user.id === recommentUserId ? (
+                      <>
+                        <span className="text-sm">나의 글</span>
+                        {recomment}
+                      </>
+                    ) : (
+                      <>
+                        <IoLockClosed className="text-gray-700" size={20} />
+                        <p>비밀글 입니다.</p>
+                      </>
+                    )
+                  ) : (
+                    <>
+                      {user && user.id === recommentUserId ? (
+                        <span className="text-sm">나의 글</span>
+                      ) : (
+                        <div></div>
+                      )}
+                      {recomment}
+                    </>
                   )}
+
+                  <div className="flex items-center gap-x-4">
+                    <p>
+                      {user && user.role === 'ADMIN'
+                        ? userId
+                        : recommentUserId.toString().length > 5
+                        ? `${recommentUserId.toString().slice(0, 4)}****`
+                        : `${recommentUserId}****`}
+                    </p>
+                    <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
+                    {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
+                      <Button
+                        title="삭제"
+                        size="sm"
+                        style="hover:bg-main py-[2px]"
+                        onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                          onClickDelete(e, '댓글', recommentId)
+                        }
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
         </div>
       )}
     </div>

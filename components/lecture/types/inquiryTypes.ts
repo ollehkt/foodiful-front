@@ -23,4 +23,5 @@ export interface PostRecommentType {
 export interface RecommentType extends PostRecommentType {
   id: number
   updatedAt: string
+  userId: number
 }
