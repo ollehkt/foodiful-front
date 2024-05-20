@@ -1,5 +1,4 @@
 import React from 'react'
-import { CartReturnType } from '../../cart/cartTypes'
 import TitleAndLine from '../../common/TitleAndLine'
 import { PostOrderProductTypes } from '../types/postOrderProductTypes'
 import OrderItem from './OrderItem'

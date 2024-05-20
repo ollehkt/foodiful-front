@@ -129,8 +129,8 @@ const UserModifyForm = ({
   return (
     <div className="flex flex-col items-start">
       <Input
-        style="ml-[70px] w-[300px] outline-none py-[4px] pl-[8px]"
-        labelStyle="my-[30px] text-lg"
+        style="ml-[40px] md:ml-[70px] md:w-[300px] outline-none py-[4px] pl-[8px]"
+        labelStyle="my-5 md:my-[30px] text-xl"
         labelName="이메일"
         type="text"
         minLength={3}
@@ -143,7 +143,7 @@ const UserModifyForm = ({
       />
       <div className="flex items-center">
         <Input
-          style={`ml-[90px] w-[300px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+          style={`ml-[30px] md:ml-[90px] md:w-[300px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
             isNameModifyMode ? 'border-main ' : 'border-gray-300 '
           }`}
           labelStyle="my-[30px] relative text-lg"
@@ -166,7 +166,7 @@ const UserModifyForm = ({
                 setIsNameModifyMode(false)
                 setModifyUserState({ ...modifyUserState, name: user.name })
               }}
-              style="w-[50px]"
+              style="w-[50px] hover:bg-main ml-3 text-xl"
               size="md"
             />
             <Button
@@ -174,7 +174,7 @@ const UserModifyForm = ({
               onClick={() => {
                 setIsNameModifyMode(false)
               }}
-              style="w-[50px]"
+              style="w-[50px] ml-3 text-xl"
               size="md"
             />
           </>
@@ -182,7 +182,7 @@ const UserModifyForm = ({
           <Button
             title="변경"
             onClick={() => setIsNameModifyMode(true)}
-            style="w-[50px]"
+            style="w-[50px] hover:bg-main ml-3 text-xl"
             size="md"
           />
         )}
@@ -190,7 +190,7 @@ const UserModifyForm = ({
       <>
         <div className="relative">
           <Input
-            style={`ml-[74px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+            style={`ml-[10px] md:ml-[74px] md:w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-2 rounded-md ${
               isPhoneModifyMode ? 'border-main' : 'border-gray-300'
             }`}
             labelStyle="my-[30px] relative text-lg"
@@ -210,7 +210,7 @@ const UserModifyForm = ({
             <>
               <Button
                 title="인증"
-                style="w-[50px] disabled:text-[#999]"
+                style="w-[50px] mt-2 md:mt-0 hover:bg-main disabled:text-[#999] ml-14 md:ml-3 text-xl"
                 size="md"
                 onClick={async () => {
                   const isNotExist = await checkExistPhone(modifyUserState.phone)
@@ -224,7 +224,7 @@ const UserModifyForm = ({
               />
               <Button
                 title="취소"
-                style="w-[50px] disabled:text-[#999]"
+                style="w-[50px] hover:bg-main disabled:text-[#999] ml-3 text-xl"
                 size="md"
                 onClick={() => {
                   setIsClickedVerifyPhone(false)
@@ -238,7 +238,7 @@ const UserModifyForm = ({
             </>
           ) : (
             <Button
-              style="w-[50px]"
+              style="w-[50px] hover:bg-main ml-3 text-xl"
               onClick={() => setIsPhoneModifyMode(true)}
               size="md"
               title="변경"
@@ -249,7 +249,7 @@ const UserModifyForm = ({
           <>
             <div className="flex items-center mt-[20px] ml-[0px]">
               <Input
-                style={`mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-2 rounded-md ${
+                style={`mr-4 md:mx-[34px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-2 rounded-md ${
                   isClickedVerifyPhone ? 'border-main' : 'border-gray-300'
                 }`}
                 labelStyle="mb-[10px] relative text-lg"
@@ -261,11 +261,12 @@ const UserModifyForm = ({
                 onChangeInput={onChangeInput}
                 placeholder="인증번호"
               />
+
               <span className="text-main text-xl w-[60px]">
                 {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
               </span>
               <button
-                className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
+                className="border-2 border-main w-[90px] h-[40px] ml-[10px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
                 onClick={() => {
                   if (!modifyUserState.verify) {
                     fireToast({
@@ -300,7 +301,7 @@ const UserModifyForm = ({
       {isPasswordModifyMode ? (
         <div className="relative flex flex-col">
           <Input
-            style={`ml-[64px] w-[300px] outline-none py-[4px] pl-[4px] ${
+            style={`ml-10 md:ml-[64px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
               isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
             }`}
             labelStyle="my-[20px] relative text-lg"
@@ -316,7 +317,7 @@ const UserModifyForm = ({
             validate={passwordValidate}
           />
           <Input
-            style={`ml-[42px] w-[300px] outline-none py-[4px] pl-[4px] ${
+            style={`ml-10 md:ml-[42px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
               isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
             }`}
             labelStyle="my-[10px] relative text-lg"
@@ -332,7 +333,7 @@ const UserModifyForm = ({
             validate={passwordValidate}
           />
           <Input
-            style={`ml-[24px] w-[300px] outline-none py-[4px] pl-[4px] ${
+            style={`ml-4 md:ml-[24px] w-[300px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
               isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
             }`}
             labelStyle="my-[20px] relative text-lg"
@@ -347,7 +348,7 @@ const UserModifyForm = ({
             errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
             validate={passwordValidate}
           />
-          <div className="absolute bottom-4 right-[-52px] flex justify-end">
+          <div className="md:absolute bottom-4 right-[-52px] flex justify-end mr-4 md:mr-0">
             <Button
               title="취소"
               onClick={() => {
@@ -358,7 +359,7 @@ const UserModifyForm = ({
                   confirmChangePassword: '',
                 })
               }}
-              style="w-[50px] ml-[30px]"
+              style="w-[50px] hover:bg-main ml-[30px] text-xl"
               size="md"
             />
           </div>
@@ -374,7 +375,7 @@ const UserModifyForm = ({
           <Button
             title="변경"
             onClick={() => setIsPasswordModifyMode(true)}
-            style="w-[50px] ml-[30px]"
+            style="w-[50px] ml-[30px] text-xl"
             size="md"
           />
         </div>

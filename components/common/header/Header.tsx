@@ -1,8 +1,8 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isMobileDisplay } from '../../../store/isMobileDisplay'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { getStoredUser } from '../../util/userStorage'
@@ -12,6 +12,7 @@ import { mobileNavState } from '../../../store/mobileNavState'
 import { User } from '../../auth/types/user'
 import { FaShoppingCart } from 'react-icons/fa'
 import { modalState } from '../../../store/modalState'
+import foodifulImg from '/public/foodiful.jpeg'
 
 const Header = () => {
   const { signOut } = useAuth()
@@ -47,7 +48,7 @@ const Header = () => {
     <div className={`w-full sticky top-0 z-[999999] bg-white shadow-md`}>
       <div className={`w-[90%] h-[100px] mx-auto flex justify-between items-center  `}>
         <div className="cursor-pointer rounded-md overflow-hidden" onClick={onClickLogo}>
-          <Image src="/foodiful.jpeg" alt="logo" width={72} height={72} priority />
+          <Image src={foodifulImg} alt="logo" width={72} height={72} priority />
         </div>
         {isMobile ? (
           <span onClick={() => setIsMenuOpened((prev) => !prev)}>

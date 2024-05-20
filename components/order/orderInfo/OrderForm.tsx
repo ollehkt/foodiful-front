@@ -103,10 +103,20 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           placeholder="상세주소를 입력해주세요"
         />
       </div>
-      <div className="flex items-center w-full">
-        <Input
-          style="ml-[10px] lg:ml-[92px] w-[30%] lg:w-[15%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
-          labelStyle="my-[30px] text-lg mr-[-60px] lg:mr-[-150px]"
+      <div className="flex items-center w-full mb-4">
+        <span className="break-keep whitespace-nowrap text-lg">휴대폰*</span>
+        <input
+          className="w-[50px] h-10 ml-2 md:ml-[94px] rounded-md border-disabled border-2 focus:outline-main"
+          type="text"
+          name="1st"
+          minLength={3}
+          maxLength={10}
+          value={phoneNum['1st']}
+          onChange={onChangePhoneNum}
+        />
+        {/* <Input
+          style="ml-2 lg:ml-[92px] lg:w-[15%] py-[4px] rounded-md border-disabled border-2 focus:outline-main"
+          labelStyle="my-[30px] w-[120px] text-lg  lg:mr-[-150px]"
           labelName="휴대폰*"
           type="text"
           minLength={3}
@@ -115,11 +125,11 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           name="1st"
           onChangeInput={onChangePhoneNum}
           placeholder=""
-        />
-        <div className="mx-2 lg:mx-4 text-2xl font-bold pb-2">-</div>
+        /> */}
+        <div className="mx-3 text-2xl font-bold pb-2">-</div>
         <Input
-          style="w-[45%] lg:w-[30%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
-          labelStyle="mr-[-70px] lg:mr-[-145px]"
+          style="w-[60px] md:w-[60px] py-1 rounded-md border-disabled border-2 focus:outline-main"
+          labelStyle="w-min"
           type="text"
           minLength={3}
           maxLength={10}
@@ -128,9 +138,10 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           onChangeInput={onChangePhoneNum}
           placeholder=""
         />
-        <div className="mx-2 lg:mx-4 text-2xl font-bold pb-2">-</div>
+        <div className="mx-3 text-2xl font-bold pb-2">-</div>
         <Input
-          style="w-[45%] lg:w-[30%] py-[4px] pl-[8px] rounded-md border-disabled border-2 focus:outline-main"
+          style="w-[60px] py-[4px]  rounded-md border-disabled border-2 focus:outline-main"
+          labelStyle="w-min"
           type="text"
           minLength={3}
           maxLength={10}
@@ -140,10 +151,10 @@ function OrderForm({ orderForm, setOrderForm }: PropsType) {
           placeholder=""
         />
       </div>
-      <label className="flex ml-[-4px] lg:ml-0">
+      <label className="flex ml-[-4px] lg:ml-0 break-keep text-lg">
         요구사항
         <textarea
-          className="resize-none border-2 border-disabled rounded-md ml-2 lg:ml-[90px] h-[100px]"
+          className="p-1 resize-none border-2 border-disabled rounded-md ml-2 md:ml-[86px] h-[100px]"
           name="requirement"
           cols={35}
           rows={10}

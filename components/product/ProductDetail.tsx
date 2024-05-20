@@ -229,13 +229,13 @@ const ProductDetail = ({
             <Button
               title="장바구니 추가"
               onClick={() => onClickAddCart(id, productQuantities, additionalQuantities)}
-              style="border-2 border-main hover:border-white w-full"
+              style="border-2 border-main hover:border-white w-full text-lg"
               size="lg"
             />
             <Button
               title="구매하기"
               onClick={onClickPurchase}
-              style="border-2 border-main hover:border-white w-full"
+              style="border-2 border-main hover:border-white w-full text-lg"
               size="lg"
             />
           </div>

@@ -30,7 +30,6 @@ function InquiryItem({ inquiry }: PropsType) {
   const { data: inquiryRecomments } = useGetInquiryRecomment(inquiry.id)
   const { deleteInquiryMutate } = useDeleteInquiry()
   const { deleteInquiryRecommentMutate } = useDeleteInquiryRecomment()
-  console.log(inquiryRecomments)
   const onClickDelete = (e: React.MouseEvent<HTMLButtonElement>, type: string, id: number) => {
     e.stopPropagation()
     setModal({
@@ -61,22 +60,26 @@ function InquiryItem({ inquiry }: PropsType) {
           user && user.id === userId ? (
             <>
               <span className="text-sm">나의 글</span>
-              {comment}{' '}
-              {inquiryRecomments &&
-                (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+              <p>
+                {comment}{' '}
+                {inquiryRecomments &&
+                  (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+              </p>{' '}
             </>
           ) : (
             <>
               <IoLockClosed className="text-gray-700" size={20} />
-              <p>비밀글 입니다.</p>
+              <p className="break-keep">비밀글 입니다.</p>
             </>
           )
         ) : (
           <>
             {user && user.id === userId ? <span className="text-sm">나의 글</span> : <div></div>}
-            {comment}{' '}
-            {inquiryRecomments &&
-              (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+            <p>
+              {comment}{' '}
+              {inquiryRecomments &&
+                (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
+            </p>{' '}
           </>
         )}
 
@@ -126,12 +129,12 @@ function InquiryItem({ inquiry }: PropsType) {
                     user && user.id === recommentUserId ? (
                       <>
                         <span className="text-sm">나의 글</span>
-                        {recomment}
+                        <p>{recomment}</p>
                       </>
                     ) : (
                       <>
                         <IoLockClosed className="text-gray-700" size={20} />
-                        <p>비밀글 입니다.</p>
+                        <p className="break-keep">비밀글 입니다.</p>
                       </>
                     )
                   ) : (
@@ -141,14 +144,14 @@ function InquiryItem({ inquiry }: PropsType) {
                       ) : (
                         <div></div>
                       )}
-                      {recomment}
+                      <p>{recomment}</p>
                     </>
                   )}
 
                   <div className="flex items-center gap-x-4">
                     <p>
                       {user && user.role === 'ADMIN'
-                        ? userId
+                        ? recommentUserId
                         : recommentUserId.toString().length > 5
                         ? `${recommentUserId.toString().slice(0, 4)}****`
                         : `${recommentUserId}****`}

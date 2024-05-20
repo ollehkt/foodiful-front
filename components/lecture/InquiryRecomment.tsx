@@ -3,6 +3,8 @@ import { Button } from '../common/Button'
 import { usePostRecomment } from './hooks/useLecture'
 import { getStoredUser } from '../util/userStorage'
 import { User } from '../auth/types/user'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 interface PropsType {
   parentId: number
@@ -16,6 +18,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
     isSecret: true,
     parentId,
   })
+  const isMobile = useAtomValue(isMobileDisplay)
 
   const { postRecommentMutate } = usePostRecomment()
 
@@ -47,7 +50,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
           <p className="text-gray-700 pb-1">비밀글 작성</p>
         </div>
         <div className="flex justify-center items-center mt-[10px]">
-          <div className="w-full flex relative items-center">
+          <div className="md:w-full flex relative items-center">
             <textarea
               value={recommentState.comment}
               onChange={onChangeComment}
@@ -62,10 +65,10 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
             </span>
           </div>
           <Button
-            title="등록하기"
+            title="등록"
             onClick={onClickPostRecomment}
-            style="h-[60px] mx-2 font-semibold border-2 border-main hover:bg-main"
-            size="md"
+            style="h-[60px]  ml-2 md:mx-2 font-semibold border-2 border-main hover:bg-main"
+            size={`${isMobile ? 'sm' : 'md'}`}
             disabled={!user}
           />
         </div>

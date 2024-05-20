@@ -9,8 +9,9 @@ import { useRenderImages } from '../common/hooks/useRenderImages'
 import useToast from '../common/hooks/useToast'
 import { usePostReview, useUpdateReview } from './hooks/useReviews'
 import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from './types/productReviewTypes'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 interface PropsType {
   productName: string
@@ -45,7 +46,7 @@ const ReviewForm = ({
   const { onChangeRenderImgs } = useRenderImages()
   const { getPresignedUrlByFiles } = useGetPresignedUrl()
   const { fireToast } = useToast()
-  const router = useRouter()
+  const isMobile = useAtomValue(isMobileDisplay)
   const setModal = useSetAtom(modalState)
 
   const { mutate: postReviewMutation } = usePostReview(productId)
@@ -85,7 +86,7 @@ const ReviewForm = ({
      *  그렇다면 aws에서 현재 파일이 등록되어 있는 지 확인 후 업로드 시키기 or 그냥 계속 업로드 되게 만들기
      *  => 뭐가 리소스 낭비가 더 심할지 고민
      */
-    if (reviewState.reviewImg) {
+    if (!!files.length) {
       const urls = await getPresignedUrlByFiles(files, 'product-review')
       if (urls) {
         userReviewed
@@ -148,6 +149,7 @@ const ReviewForm = ({
         }),
     })
   }
+
   return (
     <div className="w-full">
       {/** 별점 */}
@@ -155,7 +157,7 @@ const ReviewForm = ({
         <label htmlFor="cover-photo" className="block text-lg font-medium leading-6 text-gray-900">
           {userReviewed ? '후기 이미지 수정하기' : '후기 이미지 추가하기'}
         </label>
-        <div className="my-2 flex justify-start">
+        <div className="my-2 flex justify-start items-center">
           <label
             className="p-12 rounded-md border-2 border-dashed border-gray-900/25 cursor-pointer h-[130px]"
             htmlFor="file-upload"
@@ -164,7 +166,6 @@ const ReviewForm = ({
             <input
               id="file-upload"
               onChange={(e) => {
-                setImgSrc([])
                 onChangeRenderImgs(e, setFiles, setImgSrc)
               }}
               name="fileUpload"
@@ -272,17 +273,17 @@ const ReviewForm = ({
         </div>
         {userReviewed && (
           <Button
-            title="취소하기"
+            title="취소"
             onClick={() => setIsModifyMode && setIsModifyMode(false)}
             style="h-[60px] mx-2 font-semibold"
-            size="md"
+            size={`${userReviewed && isMobile ? 'sm' : 'md'}`}
           />
         )}
         <Button
-          title="등록하기"
+          title="등록"
           onClick={onClickPostBtn}
           style="h-[60px] mx-2 font-semibold"
-          size="md"
+          size={`${userReviewed && isMobile ? 'sm' : 'md'}`}
         />
       </div>
     </div>

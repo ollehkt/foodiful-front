@@ -12,7 +12,6 @@ import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 const MyPagePurchased = () => {
   const router = useRouter()
   const { fireToast } = useToast()
-
   const { data: orderList } = useGetOrder()
 
   useEffect(() => {
@@ -27,10 +26,10 @@ const MyPagePurchased = () => {
       })
       router.push('/auth')
     }
-  }, [])
+  }, [router, fireToast])
 
   return (
-    <section className="grow flex-col items-center px-5">
+    <section className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="상품 구매내역" style="border-b-2 border-main pb-2" />
       {!!orderList.length ? (
         <>

@@ -31,7 +31,7 @@ function RefundPage() {
     }
   }, [])
   return (
-    <section className="grow flex-col items-center px-5">
+    <section className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="취소/교환/반품 내역" style="border-b-2 border-main pb-2" />
       {!refundList.length ? (
         <div className="w-full flex flex-col items-center text-2xl font-bold my-10">

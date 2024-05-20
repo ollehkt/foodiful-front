@@ -17,13 +17,13 @@ export const Button = ({ title, style, size, disabled, onClick, onClickWithEvent
       disabled={disabled}
       className={`rounded-md ${
         size === 'lg'
-          ? 'w-[200px] h-[60px]'
+          ? 'w-[200px] h-[60px] text-2xl'
           : size === 'md'
-          ? 'w-[140px] h-[40px]'
+          ? 'w-[140px] h-[40px] text-2xl'
           : size === 'sm'
           ? 'w-10'
-          : 'w-[100px] h-[30px]'
-      } hover:bg-active hover:text-white disabled:bg-disabled disabled:text-textDisabled ${style}`}
+          : 'w-[100px] py-1 text-lg'
+      } hover:bg-active hover:text-white disabled:bg-disabled disabled:text-textDisabled ${style} break-keep`}
       onClick={handleClick}
     >
       {title}

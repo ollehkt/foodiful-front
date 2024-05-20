@@ -5,8 +5,9 @@ import { GetOrderType } from '../order/types/getOrderType'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import PurchasedProductItem from './PurchasedProductItem'
 import { useRouter } from 'next/router'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 interface PropsType {
   order: GetOrderType
@@ -20,6 +21,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   const [isDetailOpened, setIsDetailOpened] = useState(false)
   const router = useRouter()
   const setModal = useSetAtom(modalState)
+  const isMobile = useAtomValue(isMobileDisplay)
 
   const onClickOrder = () => {
     if (!viewArrow) return
@@ -60,27 +62,24 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   return (
     <>
       <div
-        className={`grid grid-cols-3 md:grid-cols-6 items-center  my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
+        className={`grid grid-cols-2 md:grid-cols-6 items-center  my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
           viewArrow && 'cursor-pointer'
         }`}
         onClick={onClickOrder}
       >
-        <div className="hidden md:block md:grow-[0.7]">
-          {dayjs(order.orderDate).format('YYYY-MM-DD HH:MM')}
-        </div>
-        <div className="md:grow-[0.8]">{order.id}</div>
-        <div className="hidden md:block md:grow-[0.8]">{order.deliverName}</div>
-        <div className="md:grow-[0.8]">{order.totalPrice.toLocaleString()}원</div>
-        <div className="md:flex md:items-center md:grow-[0.4] md:gap-8">
-          <div className="text-center">{orderStatus}</div>
+        <div className="hidden md:block">{dayjs(order.orderDate).format('YYYY-MM-DD HH:MM')}</div>
+        <div className="">{order.id}</div>
+        <div className="hidden md:block">{order.deliverName}</div>
+        <div className="">{order.totalPrice.toLocaleString()}원</div>
+        <div className="col-span-2 flex items-center gap-x-10 mt-4">
+          <div className="text-center break-keep mt-4">{orderStatus}</div>
           {orderStatus !== '주문 취소' && (
-            <div className="mt-2 md:mt-0">
-              <Button
-                title="주문 취소"
-                onClickWithEvent={onClickCancelOrder}
-                style="bg-main text-white"
-              />
-            </div>
+            <Button
+              title="주문 취소"
+              size={`${isMobile && 'sm'}`}
+              onClickWithEvent={onClickCancelOrder}
+              style="bg-main w-20 text-white mt-4 py-1 md:mt-0"
+            />
           )}
         </div>
         <span className="hidden md:block text-main text-xl font-extrabold mr-4 cursor-pointer hover:text-hover">
@@ -96,7 +95,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
             <div className="grow-[0.5]">주문 수량(추가 상품 수량)</div>
           </div>
           {order.orderProduct.map((product) => (
-            <PurchasedProductItem key={product.id} product={product} />
+            <PurchasedProductItem key={product.id} product={product} orderDate={order.orderDate} />
           ))}
         </div>
       )}

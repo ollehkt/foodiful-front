@@ -55,13 +55,13 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
       buyer_postcode: orderForm.postalCode, // 구매자 우편번호
     }
 
-    /**
-   * 결제창 호출안할 때 사용 
     postOrder({ orderForm: { ...orderForm, id: data.merchant_uid }, orderProduct })
     router.push(`/order/confirm?id=${data.merchant_uid}&date=${dayjs().format('YYYY-MM-DD HH:mm')}`)
-  */
+    /**
+     * 결제창 호출안할 때 사용
+     */
     /* 4. 결제 창 호출하기 */
-    IMP.request_pay(data, callback)
+    // IMP.request_pay(data, callback)
   }
 
   /* 3. 콜백 함수 정의하기 */

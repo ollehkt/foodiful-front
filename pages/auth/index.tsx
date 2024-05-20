@@ -6,7 +6,7 @@ function AuthPage() {
   const [viewLoginMoveText, setViewLoginMoveText] = useState(false)
   const [viewSignupMoveText, setViewSignupMoveText] = useState(false)
   return (
-    <div className="h-[400px] mt-[300px] flex flex-col justify-center items-center">
+    <div className="h-[400px] mt-[100px] flex flex-col justify-center items-center">
       <div className="text-3xl flex flex-col items-center">
         한식 디저트의 모든 것<span className="text-main mt-[10px]"> Foodiful</span>
       </div>

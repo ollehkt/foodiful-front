@@ -25,7 +25,7 @@ const CartPage = () => {
       })
       router.push('/auth')
     }
-  }, [])
+  }, [fireToast, router])
 
   return (
     <Container>

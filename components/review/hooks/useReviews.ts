@@ -123,11 +123,15 @@ const updateReview = async (updateReviewData: UpdateReviewTypes) => {
 
 export const useUpdateReview = (productId: number) => {
   const queryClient = useQueryClient()
+  const router = useRouter()
   const { fireToast } = useToast()
   const { mutate } = useMutation({
     mutationFn: ({
       ...updateReviewData
     }: UpdateReviewTypes & { productId: number; userId: number }) => updateReview(updateReviewData),
+    // onMutate: () => {
+    //   queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+    // },
     onMutate: async (updateReviewData) => {
       await queryClient.cancelQueries([queryKeys.review, productId])
 
@@ -153,7 +157,8 @@ export const useUpdateReview = (productId: number) => {
       })
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
+      router.reload()
     },
   })
   return { mutate }

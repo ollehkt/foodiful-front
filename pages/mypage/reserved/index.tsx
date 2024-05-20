@@ -7,6 +7,7 @@ import useToast from '../../../components/common/hooks/useToast'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { User } from '../../../components/auth/types/user'
+import ReservationList from '../../../components/reserve/ReservationList'
 
 const MyPageReserved = () => {
   const router = useRouter()
@@ -30,12 +31,11 @@ const MyPageReserved = () => {
     setUser(storedUser)
   }, [])
   return (
-    <section className="grow flex-col items-center px-5">
+    <section className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="예약 내역" style="border-b-2 border-main pb-2" />
 
       {!!myReservations.length ? (
-        /** 예약 내역 바탕으로 예약 보여주기 */
-        <></>
+        <ReservationList reservations={myReservations} />
       ) : (
         <div className="w-full flex flex-col items-center text-2xl font-bold my-10">
           <div>클래스 예약 내역이 없습니다.</div>

@@ -3,12 +3,14 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import OrderConfirm from '../order/orderInfo/OrderConfirm'
 import { OrderProductType } from '../order/types/getOrderType'
+import dayjs from 'dayjs'
 
 interface PropsType {
   product: OrderProductType
+  orderDate: string
 }
 
-function PurchasedProductItem({ product }: PropsType) {
+function PurchasedProductItem({ product, orderDate }: PropsType) {
   const router = useRouter()
   const onClickProduct = () => {
     router.push(`/product/${product.productId}`)
@@ -36,6 +38,10 @@ function PurchasedProductItem({ product }: PropsType) {
             <span className="text-black">({product.additionalCount})</span>
           </div>
           <div className="grow-[1]"></div>
+        </div>
+        <div className="flex items-center">
+          <p className="text-gray-500">주문일:</p>
+          <p className="text-main font-bold ml-1"> {dayjs(orderDate).format('YYYY-MM-DD')}</p>
         </div>
       </div>
     </>

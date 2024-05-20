@@ -1,6 +1,5 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPageContext } from 'next'
+import { InferGetServerSidePropsType, NextPageContext } from 'next'
 import React, { useState } from 'react'
-
 import ProductDetail from '../../components/product/ProductDetail'
 import { Button } from '../../components/common/Button'
 import { useRouter } from 'next/router'
@@ -10,7 +9,6 @@ import { queryKeys } from '../../query-keys/queryKeys'
 import { getReviews, useGetReviews } from '../../components/review/hooks/useReviews'
 import { getProductById, useGetProductById } from '../../components/product/hooks/useProduct'
 import { useGetOrder } from '../../components/order/hooks/useOrder'
-import { ProductReturnType } from '../../components/product/types/productTypes'
 import DetailDesc from '../../components/common/DetailDescription'
 
 export const getServerSideProps = async (context: NextPageContext) => {

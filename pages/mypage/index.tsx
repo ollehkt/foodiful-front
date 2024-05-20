@@ -13,6 +13,9 @@ import { Button } from '../../components/common/Button'
 import { useGetFavoriteProducts } from '../../components/common/favorite/hooks/useFavorite'
 import { useGetReservationByUserId } from '../../components/calendar/hooks/useReservation'
 import { useGetReviewByUserId } from '../../components/review/hooks/useReviews'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
+import ReservationList from '../../components/reserve/ReservationList'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -20,7 +23,8 @@ function MyPage() {
   const { data: myPurchasedList } = useGetOrder()
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
   const { data: myReservations } = useGetReservationByUserId(user?.id)
-
+  console.log(myReservations)
+  const isMobile = useAtomValue(isMobileDisplay)
   const router = useRouter()
   const { fireToast } = useToast()
   useEffect(() => {
@@ -49,6 +53,14 @@ function MyPage() {
             <span className="text-main font-bold">{user?.name}</span> 님
           </div>
         </div>
+        {isMobile && (
+          <Button
+            title="수정"
+            onClick={() => router.push('/mypage/modify')}
+            style="bg-main text-white py-1"
+            size="sm"
+          />
+        )}
       </section>
       <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="좋아하는 상품" />
@@ -116,11 +128,18 @@ function MyPage() {
       <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="예약 내역" />
         {!!myReservations.length ? (
-          <div>
-            {myReservations.map((reservation) => (
-              <div key={reservation.id}>{reservation.reserveDate}</div>
-            ))}
-          </div>
+          <>
+            <ReservationList reservations={myReservations} />
+            <div className="flex justify-content my-2">
+              <Button
+                title="더 보기"
+                onClick={() => {
+                  router.push('/mypage/reserved')
+                }}
+                style="mx-auto bg-main text-white"
+              />
+            </div>
+          </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
             예약 내역이 없습니다.

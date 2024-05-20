@@ -3,6 +3,8 @@ import { Button } from '../common/Button'
 import { usePostInquiry } from './hooks/useLecture'
 import { User } from '../auth/types/user'
 import { getStoredUser } from '../util/userStorage'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 interface PropsType {
   placeholder: string
@@ -18,6 +20,7 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
     parentId,
     lectureId,
   })
+  const isMobile = useAtomValue(isMobileDisplay)
   const { postInquiryMutate } = usePostInquiry()
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInquiryState({ ...inquiryState, comment: e.currentTarget.value })
@@ -44,7 +47,7 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
         <p className="text-gray-700 pb-1">비밀글 작성</p>
       </div>
       <div className="flex justify-center items-center mt-[10px]">
-        <div className="w-full flex relative items-center">
+        <div className="md:w-full flex relative items-center">
           <textarea
             value={inquiryState.comment}
             onChange={onChangeComment}
@@ -59,10 +62,10 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
           </span>
         </div>
         <Button
-          title="등록하기"
+          title="등록"
           onClick={onClickPostBtn}
-          style="h-[60px] mx-2 font-semibold border-2 border-main hover:bg-main"
-          size="md"
+          style="h-[60px] ml-2 md:mx-2 font-semibold border-2 border-main hover:bg-main"
+          size={`${isMobile ? 'sm' : 'md'}`}
           disabled={!user}
         />
       </div>

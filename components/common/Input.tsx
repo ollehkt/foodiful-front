@@ -72,7 +72,9 @@ export const Input = ({
         onChange={(e) => onChangeInput(e)}
       />
       {isBlur && !isValid ? (
-        <div className="text-[#f00] text-lg absolute right-0 text-center">{errorText}</div>
+        <div className="text-[#f00] text-lg absolute right-0 text-center break-keep">
+          {errorText}
+        </div>
       ) : null}
     </label>
   )

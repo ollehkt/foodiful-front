@@ -17,7 +17,7 @@ export const getServerSideProps = async (): Promise<{
   const { data: lectures } = await api('/lecture/all')
   const { data: reservations } = await api('/reservation/all')
 
-  if (!!reservations.length) {
+  if (!reservations.length) {
     return { props: { lectures, reservedTimes: [] } }
   }
   const reservedTimes: string[] = reservations.flatMap(

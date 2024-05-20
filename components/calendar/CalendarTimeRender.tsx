@@ -73,7 +73,7 @@ const CalendarTimeRender = ({
           </div>
           {confirmSelectedTime && (
             <div className="mt-8 md:mt-0 h-[40px] flex justify-center items-center text-lg font-semibold">
-              <span>
+              <span className="break-keep">
                 <span className="text-main font-bold">{confirmSelectedTime}</span> 의 예약이
                 맞으시다면 <span className="p-1 bg-main text-white rounded-md">선택</span> 을
                 눌러주세요.

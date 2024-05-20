@@ -23,12 +23,8 @@ function LectureInquiry({ lectureName, lectureId, inquiryList }: PropsType) {
       </div>
       <div className="flex-col mt-[40px] border-main border-t-[1px]">
         <p className="mt-[10px]  text-3xl mb-4">문의 목록</p>
-        {!!inquiryList.length ? (
-          <>
-            {inquiryList.map((item) => (
-              <InquiryItem key={item.id} inquiry={item} />
-            ))}
-          </>
+        {!!inquiryList?.length ? (
+          inquiryList.map((item) => <InquiryItem key={item.id} inquiry={item} />)
         ) : (
           <p className="flex justify-center text-center my-[50px] text-main text-xl font-bold">
             후기가 없습니다. <br />

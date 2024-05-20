@@ -66,10 +66,10 @@ function SignUp() {
   // }, [signUpValue.phone])
 
   return (
-    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
+    <div className="w-min md:w-[900px] mx-auto mt-[40px] py-[60px] flex flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>회원가입
       <Input
-        style=" ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="md:ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-2xl"
         labelName="이메일"
         type="text"
@@ -81,7 +81,7 @@ function SignUp() {
         errorText="이메일 형식에 맞춰 작성해주세요"
       />
       <Input
-        style="ml-[64px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="md:ml-[64px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-2xl"
         labelName="이름"
         type="text"
@@ -94,7 +94,7 @@ function SignUp() {
         errorText="3자 이상 10자 이하로 입력해주세요"
       />
       <Input
-        style="ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="md:ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-2xl"
         labelName="패스워드"
         type="password"
@@ -107,9 +107,9 @@ function SignUp() {
         placeholder="패스워드를 입력해주세요"
         errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
       />
-      <div className="relative">
+      <div className="relative mt-[30px]">
         <Input
-          style="ml-[38px] w-[300px] mt-[30px] outline-none py-[4px] pl-[8px] border-b-2"
+          style="md:ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
           labelStyle="my-[30px] relative text-2xl"
           isDisabled={isPhoneInputDisabled}
           labelName="휴대폰"
@@ -141,12 +141,12 @@ function SignUp() {
           </button>
         )}
       </div>
-      <div className="flex items-center mt-[0px] ml-[0px]">
+      <div className="flex flex-col md:flex-row items-center mt-[0px] ml-[0px]">
         {!isExistPhoneNumber && isClickedVerifyPhone && !verifyExpiredTxt ? (
           <>
             <Input
-              style="mx-[30px] w-[160px] text-xl outline-none py-[4px] pl-[8px] border-b-2"
-              labelStyle="my-[30px] relative text-2xl"
+              style="md:mx-[30px] md:w-[160px] text-xl outline-none py-[4px] pl-[8px] border-b-2"
+              labelStyle=" mt-[10px] md:my-[30px] relative text-2xl"
               type="tel"
               minLength={3}
               maxLength={10}
@@ -155,21 +155,23 @@ function SignUp() {
               onChangeInput={onChangeInput}
               placeholder="인증번호"
             />
-            <span className="text-main text-2xl">
-              {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
-            </span>
-            <button
-              className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
-              onClick={() => {
-                checkVerifySms(signUpValue.phone, signUpValue.verify, resetSignUpValue)
-                setTime(-1)
-              }}
-            >
-              확인
-            </button>
+            <div className="flex md:block mt-4 md:mt-0">
+              <span className="text-main text-2xl">
+                {Math.floor(time / 60)} : {calPhoneVerifyTime(time)}
+              </span>
+              <button
+                className="border-2 border-main w-[90px] h-[40px] ml-[20px] rounded-md text-2xl hover:border-white hover:text-white hover:bg-main"
+                onClick={() => {
+                  checkVerifySms(signUpValue.phone, signUpValue.verify, resetSignUpValue)
+                  setTime(-1)
+                }}
+              >
+                확인
+              </button>
+            </div>
           </>
         ) : (
-          <span className="text-main text-xl mt-[20px]">{verifyExpiredTxt}</span>
+          <span className="text-main text-xl mt-[20px] break-keep">{verifyExpiredTxt}</span>
         )}
       </div>
       <Button

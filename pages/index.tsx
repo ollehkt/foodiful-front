@@ -42,11 +42,11 @@ const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServ
           <ProductList products={user ? productsUserLiked : products} />
         </div>
 
-        <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <div className="w-[80%] mx-auto px-4 sm:px-6 py-8 lg:px-8">
           <LectureList lectureList={user ? lectureUserLiked : lectures} />
         </div>
 
-        <Channel />
+        {/* <Channel /> */}
         {/**<div className="sticky w-full bottom-10 pr-[2%] z-[99999] flex justify-end "> */}
       </div>
     </>

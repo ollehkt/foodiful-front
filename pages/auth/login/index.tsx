@@ -19,11 +19,6 @@ function SignIn() {
   const { emailValidate, passwordValidate } = useValidate()
   const [isValidated, setIsValidated] = useState(false)
 
-  const REST_API_KEY = process.env.NEXT_PUBLIC_CLIENT_ID
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URL
-
-  const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
-
   useEffect(() => {
     if (emailValidate(signInValue.email) && passwordValidate(signInValue.password)) {
       setIsValidated(true)
@@ -31,10 +26,10 @@ function SignIn() {
   }, [signInValue, emailValidate, passwordValidate])
 
   return (
-    <div className="w-[900px] mx-auto mt-[150px] py-[100px] flex flex-col items-center text-3xl  rounded-md">
+    <div className="w-min md:w-[900px] mx-auto mt-[40px] py-[60px] flex flex-col items-center text-3xl  rounded-md">
       <span className="text-main text-4xl mb-[10px]">Foodiful</span>로그인
       <Input
-        style="ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="md:ml-[38px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-xl"
         labelName="이메일"
         type="text"
@@ -46,7 +41,7 @@ function SignIn() {
         errorText="이메일 형식에 맞춰 입력해주세요"
       />
       <Input
-        style="ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
+        style="md:ml-[24px] w-[300px] outline-none py-[4px] pl-[8px] border-b-2"
         labelStyle="my-[30px] relative text-xl"
         labelName="패스워드"
         type="password"
@@ -61,25 +56,17 @@ function SignIn() {
       />
       <Button
         onClick={() => signIn(signInValue)}
-        style="mt-[40px] bg-primary text-[#fff] "
+        style="mt-[40px] bg-main text-[#fff] "
         title="로그인"
         size="md"
         disabled={!isValidated}
       />
-      <div className="mt-[30px]">
-        <a
-          href={KAKAO_URL}
-          className="w-[140px] h-[40px] p-4 mx-4 bg-[#fee501] rounded-md text-black text-xl hover:bg-[#eed700]"
-        >
-          카카오 로그인
-        </a>
-        <a
-          href={KAKAO_URL}
-          className="w-[140px] h-[40px] py-4 px-6 mx-4 bg-white rounded-md text-black text-xl hover:bg-[#eed700]"
-        >
-          구글 로그인
-        </a>
-      </div>
+      <Button
+        onClick={() => router.push('/auth/signup')}
+        style="mt-[40px] bg-white text-main hover:bg-main"
+        title="회원가입"
+        size="md"
+      />
     </div>
   )
 }

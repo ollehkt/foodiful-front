@@ -60,9 +60,9 @@ const MyPageModify = () => {
   // useEffect(() => {}, [isPhoneModifyMode, modifyUserState.phone])
 
   return (
-    <div className="grow flex-col items-center px-5">
+    <div className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="내 정보 수정" style="border-b-2 border-main pb-2" />
-      <div className="w-[90%] mx-auto mt-[40px]">
+      <div className="w-full mx-auto mt-[40px]">
         <UserModifyForm
           user={user}
           modifyUserState={modifyUserState}

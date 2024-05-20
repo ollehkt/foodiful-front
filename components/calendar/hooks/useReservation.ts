@@ -5,6 +5,7 @@ import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 import {
+  FetchReservationType,
   PostReservationType,
   ReservationType,
   updateReservartionType,
@@ -91,7 +92,7 @@ export const useGetReservations = () => {
   return { data }
 }
 
-const getReservationsByUserId = async (userId?: number): Promise<ReservationType[]> => {
+const getReservationsByUserId = async (userId?: number): Promise<FetchReservationType[]> => {
   const user = getStoredUser()
   const { data } = await api(`/user/reservation/${userId}`, {
     headers: {
@@ -103,7 +104,7 @@ const getReservationsByUserId = async (userId?: number): Promise<ReservationType
 
 export const useGetReservationByUserId = (
   userId?: number
-): { data: ReservationType[]; isFetching: boolean } => {
+): { data: FetchReservationType[]; isFetching: boolean } => {
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.reservation, userId],
     queryFn: () => getReservationsByUserId(userId),

@@ -1,12 +1,10 @@
 import { useAtom, useSetAtom } from 'jotai'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
 import { postOrderProductState } from '../../store/postOrderProductState'
 import { Button } from '../common/Button'
 import TitleAndLine from '../common/TitleAndLine'
-
 import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
 import { useDeleteAllCart } from './hooks/useCart'
@@ -50,14 +48,6 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
 
   // selectedProductId 변경 시 마다 가격 계산
   useEffect(() => {
-    // const selectedProductPrices = selectedProduct.map((selected) => {
-    //   if (selected && selected.product.discount)
-    //     return (
-    //       selected.product.price
-    //     )
-    //   else return selected.product.price * selected.quantity + selected.additionalCount * 5000
-    // })
-
     setTotalPrice(getTotalPrice(selectedProduct))
     if (!selectedProduct.length) setIsAllItemSelected(false)
     else if (selectedProduct.length === cartLists.length) setIsAllItemSelected(true)
@@ -76,8 +66,6 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
       else return selected.product.price * selected.quantity + selected.additionalCount * 5000
     })
     setTotalPrice(productPrices.reduce((acc, cur) => acc + cur, 0))
-
-    //
     setSelectedProduct(cartLists)
   }, [])
 
@@ -113,7 +101,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
           전체 삭제
         </button>
       </div>
-      <div className="flex gap-3">
+      <div className="flex-col md:flex-row gap-3">
         <div className="flex-col grow-[4]">
           {!!cartLists.length &&
             cartLists.map((cartList) => (
@@ -125,7 +113,6 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             ))}
         </div>
         <div className="flex-col grow justify-center items-center my-4">
-          {/**지불 금액 */}
           <div className="shadow-basic rounded-md p-4 border-[2px] border-main">
             <div className="text-main font-bold text-lg">지불 금액</div>
             <div className="flex items-center justify-between mt-[20px]">

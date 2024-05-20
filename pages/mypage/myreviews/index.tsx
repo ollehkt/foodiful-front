@@ -5,7 +5,7 @@ import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 const MyPageMyComments = () => {
   // 후기 불러오기
   return (
-    <section className="grow flex-col items-center px-5">
+    <section className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="내 후기 보기" style="border-b-2 border-main pb-2" />
     </section>
   )
