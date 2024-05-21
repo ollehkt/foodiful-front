@@ -25,7 +25,7 @@ const ReviewList = ({ reviewList }: PropsType) => {
   useIntersectionObserver(ref, addRenderReviewCount)
 
   const [renderReviewList, setRenderReviewList] = useState<ProductReviewTypes[]>([])
-  console.log(renderReviewList)
+
   return (
     <>
       {!!reviewList.length ? (

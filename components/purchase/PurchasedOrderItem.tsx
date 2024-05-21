@@ -71,14 +71,14 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
         <div className="">{order.id}</div>
         <div className="hidden md:block">{order.deliverName}</div>
         <div className="">{order.totalPrice.toLocaleString()}원</div>
-        <div className="col-span-2 flex items-center gap-x-10 mt-4">
-          <div className="text-center break-keep mt-4">{orderStatus}</div>
+        <div className="col-span-2 flex items-center gap-x-10 mt-5 md:mt-0 ">
+          <div className="text-center break-keep ">{orderStatus}</div>
           {orderStatus !== '주문 취소' && (
             <Button
               title="주문 취소"
               size={`${isMobile && 'sm'}`}
               onClickWithEvent={onClickCancelOrder}
-              style="bg-main w-20 text-white mt-4 py-1 md:mt-0"
+              style="bg-main w-20 text-white py-1"
             />
           )}
         </div>

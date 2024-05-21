@@ -14,7 +14,7 @@ const ProductItem = ({ product, mini }: PropsType) => {
   const { name, id, descImg, price, isLiked, discount } = product
   const router = useRouter()
   const { getDiscountedPrice } = useGetPrice()
-
+  console.log(product)
   return (
     <div key={`${name}-${id}`} className={`flex flex-col ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
       <Image

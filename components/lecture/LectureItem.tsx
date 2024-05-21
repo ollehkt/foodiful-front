@@ -14,10 +14,9 @@ const LectureItem = ({ lecture, mini }: PropsType) => {
     lecture
   const router = useRouter()
   return (
-    <div key={`${name}-${id}`} className={`flex flex-col w-[250px]`}>
+    <div key={`${name}-${id}`} className={`flex flex-col ${mini ? 'w-[200px]' : 'w-[250px]'}`}>
       <Image
-        key={descImg[0]}
-        src={descImg.length > 0 ? descImg[0] : '/foodiful.jpeg'}
+        src={descImg?.length > 0 ? descImg[0] : '/foodiful.jpeg'}
         alt="클래스 설명 사진"
         width={200}
         height={200}

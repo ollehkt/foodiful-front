@@ -22,6 +22,6 @@ export const myPageNav = [
   },
   {
     title: '내 후기 보기',
-    url: '/mypage/myreviews',
+    url: '/mypage/reviews',
   },
 ]

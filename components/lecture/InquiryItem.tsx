@@ -13,6 +13,7 @@ import { getStoredUser } from '../util/userStorage'
 import { Button } from '../common/Button'
 import { useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
+import { encodingUserId } from '../util/encodingUserId'
 
 interface PropsType {
   inquiry: InquiryType
@@ -84,13 +85,7 @@ function InquiryItem({ inquiry }: PropsType) {
         )}
 
         <div className="flex items-center gap-x-4">
-          <p>
-            {user && user.role === 'ADMIN'
-              ? userId
-              : userId.toString().length > 5
-              ? `${userId.toString().slice(0, 4)}****`
-              : `${userId}****`}
-          </p>
+          <p>{user && encodingUserId(user)}</p>
           <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
           {user && (user.id === userId || user.role === 'ADMIN') && (
             <Button
@@ -149,13 +144,7 @@ function InquiryItem({ inquiry }: PropsType) {
                   )}
 
                   <div className="flex items-center gap-x-4">
-                    <p>
-                      {user && user.role === 'ADMIN'
-                        ? recommentUserId
-                        : recommentUserId.toString().length > 5
-                        ? `${recommentUserId.toString().slice(0, 4)}****`
-                        : `${recommentUserId}****`}
-                    </p>
+                    <p>{user && encodingUserId(user)}</p>
                     <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
                     {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
                       <Button

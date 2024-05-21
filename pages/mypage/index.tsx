@@ -10,20 +10,26 @@ import { useGetOrder } from '../../components/order/hooks/useOrder'
 import PurchasedTitle from '../../components/purchase/PurchasedTitle'
 import PurchasedOrderItem from '../../components/purchase/PurchasedOrderItem'
 import { Button } from '../../components/common/Button'
-import { useGetFavoriteProducts } from '../../components/common/favorite/hooks/useFavorite'
+import {
+  useGetFavoriteLectures,
+  useGetFavoriteProducts,
+} from '../../components/common/favorite/hooks/useFavorite'
 import { useGetReservationByUserId } from '../../components/calendar/hooks/useReservation'
 import { useGetReviewByUserId } from '../../components/review/hooks/useReviews'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import ReservationList from '../../components/reserve/ReservationList'
+import ReviewList from '../../components/review/ReviewList'
+import LectureItem from '../../components/lecture/LectureItem'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>(null)
   const { data: myReviews } = useGetReviewByUserId(user?.id)
   const { data: myPurchasedList } = useGetOrder()
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
+  const { data: myFavoriteLectures } = useGetFavoriteLectures()
   const { data: myReservations } = useGetReservationByUserId(user?.id)
-  console.log(myReservations)
+
   const isMobile = useAtomValue(isMobileDisplay)
   const router = useRouter()
   const { fireToast } = useToast()
@@ -77,7 +83,35 @@ function MyPage() {
                 <Button
                   title="전체 보기"
                   onClick={() => {
-                    router.push('/mypage/favorites')
+                    router.push('/mypage/favorites/product')
+                  }}
+                  style="mx-auto bg-main text-white"
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="flex justify-center my-[50px] text-main text-xl font-bold">
+            좋아요 누른 상품이 없습니다.
+          </div>
+        )}
+      </section>
+      <section className="w-full my-12 border-t-2 border-t-active py-2">
+        <StrongTitle title="좋아하는 클래스" />
+
+        {!!myFavoriteLectures.length ? (
+          <>
+            <div className="grid justify-center md:justify-start md:grid-cols-3 my-12 items-center">
+              {myFavoriteLectures.slice(0, 4).map((lecture) => (
+                <LectureItem key={lecture.id} lecture={lecture} mini={true} />
+              ))}
+            </div>
+            {myFavoriteLectures.length > 4 && (
+              <div className="flex justify-content my-2">
+                <Button
+                  title="전체 보기"
+                  onClick={() => {
+                    router.push('/mypage/favorites/lecture')
                   }}
                   style="mx-auto bg-main text-white"
                 />
@@ -93,7 +127,20 @@ function MyPage() {
       <section className="w-full my-12 border-t-2 border-t-active py-2">
         <StrongTitle title="내 후기 보기" />
         {!!myReviews.length ? (
-          <></>
+          <>
+            <ReviewList reviewList={myReviews.slice(0, 3)} />
+            {myReviews.length > 3 && (
+              <div className="flex justify-content my-2">
+                <Button
+                  title="더 보기"
+                  onClick={() => {
+                    router.push('/mypage/reviews')
+                  }}
+                  style="mx-auto bg-main text-white"
+                />
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
             작성하신 후기가 없습니다.
@@ -108,15 +155,17 @@ function MyPage() {
             {myPurchasedList.slice(0, 5).map((purchased) => (
               <PurchasedOrderItem key={purchased.id} order={purchased} />
             ))}
-            <div className="flex justify-content my-2">
-              <Button
-                title="더 보기"
-                onClick={() => {
-                  router.push('/mypage/purchased')
-                }}
-                style="mx-auto bg-main text-white"
-              />
-            </div>
+            {myPurchasedList.length > 5 && (
+              <div className="flex justify-content my-2">
+                <Button
+                  title="더 보기"
+                  onClick={() => {
+                    router.push('/mypage/purchased')
+                  }}
+                  style="mx-auto bg-main text-white"
+                />
+              </div>
+            )}
           </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
@@ -129,16 +178,18 @@ function MyPage() {
         <StrongTitle title="예약 내역" />
         {!!myReservations.length ? (
           <>
-            <ReservationList reservations={myReservations} />
-            <div className="flex justify-content my-2">
-              <Button
-                title="더 보기"
-                onClick={() => {
-                  router.push('/mypage/reserved')
-                }}
-                style="mx-auto bg-main text-white"
-              />
-            </div>
+            <ReservationList reservations={myReservations.slice(0, 5)} />
+            {myReservations.length > 5 && (
+              <div className="flex justify-content my-2">
+                <Button
+                  title="더 보기"
+                  onClick={() => {
+                    router.push('/mypage/reserved')
+                  }}
+                  style="mx-auto bg-main text-white"
+                />
+              </div>
+            )}
           </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
