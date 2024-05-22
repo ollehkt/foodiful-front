@@ -9,7 +9,7 @@ export const getStoredUser = (): User | null => {
   } else return null
 }
 
-export const setStoreUser = (user: User): void => {
+export const setStoreUser = (user: User | null | undefined): void => {
   if (user) localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(user))
 }
 
