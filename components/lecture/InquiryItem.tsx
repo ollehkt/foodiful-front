@@ -14,6 +14,7 @@ import { Button } from '../common/Button'
 import { useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
 import { encodingUserId } from '../util/encodingUserId'
+import { useUser } from '../auth/hooks/useUser'
 
 interface PropsType {
   inquiry: InquiryType
@@ -22,7 +23,9 @@ interface PropsType {
 function InquiryItem({ inquiry }: PropsType) {
   const { id: inquiryId, userId, comment, isSecret, updatedAt } = inquiry
   const [isDetailOpened, setIsDetailOpened] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
 
   const onClickInquiry = () => {
     !isSecret && setIsDetailOpened(!isDetailOpened)
@@ -43,12 +46,6 @@ function InquiryItem({ inquiry }: PropsType) {
     })
   }
 
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    }
-  }, [])
   return (
     <div className={`${isDetailOpened && 'bg-gray-200'}`}>
       <div

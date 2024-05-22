@@ -28,7 +28,9 @@ export const useAddFavoriteProduct = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.favorite, queryKeys.product] })
     },
-    onError: () => {},
+    onError: () => {
+      throw new Error('에러')
+    },
   })
   return { mutate }
 }

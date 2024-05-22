@@ -21,9 +21,12 @@ import { isMobileDisplay } from '../../store/isMobileDisplay'
 import ReservationList from '../../components/reserve/ReservationList'
 import ReviewList from '../../components/review/ReviewList'
 import LectureItem from '../../components/lecture/LectureItem'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 function MyPage() {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const { data: myReviews } = useGetReviewByUserId(user?.id)
   const { data: myPurchasedList } = useGetOrder()
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
@@ -32,22 +35,6 @@ function MyPage() {
 
   const isMobile = useAtomValue(isMobileDisplay)
   const router = useRouter()
-  const { fireToast } = useToast()
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    } else {
-      fireToast({
-        id: '재로그인',
-        type: 'failed',
-        message: '다시 로그인 해주세요.',
-        position: 'bottom',
-        timer: 1000,
-      })
-      router.push('/')
-    }
-  }, [])
 
   return (
     <div className="grow shadow-basic rounded-md px-5">

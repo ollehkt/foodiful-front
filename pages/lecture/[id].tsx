@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { Button } from '../../components/common/Button'
 import DetailDesc from '../../components/common/DetailDescription'
 import LectureInquiry from '../../components/lecture/LectureInquiry'
+import Custom404 from '../404'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -47,7 +48,7 @@ const LectureDetailPage = ({
   const { data: inquiry } = useGetLectureInquiry(lectureId)
   return (
     <Hydrate state={dehydratedState}>
-      {!!lecture && (
+      {!!lecture ? (
         <div className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto">
           <Button title="업데이트" onClick={() => router.push(`/lecture/update/${lectureId}`)} />
           <LectureDetail lecture={lecture} />
@@ -86,6 +87,8 @@ const LectureDetailPage = ({
             </div>
           )}
         </div>
+      ) : (
+        <Custom404 />
       )}
     </Hydrate>
   )

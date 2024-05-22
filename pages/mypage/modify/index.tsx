@@ -43,7 +43,12 @@ const MyPageModify = () => {
       const res = await getUser(storedUser)
       if (res) {
         setUser(res)
-        setModifyUserState(res)
+        setModifyUserState({
+          ...modifyUserState,
+          name: res.name,
+          email: res.email,
+          phone: res.phone,
+        })
       } else {
         fireToast({
           id: '재로그인',
@@ -56,8 +61,6 @@ const MyPageModify = () => {
       }
     })()
   }, [])
-
-  // useEffect(() => {}, [isPhoneModifyMode, modifyUserState.phone])
 
   return (
     <div className="grow flex-col items-center px-5 mt-10">

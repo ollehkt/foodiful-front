@@ -13,10 +13,12 @@ import { User } from '../../auth/types/user'
 import { FaShoppingCart } from 'react-icons/fa'
 import { modalState } from '../../../store/modalState'
 import foodifulImg from '/public/foodiful.jpeg'
+import { useUser } from '../../auth/hooks/useUser'
 
 const Header = () => {
   const { signOut } = useAuth()
   const router = useRouter()
+
   const isMobile = useAtomValue(isMobileDisplay)
   const setIsMenuOpened = useSetAtom(mobileNavState)
   const [user, setUser] = useState<User | null>(null)

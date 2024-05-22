@@ -7,6 +7,7 @@ import ReviewItem from '../review/ReviewItem'
 import ReviewList from '../review/ReviewList'
 import { ProductReviewTypes } from '../review/types/productReviewTypes'
 import { getStoredUser } from '../util/userStorage'
+import { useUser } from '../auth/hooks/useUser'
 
 const ProductDetailReview = ({
   productName,
@@ -22,16 +23,16 @@ const ProductDetailReview = ({
   const [userReviewed, setUserReviewed] = useState<ProductReviewTypes>()
   const [userPurchased, setUserPurchased] = useState(false)
   const [isModifyMode, setIsModifyMode] = useState(false)
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
 
   const { mutate: deleteReview } = useDeleteReview(productId)
 
   useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
-    if (storedUser && !!reviewList.length) {
+    if (user && !!reviewList.length) {
       const userReview = reviewList.find((review: ProductReviewTypes) => {
-        return review.userId === storedUser.id
+        return review.userId === user.id
       })
       setUserReviewed(userReview)
     }

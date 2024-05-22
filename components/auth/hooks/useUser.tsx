@@ -15,7 +15,7 @@ export interface StoredUser {
   token: string
 }
 
-export const useUser = (): any => {
+export const useUser = () => {
   const router = useRouter()
   let storedUser: User | null = null
   if (typeof window !== 'undefined') {

@@ -5,6 +5,7 @@ import { User } from '../auth/types/user'
 import { getStoredUser } from '../util/userStorage'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
+import { useUser } from '../auth/hooks/useUser'
 
 interface PropsType {
   placeholder: string
@@ -13,7 +14,9 @@ interface PropsType {
 }
 
 function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const [inquiryState, setInquiryState] = useState({
     comment: '',
     isSecret: true,
@@ -22,6 +25,7 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
   })
   const isMobile = useAtomValue(isMobileDisplay)
   const { postInquiryMutate } = usePostInquiry()
+
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInquiryState({ ...inquiryState, comment: e.currentTarget.value })
   }
@@ -29,11 +33,6 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
   const onClickPostBtn = () => {
     postInquiryMutate({ lectureInquiry: inquiryState })
   }
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
-  }, [])
 
   return (
     <>

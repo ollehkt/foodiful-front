@@ -10,6 +10,7 @@ import { getReviews, useGetReviews } from '../../components/review/hooks/useRevi
 import { getProductById, useGetProductById } from '../../components/product/hooks/useProduct'
 import { useGetOrder } from '../../components/order/hooks/useOrder'
 import DetailDesc from '../../components/common/DetailDescription'
+import Custom404 from '../404'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -50,7 +51,7 @@ const ProductDetailPage = ({
   const { data: orderLists } = useGetOrder()
   return (
     <Hydrate state={dehydratedState}>
-      {!!product && (
+      {!!product ? (
         <div
           className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
           onClick={() => {
@@ -106,6 +107,8 @@ const ProductDetailPage = ({
             </div>
           )}
         </div>
+      ) : (
+        <Custom404 />
       )}
     </Hydrate>
   )

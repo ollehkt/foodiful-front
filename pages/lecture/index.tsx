@@ -11,6 +11,7 @@ import { DehydratedState, QueryClient, dehydrate } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
 import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
 import { api } from '../../components/axios/axiosInstance'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 export const getServerSideProps = async (): Promise<{ props: { lectures: LectureType[] } }> => {
   const { data: lectures = [] } = await api('/lecture/all')
@@ -21,12 +22,14 @@ const LecturePage = ({ lectures }: InferGetServerSidePropsType<typeof getServerS
   const { data: lectureUserLiked, isFetching } = useGetLectures()
   const { push } = useRouter()
   const [user, setUser] = useState<User | null>(null)
+  const { getUser } = useUser()
 
   useEffect(() => {
     const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    }
+    ;(async () => {
+      const res = await getUser(storedUser)
+      if (res) setUser(res)
+    })()
   }, [])
 
   const onClickAddBtn = () => {

@@ -1,29 +1,44 @@
 import Image from 'next/image'
 import StrongTitle from '../common/StrongTitle'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 const descs = [
   {
     img: '/profileImage.png',
-    title: '이게 푸디풀 입니다',
-    desc: '엄청난 이력의 소유자 입니다.',
+    title: '안녕하세요 푸디풀 입니다.',
+    desc: '다양한 경험을 바탕으로 재밌고 즐거운 교육을 진행하는 푸디풀 대표 "전민지"입니다.',
   },
   { img: '/foodiful.jpeg', title: '푸디풀 입니다', desc: '엄청난 이력의 소유자 입니다.' },
 ]
 const IntroduceDesc = () => {
+  const isMobile = useAtomValue(isMobileDisplay)
   return (
-    <div className="my-[120px] grid grid-cols-1 gap-y-40 justify-center items-center">
+    <div className="my-28 grid grid-cols-1 gap-y-20 justify-center items-center">
       {descs.map(
         ({ title, desc, img }: { title: string; desc: string; img: string }, idx: number) => (
-          <div key={`${title}-${desc}`} className="flex justify-center">
+          <div
+            key={`${title}-${desc}`}
+            className={`flex ${isMobile ? 'flex-col items-center' : 'justify-center'} `}
+          >
             <div
-              className={`${(idx + 1) % 2 === 0 && 'order-last w-[40%]'} w-[30%]`}
+              className={`${
+                !isMobile ? ((idx + 1) % 2 === 0 ? 'order-last w-[40%]' : 'w-[30%]') : 'break-keep'
+              }`}
               key={`${title}-${img}-${idx}`}
             >
               <StrongTitle title={title} style="my-[20px]" />
               <div className="font-semibold text-xl">{desc}</div>
             </div>
-            <div className="relative w-[40%]">
-              <Image src={img} alt="main-image" priority width={500} height={500} />
+            <div className={`mt-5 ${isMobile ? 'flex justify-center' : 'relative w-[40%]'}`}>
+              <Image
+                src={img}
+                alt="main-image"
+                priority
+                width={400}
+                height={400}
+                className="w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
+              />
             </div>
           </div>
         )
@@ -33,3 +48,61 @@ const IntroduceDesc = () => {
 }
 
 export default IntroduceDesc
+
+/**
+ * import Image from 'next/image'
+import StrongTitle from '../common/StrongTitle'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
+
+const descs = [
+  {
+    img: '/profileImage.png',
+    title: '안녕하세요 푸디풀 입니다.',
+    desc: '다양한 경험을 바탕으로 재밌고 즐거운 교육을 진행하는 푸디풀 대표 전민지입니다.',
+  },
+  { img: '/foodiful.jpeg', title: '푸디풀 입니다', desc: '엄청난 이력의 소유자 입니다.' },
+]
+const IntroduceDesc = () => {
+  const isMobile = useAtomValue(isMobileDisplay)
+  return (
+    <div className="my-[120px] grid grid-cols-1 gap-y-40 justify-center items-center">
+      {descs.map(
+        ({ title, desc, img }: { title: string; desc: string; img: string }, idx: number) => (
+          <div
+            key={`${title}-${desc}`}
+            className={`flex ${isMobile ? 'flex-col items-center' : ' justify-center'}`}
+          >
+            <div
+              className={`${
+                isMobile
+                  ? 'break-keep'
+                  : (idx + 1) % 2 === 0
+                  ? 'order-last w-[40%] text-end'
+                  : 'w-[30%]'
+              } `}
+              key={`${title}-${img}-${idx}`}
+            >
+              <StrongTitle title={title} style="my-[20px] " />
+              <div className="font-semibold text-xl">{desc}</div>
+            </div>
+            <div className={`${isMobile ? '' : 'relative'}`}>
+              <Image
+                src={img}
+                alt="main-image"
+                priority
+                width={400}
+                height={400}
+                className="w-[300px] h-[300px] rounded-md shadow-basic"
+              />
+            </div>
+          </div>
+        )
+      )}
+    </div>
+  )
+}
+
+export default IntroduceDesc
+
+ */

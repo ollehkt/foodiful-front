@@ -11,6 +11,7 @@ import LectureList from '../components/lecture/LectureList'
 import { ProductReturnType } from '../components/product/types/productTypes'
 import { LectureType } from '../components/lecture/types/lectureTypes'
 import { api } from '../components/axios/axiosInstance'
+import { useUser } from '../components/auth/hooks/useUser'
 
 export const getServerSideProps = async (): Promise<{
   props: { products: ProductReturnType[]; lectures: LectureType[] }
@@ -22,14 +23,10 @@ export const getServerSideProps = async (): Promise<{
 }
 
 const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
 
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    }
-  }, [])
   const { data: productsUserLiked } = useGetProducts()
   const { data: lectureUserLiked } = useGetLectures()
 

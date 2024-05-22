@@ -11,6 +11,8 @@ import {
   useDeleteFavoriteLecture,
   useDeleteFavoriteProduct,
 } from './hooks/useFavorite'
+import { isAxiosError } from 'axios'
+import { useUser } from '../../auth/hooks/useUser'
 
 interface PropsType {
   id: number
@@ -21,7 +23,9 @@ interface PropsType {
 
 const FavoriteIcon = ({ id, isLiked, product, lecture }: PropsType) => {
   const [onHeartAnimation, setOnHeartAnimation] = useState(false)
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const router = useRouter()
   const { fireToast } = useToast()
   const isMobile = useAtomValue(isMobileDisplay)
@@ -46,15 +50,10 @@ const FavoriteIcon = ({ id, isLiked, product, lecture }: PropsType) => {
       setOnHeartAnimation(false)
       product ? deleteFavoriteProduct(id) : lecture && deleteFavoriteLecture(id)
     } else {
-      setOnHeartAnimation(true)
       product ? addFavoriteProduct(id) : lecture && addFavoriteLecture(id)
+      setOnHeartAnimation(true)
     }
   }
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
-  }, [])
 
   useEffect(() => {
     if (isLiked) setOnHeartAnimation(true)

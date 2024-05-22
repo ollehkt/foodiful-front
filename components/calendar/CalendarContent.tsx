@@ -11,6 +11,7 @@ import { getStoredUser } from '../util/userStorage'
 import CalendarDatesRender from './CalendarDatesRender'
 import CalendarTimeRender from './CalendarTimeRender'
 import { useMutateReservation } from './hooks/useReservation'
+import { useUser } from '../auth/hooks/useUser'
 
 interface PropsType {
   currentDate: string
@@ -36,25 +37,11 @@ const CalendarContent = ({
   const [times, setTimes] = useState<string[]>([])
   const [isReserveTimeSelected, setIsReserveTimeSelected] = useState(false)
   const [selectedTimes, setSelectedTimes] = useState('')
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const setModal = useSetAtom(modalState)
   const { mutate: postReservation } = useMutateReservation()
-
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) setUser(storedUser)
-    else {
-      router.push('/auth')
-      fireToast({
-        id: '로그인 필요',
-        position: 'bottom',
-        timer: 1500,
-        message: '예약을 위해 로그인이 필요합니다',
-        type: 'warning',
-      })
-      return
-    }
-  }, [])
 
   const onClickPostReservation = async () => {
     if (!selectedTimes) {

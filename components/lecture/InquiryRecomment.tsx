@@ -5,6 +5,7 @@ import { getStoredUser } from '../util/userStorage'
 import { User } from '../auth/types/user'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
+import { useUser } from '../auth/hooks/useUser'
 
 interface PropsType {
   parentId: number
@@ -12,7 +13,9 @@ interface PropsType {
 }
 
 function InquiryReComment({ parentId, placeholder }: PropsType) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const [recommentState, setRecommentState] = useState({
     comment: '',
     isSecret: true,
@@ -29,12 +32,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
   const onClickPostRecomment = () => {
     postRecommentMutate({ recomment: recommentState })
   }
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    }
-  }, [])
+
   return (
     <>
       <div>

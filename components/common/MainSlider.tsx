@@ -1,11 +1,13 @@
-import Image from 'next/image'
+import { useAtomValue } from 'jotai'
+import Image, { StaticImageData } from 'next/image'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
-const MainSlider = ({ imgs }: { imgs: string[] }) => {
+const MainSlider = ({ imgs }: { imgs: StaticImageData[] }) => {
   const total = imgs.length - 1
   const [hoverState, setHoverState] = useState({ left: false, right: false })
-
+  const isMobile = useAtomValue(isMobileDisplay)
   const onMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const { name } = e.currentTarget
@@ -48,36 +50,43 @@ const MainSlider = ({ imgs }: { imgs: string[] }) => {
   }, [index, total])
 
   return (
-    <div className={`flex w-[90%] mb-[100px] mx-auto border-white rounded-md h-[600px] relative`}>
-      <Image src={imgs[index]} alt="slider-image" fill />
-
-      <button
-        name="left"
-        className={`flex justify-center items-center absolute top-[45%] left-10 ${
-          hoverState.left
-            ? 'bg-main scale-125 ease-in duration-120 transition-all'
-            : 'bg-white scale-100 ease-in duration-120 transition-all'
-        } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
-        onClick={scrollPrev}
-        onMouseEnter={(e) => onMouseEnter(e)}
-        onMouseLeave={(e) => onMouseLeave(e)}
-      >
-        <AiOutlineArrowLeft color={hoverState.left ? 'white' : 'black'} />
-      </button>
-      <button
-        name="right"
-        className={`flex justify-center items-center absolute top-[45%] right-10 ${
-          hoverState.right
-            ? 'bg-main scale-125 ease-in duration-120 transition-all'
-            : 'bg-white scale-100 ease-in duration-120 transition-all border-white'
-        } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
-        onClick={scrollNext}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        <AiOutlineArrowRight color={hoverState.right ? 'white' : 'black'} />
-      </button>
-      <div className="absolute left-[50%]  bottom-1 flex gap-[5px]">
+    <div className={`flex w-[90%] mx-auto border-white rounded-md h-[300px] md:h-[600px] relative`}>
+      <Image
+        src={imgs[index]}
+        alt="slider-image"
+        className="w-[80%] md:w-[70%] mx-auto rounded-md"
+      />
+      {!isMobile && (
+        <>
+          <button
+            name="left"
+            className={`flex justify-center items-center absolute top-[45%] left-[10%] ${
+              hoverState.left
+                ? 'bg-main scale-125 ease-in duration-120 transition-all'
+                : 'bg-white scale-100 ease-in duration-120 transition-all'
+            } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
+            onClick={scrollPrev}
+            onMouseEnter={(e) => onMouseEnter(e)}
+            onMouseLeave={(e) => onMouseLeave(e)}
+          >
+            <AiOutlineArrowLeft color={hoverState.left ? 'white' : 'black'} />
+          </button>
+          <button
+            name="right"
+            className={`flex justify-center items-center absolute top-[45%] right-[10%] ${
+              hoverState.right
+                ? 'bg-main scale-125 ease-in duration-120 transition-all'
+                : 'bg-white scale-100 ease-in duration-120 transition-all border-white'
+            } w-[40px] h-[40px] border-[1px] border-transparent rounded-3xl`}
+            onClick={scrollNext}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <AiOutlineArrowRight color={hoverState.right ? 'white' : 'black'} />
+          </button>
+        </>
+      )}
+      <div className="absolute left-[50%] -translate-x-1/2 bottom-1 flex gap-[5px]">
         {imgs.map((_, idx) => (
           <button
             key={`${_}-${idx}`}

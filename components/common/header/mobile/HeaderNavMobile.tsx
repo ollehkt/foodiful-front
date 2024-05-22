@@ -9,19 +9,16 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../auth/hooks/useAuth'
+import { useUser } from '../../../auth/hooks/useUser'
 
 const HeaderNavMobile = () => {
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
   const [subMenuIdx, setSubmenuIdx] = useState(-1)
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const router = useRouter()
   const { signOut } = useAuth()
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (storedUser) {
-      setUser(storedUser)
-    }
-  }, [router])
 
   const onClickClose = () => {
     setIsMenuOpened(false)
@@ -133,7 +130,7 @@ const HeaderNavMobile = () => {
                 {subTitle && subMenuIdx === idx && (
                   <ul className="flex flex-col gap-y-2">
                     {subTitle &&
-                      subTitle.map(({ title, url }) => (
+                      subTitle.map(({ title, url }, idx) => (
                         <Link
                           key={`${title}-${url}`}
                           className={`flex items-center  hover:text-active hover:bg-[#eee] text-left pl-2`}
