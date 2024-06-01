@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { VALID_IMAGE_FILE_TYPES } from '../common/types/fileTypes'

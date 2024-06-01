@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useValidate } from '../auth/hooks/useValidate'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 interface PropsType {
   style?: string

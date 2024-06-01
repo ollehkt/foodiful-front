@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { modalState } from '../../../store/modalState'
 import { Button } from '../Button'
 import { MdInfo } from 'react-icons/md'

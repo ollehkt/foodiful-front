@@ -1,8 +1,6 @@
 import type { InferGetServerSidePropsType } from 'next'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { getStoredUser } from '../components/util/userStorage'
-import MainSlider from '../components/common/MainSlider'
-import Channel from '../components/main/channel/Channel'
 import ProductList from '../components/product/ProductList'
 import { User } from '../components/auth/types/user'
 import { useGetProducts } from '../components/product/hooks/useProduct'
@@ -11,7 +9,6 @@ import LectureList from '../components/lecture/LectureList'
 import { ProductReturnType } from '../components/product/types/productTypes'
 import { LectureType } from '../components/lecture/types/lectureTypes'
 import { api } from '../components/axios/axiosInstance'
-import { useUser } from '../components/auth/hooks/useUser'
 
 export const getServerSideProps = async (): Promise<{
   props: { products: ProductReturnType[]; lectures: LectureType[] }
@@ -26,6 +23,7 @@ const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServ
   const [user, setUser] = useState<User | null>(
     typeof window !== 'undefined' ? getStoredUser() : null
   )
+  console.log(process.env.NEXT_PUBLIC_PROD_URL)
 
   const { data: productsUserLiked } = useGetProducts()
   const { data: lectureUserLiked } = useGetLectures()

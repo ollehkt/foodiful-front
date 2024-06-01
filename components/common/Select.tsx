@@ -1,6 +1,5 @@
-import { useAtom } from 'jotai'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import useToast from './hooks/useToast'
 
 interface PropsType<T> {

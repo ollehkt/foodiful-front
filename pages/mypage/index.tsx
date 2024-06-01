@@ -21,7 +21,6 @@ import { isMobileDisplay } from '../../store/isMobileDisplay'
 import ReservationList from '../../components/reserve/ReservationList'
 import ReviewList from '../../components/review/ReviewList'
 import LectureItem from '../../components/lecture/LectureItem'
-import { useUser } from '../../components/auth/hooks/useUser'
 
 function MyPage() {
   const [user, setUser] = useState<User | null>(

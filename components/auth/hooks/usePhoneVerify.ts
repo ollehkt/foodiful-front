@@ -1,8 +1,7 @@
-import axios, { AxiosResponse } from 'axios'
-import { Dispatch, SetStateAction, useState } from 'react'
+import axios from 'axios'
+import { useState } from 'react'
 import { api } from '../../axios/axiosInstance'
 import useToast from '../../common/hooks/useToast'
-import { SignUpType } from '../types/user'
 
 /**
  * 핸드폰 번호 수정 눌렀을 때 번호 input able

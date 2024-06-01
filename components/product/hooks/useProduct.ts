@@ -1,5 +1,4 @@
 import { QueryFunctionContext, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query'
-import axios, { AxiosError, AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'

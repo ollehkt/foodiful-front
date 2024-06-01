@@ -9,7 +9,6 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../auth/hooks/useAuth'
-import { useUser } from '../../../auth/hooks/useUser'
 
 const HeaderNavMobile = () => {
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)

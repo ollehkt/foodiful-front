@@ -6,7 +6,6 @@ import StrongTitle from '../../../components/common/StrongTitle'
 import { useGetRefund } from '../../../components/myPage/refund/hooks/useRefund'
 import RefundList from '../../../components/myPage/refund/RefundList'
 import { getStoredUser } from '../../../components/util/userStorage'
-
 import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 function RefundPage() {

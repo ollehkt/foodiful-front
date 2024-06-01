@@ -11,23 +11,6 @@ interface PropsType {
   review: ProductReviewTypes
 }
 
-/**
- * 
-  "createdAt": "2023-11-07T04:49:07.365Z",
-  "updatedAt": "2023-11-07T04:49:07.365Z",
-  "comment": "진짜 맛있어요",
-  "userId": 1,
-  "productId": 1,
-  "id": 5,
-  "deleted": false,
-  "isSecret": false,
-  "rating": 4,
-  "reviewImg": [
-      "https://kt-first-bucket.s3.ap-northeast-2.amazonaws.com/product-review/49ed84a5-6200-4e70-a4c2-3830b22995ec.jpeg"
-  ],
-  "user": User
- */
-
 const ReviewItem = ({ review }: PropsType) => {
   const { createdAt, updatedAt, comment, userId, productId, id, rating, reviewImg, user, product } =
     review

@@ -11,8 +11,6 @@ import {
   useDeleteFavoriteLecture,
   useDeleteFavoriteProduct,
 } from './hooks/useFavorite'
-import { isAxiosError } from 'axios'
-import { useUser } from '../../auth/hooks/useUser'
 
 interface PropsType {
   id: number

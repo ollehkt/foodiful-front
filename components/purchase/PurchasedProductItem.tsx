@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import OrderConfirm from '../order/orderInfo/OrderConfirm'
 import { OrderProductType } from '../order/types/getOrderType'
 import dayjs from 'dayjs'
 

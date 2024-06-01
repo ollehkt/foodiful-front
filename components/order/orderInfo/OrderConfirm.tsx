@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { RequestPayParams, RequestPayResponse } from '../../../portone'

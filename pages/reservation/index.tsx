@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { InferGetServerSidePropsType } from 'next'
 import React, { useEffect, useState } from 'react'
 import { api } from '../../components/axios/axiosInstance'
@@ -8,8 +7,6 @@ import { LectureType } from '../../components/lecture/types/lectureTypes'
 import Container from '../../components/common/Container'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
-
-// class 및 예약 내역 서버사이드 프롭으로 받아오기
 
 export const getServerSideProps = async (): Promise<{
   props: { lectures: LectureType[]; reservedTimes: string[] }

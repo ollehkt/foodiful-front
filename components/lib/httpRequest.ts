@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { api } from '../axios/axiosInstance'
 import { tryCatch } from '../auth/hooks/tryCatch'
 export const httpRequest =
@@ -22,5 +21,3 @@ export const httpRequest =
     )
     return res
   }
-
-// export const userRequest = httpRequest('/auth')

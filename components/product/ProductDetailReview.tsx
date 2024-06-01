@@ -7,7 +7,6 @@ import ReviewItem from '../review/ReviewItem'
 import ReviewList from '../review/ReviewList'
 import { ProductReviewTypes } from '../review/types/productReviewTypes'
 import { getStoredUser } from '../util/userStorage'
-import { useUser } from '../auth/hooks/useUser'
 
 const ProductDetailReview = ({
   productName,
