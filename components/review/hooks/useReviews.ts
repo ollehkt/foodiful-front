@@ -10,7 +10,7 @@ const getReviewByUserId = async (userId?: number): Promise<ProductReviewTypes[]>
   const user = getStoredUser()
   const { data } = await api(`/user/product-review/${userId}`, {
     headers: {
-      Authorization: `Bearer ${user?.token}`,
+      Authorization: user ? `Bearer ${user.token}` : undefined,
     },
   })
   return data

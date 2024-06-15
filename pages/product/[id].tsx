@@ -11,6 +11,8 @@ import { getProductById, useGetProductById } from '../../components/product/hook
 import { useGetOrder } from '../../components/order/hooks/useOrder'
 import DetailDesc from '../../components/common/DetailDescription'
 import Custom404 from '../404'
+import { getStoredUser } from '../../components/util/userStorage'
+import { User } from '../../components/auth/types/user'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -41,6 +43,7 @@ const ProductDetailPage = ({
   productId,
   dehydratedState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [user, _] = useState<User | null>(typeof window !== 'undefined' ? getStoredUser() : null)
   const [isAdditionalSelectModalOpen, setIsAdditionalSelectModalOpen] = useState(false)
   const router = useRouter()
   const [viewDescTab, setViewDescTab] = useState(0)
@@ -48,7 +51,7 @@ const ProductDetailPage = ({
   /**isFetching 사용 */
   const { data: reviewList, isFetching } = useGetReviews(productId)
   const { data: product } = useGetProductById(productId)
-  const { data: orderLists } = useGetOrder()
+  const { data: orderLists } = useGetOrder(user?.id)
   return (
     <Hydrate state={dehydratedState}>
       {!!product ? (

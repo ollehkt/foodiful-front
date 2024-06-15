@@ -1,7 +1,5 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
-import useToast from '../../../components/common/hooks/useToast'
+import React, { useState } from 'react'
 import StrongTitle from '../../../components/common/StrongTitle'
 import { useGetOrder } from '../../../components/order/hooks/useOrder'
 import PurchasedOrderItem from '../../../components/purchase/PurchasedOrderItem'
@@ -10,23 +8,8 @@ import { getStoredUser } from '../../../components/util/userStorage'
 import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 
 const MyPagePurchased = () => {
-  const router = useRouter()
-  const { fireToast } = useToast()
-  const { data: orderList } = useGetOrder()
-
-  useEffect(() => {
-    const user = getStoredUser()
-    if (!user) {
-      fireToast({
-        id: '장바구니 접속 실패',
-        type: 'failed',
-        message: '로그인 후에 이용해주세요.',
-        timer: 1500,
-        position: 'bottom',
-      })
-      router.push('/auth')
-    }
-  }, [router, fireToast])
+  const [user, _] = useState(typeof window !== 'undefined' ? getStoredUser() : null)
+  const { data: orderList } = useGetOrder(user?.id)
 
   return (
     <section className="grow flex-col items-center px-5 mt-10">

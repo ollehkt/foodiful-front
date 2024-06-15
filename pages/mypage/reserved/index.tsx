@@ -1,35 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import StrongTitle from '../../../components/common/StrongTitle'
 import getMyPageLayout from '../../../components/layout/getMyPageLayout'
 import { useGetReservationByUserId } from '../../../components/calendar/hooks/useReservation'
 import { getStoredUser } from '../../../components/util/userStorage'
-import useToast from '../../../components/common/hooks/useToast'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { User } from '../../../components/auth/types/user'
 import ReservationList from '../../../components/reserve/ReservationList'
 
 const MyPageReserved = () => {
-  const router = useRouter()
-  const { fireToast } = useToast()
-  const [user, setUser] = useState<User | null>(null)
+  const [user, _] = useState<User | null>(typeof window !== 'undefined' ? getStoredUser() : null)
 
   const { data: myReservations } = useGetReservationByUserId(user?.id)
 
-  useEffect(() => {
-    const storedUser = getStoredUser()
-    if (!storedUser) {
-      fireToast({
-        id: '예약 페이지 접속 실패',
-        type: 'failed',
-        message: '로그인 후에 이용해주세요.',
-        timer: 1500,
-        position: 'bottom',
-      })
-      router.push('/auth')
-    }
-    setUser(storedUser)
-  }, [])
   return (
     <section className="grow flex-col items-center px-5 mt-10">
       <StrongTitle title="예약 내역" style="border-b-2 border-main pb-2" />

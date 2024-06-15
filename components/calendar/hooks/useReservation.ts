@@ -92,11 +92,11 @@ export const useGetReservations = () => {
   return { data }
 }
 
-const getReservationsByUserId = async (userId?: number): Promise<FetchReservationType[]> => {
+const getReservationsByUserId = async (): Promise<FetchReservationType[]> => {
   const user = getStoredUser()
-  const { data } = await api(`/user/reservation/${userId}`, {
+  const { data } = await api(`/user/reservation`, {
     headers: {
-      Authorization: `Bearer ${user?.token}`,
+      Authorization: user ? `Bearer ${user.token}` : undefined,
     },
   })
   return data
@@ -107,7 +107,7 @@ export const useGetReservationByUserId = (
 ): { data: FetchReservationType[]; isFetching: boolean } => {
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.reservation, userId],
-    queryFn: () => getReservationsByUserId(userId),
+    queryFn: getReservationsByUserId,
     enabled: !!userId,
   })
   return { data, isFetching }

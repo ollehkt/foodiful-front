@@ -66,27 +66,20 @@ const getOrder = async () => {
 
   const { data } = await api('/order', {
     headers: {
-      Authorization: `Bearer ${user?.token}`,
+      Authorization: user ? `Bearer ${user.token}` : undefined,
     },
   })
   return data
 }
 
-export const useGetOrder = (): { data: GetOrderType[] } => {
+export const useGetOrder = (userId?: number): { data: GetOrderType[] } => {
   const { fireToast } = useToast()
   const { data = [], isError } = useQuery({
-    queryKey: [queryKeys.order],
+    queryKey: [queryKeys.order, userId],
     queryFn: getOrder,
+    enabled: !!userId,
     onSuccess: () => {},
-    onError: (error) => {
-      fireToast({
-        type: 'failed',
-        id: '주문 목록 조회 실패',
-        position: 'bottom',
-        timer: 2000,
-        message: '주문 목록 조회에 실패했습니다. 다시 시도해주세요.',
-      })
-    },
+    onError: (error) => {},
   })
   return { data }
 }

@@ -140,7 +140,9 @@ const ProductDetail = ({
         )}
 
         <div className="lg:ml-[100px] my-[10px] w-full mx-auto">
-          <h2 className="text-base font-semibold leading-7 text-gray-400 py-2">제품 &gt; {name}</h2>
+          <h2 className="text-base font-semibold leading-7 text-gray-400 py-2 flex items-center">
+            제품 &gt; <p className="mb-[1px] ml-1">{name}</p>
+          </h2>
           <div className="font-semibold text-3xl">{name}</div>
           <div className="text-textDisabled text-md pb-4 border-b-2 border-main break-keep">
             {subTitle}

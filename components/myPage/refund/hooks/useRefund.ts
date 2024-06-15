@@ -3,11 +3,11 @@ import { api } from '../../../axios/axiosInstance'
 import { getStoredUser } from '../../../util/userStorage'
 import { RefundType } from '../refundTypes'
 
-const getRefund = async (userId?: number): Promise<RefundType[]> => {
+const getRefund = async (): Promise<RefundType[]> => {
   const user = getStoredUser()
-  const { data } = await api(`/user/refund/${userId}`, {
+  const { data } = await api(`/user/refund`, {
     headers: {
-      Authorization: `Bearer ${user?.token}`,
+      Authorization: user ? `Bearer ${user.token}` : undefined,
     },
   })
   return data
@@ -16,7 +16,7 @@ const getRefund = async (userId?: number): Promise<RefundType[]> => {
 export const useGetRefund = (userId?: number): { data: RefundType[] } => {
   const { data = [] } = useQuery({
     queryKey: ['refund', userId],
-    queryFn: () => getRefund(userId),
+    queryFn: getRefund,
     enabled: !!userId,
   })
   return { data }

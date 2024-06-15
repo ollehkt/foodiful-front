@@ -23,11 +23,9 @@ import ReviewList from '../../components/review/ReviewList'
 import LectureItem from '../../components/lecture/LectureItem'
 
 function MyPage() {
-  const [user, setUser] = useState<User | null>(
-    typeof window !== 'undefined' ? getStoredUser() : null
-  )
+  const [user, _] = useState<User | null>(typeof window !== 'undefined' ? getStoredUser() : null)
   const { data: myReviews } = useGetReviewByUserId(user?.id)
-  const { data: myPurchasedList } = useGetOrder()
+  const { data: myPurchasedList } = useGetOrder(user?.id)
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
   const { data: myFavoriteLectures } = useGetFavoriteLectures()
   const { data: myReservations } = useGetReservationByUserId(user?.id)

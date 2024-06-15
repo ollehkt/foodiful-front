@@ -122,6 +122,7 @@ function SignUp() {
           placeholder="예시) 01012341234"
           errorText={phoneCheckErrorMsg}
         />
+        {/* <div className="relative mt-[30px]">
 
         {!isClickedVerifyPhone && !isVerifiedPhone && (
           <button
@@ -173,9 +174,10 @@ function SignUp() {
         ) : (
           <span className="text-main text-xl mt-[20px] break-keep">{verifyExpiredTxt}</span>
         )}
+      </div> */}
       </div>
       <Button
-        disabled={!isVerifiedPhone}
+        // disabled={!isVerifiedPhone}
         style="mt-[40px] bg-primary text-[#fff] text-2xl"
         title="회원가입"
         size="md"
