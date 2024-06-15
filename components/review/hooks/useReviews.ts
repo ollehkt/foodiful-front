@@ -6,9 +6,9 @@ import useToast from '../../common/hooks/useToast'
 import { getStoredUser } from '../../util/userStorage'
 import { PostReviewTypes, ProductReviewTypes, UpdateReviewTypes } from '../types/productReviewTypes'
 
-const getReviewByUserId = async (userId?: number): Promise<ProductReviewTypes[]> => {
+const getReviewByUserId = async (): Promise<ProductReviewTypes[]> => {
   const user = getStoredUser()
-  const { data } = await api(`/user/product-review/${userId}`, {
+  const { data } = await api(`/user/product-review`, {
     headers: {
       Authorization: user ? `Bearer ${user.token}` : undefined,
     },
@@ -19,7 +19,7 @@ const getReviewByUserId = async (userId?: number): Promise<ProductReviewTypes[]>
 export const useGetReviewByUserId = (userId?: number): { data: ProductReviewTypes[] } => {
   const { data = [] } = useQuery({
     queryKey: [queryKeys.review, userId],
-    queryFn: () => getReviewByUserId(userId),
+    queryFn: getReviewByUserId,
     enabled: !!userId,
   })
   return { data }
