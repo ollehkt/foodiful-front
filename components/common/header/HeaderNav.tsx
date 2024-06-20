@@ -32,7 +32,7 @@ const HeaderNav = () => {
     <ul className="mx-auto flex justify-between">
       {headerTitle.map(({ title, url, subTitle }, idx) => (
         <div
-          className={`relative h-full px-[30px] flex justify-center items-center text-[18px] font-[400]  cursor-pointer`}
+          className={`relative h-full px-[30px] flex justify-center items-center text-lg font-normal  cursor-pointer`}
           key={`${title}-${url}`}
           onMouseEnter={() => handleActiveIdxOnMouseOver(idx)}
           onMouseLeave={() => handleActiveIdxOnMouseLeave()}

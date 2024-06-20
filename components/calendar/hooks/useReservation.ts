@@ -124,7 +124,7 @@ const updateReservartion = async ({
       ...updateReservationData,
     },
     {
-      headers: { Authorization: `Bearer ${user?.id}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     }
   )
   return data

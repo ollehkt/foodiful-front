@@ -30,6 +30,9 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
   }
 
   const onClickPostRecomment = () => {
+    if (!recommentState.comment.trim()) {
+      return
+    }
     postRecommentMutate({ recomment: recommentState })
   }
 
@@ -65,9 +68,11 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
           <Button
             title="등록"
             onClick={onClickPostRecomment}
-            style="h-[60px]  ml-2 md:mx-2 font-semibold border-2 border-main hover:bg-main"
+            style={`h-[60px] ml-2 md:mx-2 font-semibold border-2 ${
+              !recommentState.comment.trim() ? 'border-disabled' : 'border-main'
+            } hover:bg-main hover:text-white`}
             size={`${isMobile ? 'sm' : 'md'}`}
-            disabled={!user}
+            disabled={!user || !recommentState.comment.trim()}
           />
         </div>
       </div>

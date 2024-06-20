@@ -107,7 +107,7 @@ const CalendarContent = ({
               <Button
                 title="예약하기"
                 onClick={onClickPostReservation}
-                style="bg-main text-white"
+                style="bg-main text-white hover:bg-hover"
               />
             </div>
           </div>

@@ -178,7 +178,7 @@ function SignUp() {
       </div>
       <Button
         // disabled={!isVerifiedPhone}
-        style="mt-[40px] bg-primary text-[#fff] text-2xl"
+        style="mt-10 bg-main text-white text-2xl hover:bg-white hover:text-main hover:border-2 hover:border-main"
         title="회원가입"
         size="md"
         onClick={onClickSignUpBtn}

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RequestPayParams, RequestPayResponse } from '../../../portone'
 import { Button } from '../../common/Button'
 import useToast from '../../common/hooks/useToast'
@@ -7,6 +7,8 @@ import { usePostOrder } from '../hooks/useOrder'
 import { OrderFormType } from '../types/orderFormTypes'
 import { PostOrderProductTypes } from '../types/postOrderProductTypes'
 import { useDeleteCart, useGetCartList } from '../../cart/hooks/useCart'
+import { useAtomValue } from 'jotai'
+import { isMobileDisplay } from '../../../store/isMobileDisplay'
 
 interface PropsType {
   orderForm: OrderFormType
@@ -19,6 +21,26 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
   const router = useRouter()
   const { data: cartLists } = useGetCartList()
   const { mutate: deleteCartItem } = useDeleteCart()
+  const isMobile = useAtomValue(isMobileDisplay)
+
+  useEffect(() => {
+    if (isMobile) {
+      fireToast({
+        id: '결제 실패',
+        message: '모바일에서는 결제가 불가능합니다.',
+        position: 'bottom',
+        timer: 2000,
+        type: 'warning',
+      })
+      const timer = setTimeout(() => {
+        router.back()
+      }, 2000)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [isMobile])
+
   const onClickPayment = () => {
     if (!window.IMP) return
     const { deliverName, deliverAddress, deliverPhone } = orderForm
@@ -95,7 +117,12 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
         </div>
       </div>
 
-      <Button title="결제하기" onClick={onClickPayment} style="my-4 bg-main text-white" size="lg" />
+      <Button
+        title="결제하기"
+        onClick={onClickPayment}
+        style="my-4 bg-main text-white hover:bg-hover"
+        size="lg"
+      />
     </div>
   )
 }

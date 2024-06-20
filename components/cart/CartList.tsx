@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { cartProductState } from '../../store/cartProductState'
@@ -9,6 +9,7 @@ import CartItem from './CartItem'
 import { CartReturnType } from './cartTypes'
 import { useDeleteAllCart } from './hooks/useCart'
 import { useGetPrice } from './hooks/useGetPrice'
+import { isMobileDisplay } from '../../store/isMobileDisplay'
 
 const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const router = useRouter()
@@ -18,6 +19,7 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const { mutate: deleteAllCartItems } = useDeleteAllCart()
   const { getDiscountedPrice, getTotalPrice } = useGetPrice()
+  const isMobile = useAtomValue(isMobileDisplay)
 
   const onClickDeleteAll = () => {
     setSelectedProduct([])
@@ -142,16 +144,16 @@ const CartList = ({ cartLists }: { cartLists: CartReturnType[] }) => {
             <Button
               title={`선택 상품 구매`}
               onClick={onClickPurchaseSelectedItemBtn}
-              style="disabled:border-none border-[1px] border-main hover:bg-main hover:text-white"
-              size="md"
+              style="disabled:border-none border-[1px] border-main text-lg md:text-xl hover:bg-active hover:text-white"
+              size={`${isMobile ? 'md' : 'lg'}`}
               disabled={selectedProduct.length < 1}
             />
 
             <Button
               title="전체 상품 구매"
               onClick={onClickPurchaseAllBtn}
-              style="bg-main border-[1px] border-main text-white hover:bg-active  hover:text-white hover:border-active"
-              size="md"
+              style="bg-main border-[1px] border-main text-white text-lg md:text-xl hover:bg-hover hover:text-white hover:border-hover"
+              size={`${isMobile ? 'md' : 'lg'}`}
             />
           </div>
         </div>

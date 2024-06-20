@@ -7,7 +7,6 @@ import { useValidate } from '../../../components/auth/hooks/useValidate'
 import { useAuth } from '../../../components/auth/hooks/useAuth'
 import { Button } from '../../../components/common/Button'
 import { SignInType } from '../../../components/auth/types/user'
-import Link from 'next/link'
 
 function SignIn() {
   const { state: signInValue, onChangeInput } = useInput<SignInType, string>({
@@ -56,14 +55,14 @@ function SignIn() {
       />
       <Button
         onClick={() => signIn(signInValue)}
-        style="mt-[40px] bg-main text-[#fff] "
+        style="mt-10 bg-main text-white hover:bg-hover"
         title="로그인"
         size="md"
         disabled={!isValidated}
       />
       <Button
         onClick={() => router.push('/auth/signup')}
-        style="mt-[40px] bg-white text-main hover:bg-main"
+        style="mt-10 bg-white text-main hover:border-main hover:border-2"
         title="회원가입"
         size="md"
       />

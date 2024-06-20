@@ -63,9 +63,11 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
         <Button
           title="등록"
           onClick={onClickPostBtn}
-          style="h-[60px] ml-2 md:mx-2 font-semibold border-2 border-main hover:bg-main"
+          style={`h-[60px] ml-2 md:mx-2 font-semibold border-2 ${
+            !inquiryState.comment.trim() ? 'border-disabled' : 'border-main'
+          } hover:bg-main hover:text-white`}
           size={`${isMobile ? 'sm' : 'md'}`}
-          disabled={!user}
+          disabled={!user || !inquiryState.comment.trim()}
         />
       </div>
     </>

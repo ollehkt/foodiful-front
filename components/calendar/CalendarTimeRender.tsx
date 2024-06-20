@@ -81,10 +81,10 @@ const CalendarTimeRender = ({
             </div>
           )}
 
-          <div className="py-4  md:py-1 my-[20px]">
+          <div className="py-4  md:py-1 my-5">
             <Button
               title="선택"
-              style="w-[120px] h-[40px] bg-main text-white font-bold mx-[10px]"
+              style="w-[120px] h-10 bg-main text-white font-bold mx-[10px] hover:bg-hover"
               onClick={() => {
                 setIsReserveTimeSelected(true)
                 setIsTimeTableModalOpen(false)
@@ -94,7 +94,7 @@ const CalendarTimeRender = ({
             />
             <Button
               title="닫기"
-              style="w-[120px] h-[40px] bg-disabled"
+              style="w-[120px] h-10 bg-disabled hover:bg-gray-300"
               onClick={() => {
                 setIsTimeTableModalOpen(false)
                 setSelectedTimes('')

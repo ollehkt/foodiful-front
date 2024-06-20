@@ -9,6 +9,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../auth/hooks/useAuth'
+import { FaShoppingCart } from 'react-icons/fa'
 
 const HeaderNavMobile = () => {
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
@@ -65,10 +66,10 @@ const HeaderNavMobile = () => {
   return (
     <>
       {isMenuOpened && (
-        <div className={`fixed top-0 right-0 z-[99999999] w-full h-screen bg-white`}>
+        <div className={`fixed top-0 right-0 z-[9999999] w-full h-screen bg-white`}>
           <div className="h-[100px] border-b-2 border-b-gray-700 flex justify-between items-center px-4">
             {user ? (
-              <div className="flex items-center grow gap-x-2 mr-6">
+              <div className="flex items-center grow gap-x-2 mr-4">
                 <p className="text-2xl font-bold text-main">{user.name}</p>
                 <p className="pt-1 text-lg font-bold">님</p>
                 <Link
@@ -78,6 +79,16 @@ const HeaderNavMobile = () => {
                 >
                   마이페이지
                 </Link>
+
+                <span
+                  className="cursor-pointer mt-1 ml-2"
+                  onClick={() => {
+                    setIsMenuOpened(false)
+                    router.push('/cart')
+                  }}
+                >
+                  <FaShoppingCart size={22} />
+                </span>
                 <div className="grow"></div>
                 <button className="pt-1 text-gray-500" onClick={onClickSignOut}>
                   로그아웃
@@ -86,18 +97,14 @@ const HeaderNavMobile = () => {
             ) : (
               <>
                 <div className="flex items-center text-lg font-semibold text-gray-500">
-                  <Link
-                    href="/auth"
-                    onClick={() => setIsMenuOpened(false)}
-                    className="hover:text-gray-800 underline"
-                  >
+                  <Link href="/auth" onClick={() => setIsMenuOpened(false)} className="underline">
                     로그인
                   </Link>
                   <p>이 필요합니다</p>
                 </div>
               </>
             )}
-            <span onClick={onClickClose} className="cursor-pointer hover:text-active ">
+            <span onClick={onClickClose} className="cursor-pointer">
               <AiOutlineClose size={30} color="#711b98" />
             </span>
           </div>
@@ -137,7 +144,7 @@ const HeaderNavMobile = () => {
                           onClick={onClickSubTitle}
                         >
                           <span className="w-1 h-1 rounded-full bg-main"></span>
-                          <span className="p-[6px] text-[16px] font-[500] leading-6">{title}</span>
+                          <span className="p-[6px] text-base font-medium leading-6">{title}</span>
                         </Link>
                       ))}
                   </ul>

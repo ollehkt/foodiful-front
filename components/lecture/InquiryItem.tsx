@@ -88,7 +88,7 @@ function InquiryItem({ inquiry }: PropsType) {
             <Button
               title="삭제"
               size="sm"
-              style="hover:bg-main py-[2px]"
+              style="hover:bg-main hover:text-white py-[2px]"
               onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
                 onClickDelete(e, '문의', inquiryId)
               }
@@ -147,7 +147,7 @@ function InquiryItem({ inquiry }: PropsType) {
                       <Button
                         title="삭제"
                         size="sm"
-                        style="hover:bg-main py-[2px]"
+                        style="hover:bg-main hover:text-white py-[2px]"
                         onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
                           onClickDelete(e, '댓글', recommentId)
                         }
