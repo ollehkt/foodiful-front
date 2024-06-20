@@ -29,6 +29,7 @@ const UserModifyForm = ({
   const [isPhoneModifyMode, setIsPhoneModifyMode] = useState(false)
   const [isNameModifyMode, setIsNameModifyMode] = useState(false)
   const [isPasswordModifyMode, setIsPasswordModifyMode] = useState(false)
+  const [isModified, setIsModified] = useState(false)
   const { passwordValidate } = useValidate()
 
   const {
@@ -67,7 +68,7 @@ const UserModifyForm = ({
     setTime(180)
   }
 
-  const updateUser = async (userId: number, modifyUserState: ModifyUserType) => {
+  const updateUser = async (modifyUserState: ModifyUserType) => {
     try {
       if (modifyUserState.changePassword !== modifyUserState.confirmChangePassword) {
         fireToast({
@@ -79,9 +80,16 @@ const UserModifyForm = ({
         })
         return
       }
+
+      const patchData: { [key: string]: {} } = {}
+      for (const key in modifyUserState) {
+        if (key === 'confirmChangePassword') break
+        if (modifyUserState[key]) patchData[key] = modifyUserState[key]
+      }
+
       const { data } = await api.patch(
-        `/auth/update/${userId}`,
-        { ...modifyUserState },
+        `/auth/update`,
+        { ...patchData },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -110,6 +118,25 @@ const UserModifyForm = ({
       })
     }
   }
+
+  useEffect(() => {
+    if (user.name !== modifyUserState.name) {
+      setIsModified(true)
+    } else if (user.phone !== modifyUserState.phone && isVerifiedPhone) setIsModified(true)
+    else if (
+      passwordValidate(modifyUserState.password) &&
+      passwordValidate(modifyUserState.changePassword) &&
+      modifyUserState.changePassword &&
+      modifyUserState.changePassword === modifyUserState.confirmChangePassword
+    )
+      setIsModified(true)
+    else setIsModified(false)
+  }, [
+    modifyUserState.name,
+    modifyUserState.phone,
+    modifyUserState.password,
+    modifyUserState.changePassword,
+  ])
 
   useEffect(() => {
     let count: NodeJS.Timeout
@@ -166,7 +193,7 @@ const UserModifyForm = ({
                 setIsNameModifyMode(false)
                 setModifyUserState({ ...modifyUserState, name: user.name })
               }}
-              style="w-[50px] hover:bg-main ml-3 text-xl"
+              style="w-[50px] hover:bg-disabled ml-3 text-xl"
               size="md"
             />
             <Button
@@ -174,7 +201,7 @@ const UserModifyForm = ({
               onClick={() => {
                 setIsNameModifyMode(false)
               }}
-              style="w-[50px] ml-3 text-xl"
+              style="w-[50px] ml-3 text-xl hover:bg-main hover:text-white"
               size="md"
             />
           </>
@@ -182,7 +209,7 @@ const UserModifyForm = ({
           <Button
             title="변경"
             onClick={() => setIsNameModifyMode(true)}
-            style="w-[50px] hover:bg-main ml-3 text-xl"
+            style="w-[50px] hover:bg-main hover:text-white ml-3 text-xl"
             size="md"
           />
         )}
@@ -210,7 +237,7 @@ const UserModifyForm = ({
             <>
               <Button
                 title="인증"
-                style="w-[50px] mt-2 md:mt-0 hover:bg-main disabled:text-[#999] ml-14 md:ml-3 text-xl"
+                style="w-[50px] mt-2 md:mt-0 hover:bg-main hover:text-white disabled:text-textDisabled ml-14 md:ml-3 text-xl"
                 size="md"
                 onClick={async () => {
                   const isNotExist = await checkExistPhone(modifyUserState.phone)
@@ -224,7 +251,7 @@ const UserModifyForm = ({
               />
               <Button
                 title="취소"
-                style="w-[50px] hover:bg-main disabled:text-[#999] ml-3 text-xl"
+                style="w-[50px] hover:bg-disabled disabled:text-textDisabled ml-3 text-xl"
                 size="md"
                 onClick={() => {
                   setIsClickedVerifyPhone(false)
@@ -238,7 +265,7 @@ const UserModifyForm = ({
             </>
           ) : (
             <Button
-              style="w-[50px] hover:bg-main ml-3 text-xl"
+              style="w-[50px] hover:bg-main hover:text-white ml-3 text-xl"
               onClick={() => setIsPhoneModifyMode(true)}
               size="md"
               title="변경"
@@ -301,9 +328,7 @@ const UserModifyForm = ({
       {isPasswordModifyMode ? (
         <div className="relative flex flex-col">
           <Input
-            style={`ml-10 md:ml-[64px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
-              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
-            }`}
+            style={`ml-10 md:ml-[64px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] border-b-2`}
             labelStyle="my-[20px] relative text-lg"
             labelName="패스워드"
             type="password"
@@ -317,9 +342,7 @@ const UserModifyForm = ({
             validate={passwordValidate}
           />
           <Input
-            style={`ml-10 md:ml-[42px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
-              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
-            }`}
+            style={`ml-10 md:ml-[42px] w-[240px] md:w-[300px] outline-none py-[4px] pl-[4px] border-b-2`}
             labelStyle="my-[10px] relative text-lg"
             labelName="새 패스워드"
             type="password"
@@ -333,9 +356,7 @@ const UserModifyForm = ({
             validate={passwordValidate}
           />
           <Input
-            style={`ml-4 md:ml-[24px] w-[300px] md:w-[300px] outline-none py-[4px] pl-[4px] ${
-              isPasswordModifyMode ? 'border-b-2' : 'border-b-2 border-b-white'
-            }`}
+            style={`ml-4 md:ml-[24px] w-[300px] md:w-[300px] outline-none py-[4px] pl-[4px] border-b-2`}
             labelStyle="my-[20px] relative text-lg"
             labelName="패스워드 확인"
             type="password"
@@ -348,18 +369,19 @@ const UserModifyForm = ({
             errorText="6~12자 영문, 숫자를 포함해 작성해주세요"
             validate={passwordValidate}
           />
-          <div className="md:absolute bottom-4 right-[-52px] flex justify-end mr-4 md:mr-0">
+          <div className="md:absolute bottom-4 right-[-60px] flex justify-end mr-4 md:mr-0">
             <Button
               title="취소"
               onClick={() => {
                 setIsPasswordModifyMode(false)
                 setModifyUserState({
                   ...modifyUserState,
+                  password: '',
                   changePassword: '',
                   confirmChangePassword: '',
                 })
               }}
-              style="w-[50px] hover:bg-main ml-[30px] text-xl"
+              style="w-[50px] hover:bg-disabled ml-[30px] text-xl"
               size="md"
             />
           </div>
@@ -375,7 +397,7 @@ const UserModifyForm = ({
           <Button
             title="변경"
             onClick={() => setIsPasswordModifyMode(true)}
-            style="w-[50px] ml-[30px] text-xl"
+            style="w-[50px] ml-[30px] text-xl hover:bg-main hover:text-white"
             size="md"
           />
         </div>
@@ -385,9 +407,10 @@ const UserModifyForm = ({
         <Button
           title="수정하기"
           size="md"
-          disabled={user.name === modifyUserState.name && user.phone === modifyUserState.phone}
+          style="bg-main text-white hover:bg-hover"
+          disabled={!isModified}
           onClick={() => {
-            updateUser(user.id, modifyUserState)
+            updateUser(modifyUserState)
           }}
         />
       </div>

@@ -23,6 +23,7 @@ export interface PromiseUserType {
 }
 
 export interface ModifyUserType {
+  [key: string]: string
   email: string
   name: string
   phone: string
