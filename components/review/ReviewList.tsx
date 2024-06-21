@@ -35,7 +35,7 @@ const ReviewList = ({ reviewList, selectedOption, mypage }: PropsType) => {
     <>
       <div className="flex-col justify-center">
         {renderReviewList.map((review) => (
-          <ReviewItem key={`${review.id}`} review={review} mypage/>
+          <ReviewItem key={`${review.id}`} review={review} mypage={mypage} />
         ))}
       </div>
       {reviewList.length > renderReviewEndCount && <div ref={ref}>ref임</div>}
@@ -47,10 +47,10 @@ export default ReviewList
 
 function sortReviewList(list: ProductReviewTypes[], sortOption?: string): ProductReviewTypes[] {
   switch (sortOption) {
-    case '오래된순':
-      return list.sort((a, b) => a.id - b.id)
     case '최신순':
       return list.sort((a, b) => b.id - a.id)
+    case '오래된순':
+      return list.sort((a, b) => a.id - b.id)
     case '별점순':
       return list.sort((a, b) => b.rating - a.rating)
     default:

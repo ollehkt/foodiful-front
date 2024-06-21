@@ -99,7 +99,7 @@ const ProductDetailReview = ({
           <div className="mt-[10px]  text-3xl">후기 목록</div>
 
           <Select<string>
-            options={['최신순', '오래된순', '별점순']}
+            options={['오래된순','최신순', '별점순']}
             selected={selectedOption}
             setSelected={setSelectedOption}
             isSelectedModalOpen={isSelectModalOpen}
