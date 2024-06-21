@@ -5,9 +5,11 @@ import { ProductReviewTypes } from './types/productReviewTypes'
 
 interface PropsType {
   reviewList: ProductReviewTypes[]
+  selectedOption?: string
+  mypage?: boolean
 }
 
-const ReviewList = ({ reviewList }: PropsType) => {
+const ReviewList = ({ reviewList, selectedOption, mypage }: PropsType) => {
   const [renderReviewStartCount, setRenderReviewStartCount] = useState(0)
   const [renderReviewEndCount, setRenderReviewEndCount] = useState(5)
   const [renderReviewList, setRenderReviewList] = useState<ProductReviewTypes[]>([])
@@ -25,13 +27,15 @@ const ReviewList = ({ reviewList }: PropsType) => {
   useEffect(() => {
     setRenderReviewStartCount(0)
     setRenderReviewEndCount(5)
-    setRenderReviewList(reviewList.slice(0, 5))
-  }, [reviewList])
+    const sortedReview = sortReviewList(reviewList, selectedOption)
+    setRenderReviewList(sortedReview.slice(0, 5))
+  }, [reviewList, selectedOption])
+
   return (
     <>
       <div className="flex-col justify-center">
         {renderReviewList.map((review) => (
-          <ReviewItem key={`${review.id}`} review={review} />
+          <ReviewItem key={`${review.id}`} review={review} mypage/>
         ))}
       </div>
       {reviewList.length > renderReviewEndCount && <div ref={ref}>ref임</div>}
@@ -40,3 +44,16 @@ const ReviewList = ({ reviewList }: PropsType) => {
 }
 
 export default ReviewList
+
+function sortReviewList(list: ProductReviewTypes[], sortOption?: string): ProductReviewTypes[] {
+  switch (sortOption) {
+    case '오래된순':
+      return list.sort((a, b) => a.id - b.id)
+    case '최신순':
+      return list.sort((a, b) => b.id - a.id)
+    case '별점순':
+      return list.sort((a, b) => b.rating - a.rating)
+    default:
+      return list
+  }
+}

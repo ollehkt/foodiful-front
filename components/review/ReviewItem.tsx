@@ -6,12 +6,14 @@ import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReviewTypes } from './types/productReviewTypes'
 import { encodingUserId } from '../util/encodingUserId'
+import Link from 'next/link'
 
 interface PropsType {
   review: ProductReviewTypes
+  mypage?: boolean
 }
 
-const ReviewItem = ({ review }: PropsType) => {
+const ReviewItem = ({ review, mypage }: PropsType) => {
   const { createdAt, updatedAt, comment, userId, productId, id, rating, reviewImg, user, product } =
     review
   const [isImageClicked, setIsImageClicked] = useState(false)
@@ -19,7 +21,9 @@ const ReviewItem = ({ review }: PropsType) => {
   return (
     <>
       <div
-        className={`w-full cursor-pointer py-[12px] my-[20px] bg-main bg-opacity-10  rounded-md ${
+        className={`w-full ${
+          reviewImg ? 'cursor-pointer' : 'cursor-default'
+        } py-[12px] my-[20px] bg-main bg-opacity-10  rounded-md ${
           isImageClicked
             ? ''
             : isImageClicked && !reviewImg
@@ -65,6 +69,18 @@ const ReviewItem = ({ review }: PropsType) => {
           <div className="text-gray-500">
             {updatedAt ? dayjs(updatedAt).format('YY.MM.DD') : dayjs(createdAt).format('YY.MM.DD')}
           </div>
+          {mypage && (
+            <span className="inline-flex text-gray-500">
+              <p className="">상품:</p>
+
+              <Link
+                href={`/product/${product.id}`}
+                className="ml-1 text-main font-semibold underline hover:text-hover"
+              >
+                {product.name}
+              </Link>
+            </span>
+          )}
           <p className="mt-[10px] text-gray-500">후기 내용</p>
           <div className={`md:w-[60%] w-[80%]  text-[#333] font-semibold break-keep`}>
             {comment}

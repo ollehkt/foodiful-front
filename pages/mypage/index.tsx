@@ -21,17 +21,30 @@ import { isMobileDisplay } from '../../store/isMobileDisplay'
 import ReservationList from '../../components/reserve/ReservationList'
 import ReviewList from '../../components/review/ReviewList'
 import LectureItem from '../../components/lecture/LectureItem'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 function MyPage() {
-  const [user, _] = useState<User | null>(typeof window !== 'undefined' ? getStoredUser() : null)
+  const [user, setUser] = useState<User | null>(null)
   const { data: myReviews } = useGetReviewByUserId(user?.id)
   const { data: myPurchasedList } = useGetOrder(user?.id)
   const { data: myFavoriteProducts } = useGetFavoriteProducts()
   const { data: myFavoriteLectures } = useGetFavoriteLectures()
   const { data: myReservations } = useGetReservationByUserId(user?.id)
-
+  const { getUser } = useUser()
   const isMobile = useAtomValue(isMobileDisplay)
   const router = useRouter()
+
+  console.log(myReviews)
+
+  useEffect(() => {
+    ;(async () => {
+      const storedUser = getStoredUser()
+      if (storedUser) {
+        const fetchedUser = await getUser(storedUser)
+        if (fetchedUser) setUser(fetchedUser)
+      } else setUser(null)
+    })()
+  }, [])
 
   return (
     <div className="grow shadow-basic rounded-md px-5">
@@ -104,7 +117,7 @@ function MyPage() {
           </>
         ) : (
           <div className="flex justify-center my-[50px] text-main text-xl font-bold">
-            좋아요 누른 상품이 없습니다.
+            좋아요 누른 클래스가 없습니다.
           </div>
         )}
       </section>
@@ -112,7 +125,7 @@ function MyPage() {
         <StrongTitle title="내 후기 보기" />
         {!!myReviews.length ? (
           <>
-            <ReviewList reviewList={myReviews.slice(0, 3)} />
+            <ReviewList reviewList={myReviews.slice(0, 3)} mypage />
             {myReviews.length > 3 && (
               <div className="flex justify-content my-2">
                 <Button

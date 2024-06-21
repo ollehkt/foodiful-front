@@ -7,6 +7,7 @@ import ReviewItem from '../review/ReviewItem'
 import ReviewList from '../review/ReviewList'
 import { ProductReviewTypes } from '../review/types/productReviewTypes'
 import { getStoredUser } from '../util/userStorage'
+import Select from '../common/Select'
 
 const ProductDetailReview = ({
   productName,
@@ -26,6 +27,9 @@ const ProductDetailReview = ({
     typeof window !== 'undefined' ? getStoredUser() : null
   )
 
+  const [selectedOption, setSelectedOption] = useState('오래된순')
+  const [isSelectModalOpen, setIsSelectModalOpen] = useState(false)
+
   const { mutate: deleteReview } = useDeleteReview(productId)
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const ProductDetailReview = ({
         })
       })
     }
-  }, [])
+  }, [reviewList])
 
   return (
     <div className="w-full">
@@ -88,9 +92,24 @@ const ProductDetailReview = ({
         </>
       )}
       <div className="flex-col mt-[40px] border-main border-t-[1px]">
-        <div className="mt-[10px]  text-3xl">후기 목록</div>
+        <div
+          className="flex justify-between items-center relative"
+          onClick={() => isSelectModalOpen && setIsSelectModalOpen(false)}
+        >
+          <div className="mt-[10px]  text-3xl">후기 목록</div>
+
+          <Select<string>
+            options={['최신순', '오래된순', '별점순']}
+            selected={selectedOption}
+            setSelected={setSelectedOption}
+            isSelectedModalOpen={isSelectModalOpen}
+            setIsSelectedModalOpen={setIsSelectModalOpen}
+            position="top-12"
+            size="w-[120px]"
+          />
+        </div>
         {!!reviewList.length ? (
-          <ReviewList reviewList={reviewList} />
+          <ReviewList reviewList={reviewList} selectedOption={selectedOption} />
         ) : (
           <div className="flex justify-center text-center my-[50px] text-main text-xl font-bold">
             후기가 없습니다. <br />
