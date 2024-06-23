@@ -28,7 +28,7 @@ jobs:
     # Docker 이미지 빌드
     - name: Docker image build
       run: |
-        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}  -f ./Dockerfile . --platform=linux/amd64
+        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . --platform=linux/amd64
     - name: Docker image push
       run: |
         docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
