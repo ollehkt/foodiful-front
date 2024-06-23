@@ -14,10 +14,13 @@ jobs:
 
     steps:
     - uses: actions/setup-node@v3
+
+    - uses: actions/cache@v3
       with:
-        node-version: 20
-        cache: 'yarn'
-        cache-dependency-path: '**/yarn.lock'
+        path: ~/.npm
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
     - run: yarn install --frozen-lockfile
     - run: yarn 
 
