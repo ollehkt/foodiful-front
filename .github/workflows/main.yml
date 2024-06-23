@@ -33,7 +33,7 @@ jobs:
 
     - name: DockerHub build and push
       run: |
-        docker build -f Dockerfile -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . platform=linux/amd64
+        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . platform=linux/amd64
         docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
     
     
