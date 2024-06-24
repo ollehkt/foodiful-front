@@ -27,8 +27,7 @@ function LectureInquiry({ lectureName, lectureId, inquiryList }: PropsType) {
           inquiryList.map((item) => <InquiryItem key={item.id} inquiry={item} />)
         ) : (
           <p className="flex justify-center text-center my-[50px] text-main text-xl font-bold">
-            후기가 없습니다. <br />
-            구매 후 후기를 등록해주세요.
+            등록된 문의가 없습니다.
           </p>
         )}
       </div>
