@@ -11,7 +11,6 @@ import { getStoredUser } from '../util/userStorage'
 import CalendarDatesRender from './CalendarDatesRender'
 import CalendarTimeRender from './CalendarTimeRender'
 import { useMutateReservation } from './hooks/useReservation'
-import { useUser } from '../auth/hooks/useUser'
 
 interface PropsType {
   currentDate: string
@@ -41,7 +40,7 @@ const CalendarContent = ({
     typeof window !== 'undefined' ? getStoredUser() : null
   )
   const setModal = useSetAtom(modalState)
-  const { mutate: postReservation } = useMutateReservation()
+  const { mutate: postReservation } = useMutateReservation(user?.id)
 
   const onClickPostReservation = async () => {
     if (!selectedTimes) {
