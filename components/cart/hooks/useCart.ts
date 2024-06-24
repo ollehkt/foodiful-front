@@ -88,11 +88,22 @@ const updateCart = async (updateCartData: Partial<CartReturnType>) => {
 
 export const useUpdateCart = () => {
   const queryClient = useQueryClient()
+  const { fireToast } = useToast()
   const { mutate } = useMutation({
     mutationFn: (updateCartData: Partial<CartReturnType>) => updateCart(updateCartData),
-    onSuccess: () => {},
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.cart] })
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        fireToast({
+          id: '장바구니 업데이트 실패',
+          type: 'failed',
+          message: error.response?.data.message,
+          position: 'bottom',
+          timer: 2000,
+        })
+      }
     },
   })
   return { mutate }
