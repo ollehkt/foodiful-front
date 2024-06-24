@@ -8,5 +8,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/mypage/:path*', '/reservation/:path*'],
+  matcher: ['/mypage/:path*', '/reservation/:path*', '/order/:path*'],
 }
