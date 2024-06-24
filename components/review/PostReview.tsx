@@ -120,6 +120,7 @@ const ReviewForm = ({
           productId,
           userId,
         })
+        setIsModifyMode && setIsModifyMode(false)
       },
     })
   }
@@ -127,7 +128,7 @@ const ReviewForm = ({
   const updateReview = async (updatedReview: UpdateReviewTypes) => {
     if (!updatedReview.comment || updatedReview.rating === 0) {
       fireToast({
-        id: '후기 등록 실패',
+        id: '후기 업데이트 실패',
         type: 'failed',
         message: '후기 내용을 입력해주세요.',
         timer: 1500,
@@ -139,13 +140,15 @@ const ReviewForm = ({
       isOpen: true,
       title: '후기 업데이트',
       content: '후기를 업데이트 하시겠습니까?',
-      confirmFunc: () =>
+      confirmFunc: () => {
         updateReviewMutation({
           ...updatedReview,
           comment: updatedReview.comment.trim(),
           productId,
           userId,
-        }),
+        })
+        setIsModifyMode && setIsModifyMode(false)
+      },
     })
   }
 
@@ -281,7 +284,7 @@ const ReviewForm = ({
         <Button
           title="등록"
           onClick={onClickPostBtn}
-          style="h-[60px] mx-2 font-semibold"
+          style="h-[60px] mx-2 font-semibold border-2 border-main hover:bg-main hover:text-white"
           size={`${userReviewed && isMobile ? 'sm' : 'md'}`}
         />
       </div>

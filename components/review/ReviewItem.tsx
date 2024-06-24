@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { ProductReviewTypes } from './types/productReviewTypes'
-import { encodingUserId } from '../util/encodingUserId'
+import { encodingUserEmail } from '../util/encodingUserEmail'
 import Link from 'next/link'
 
 interface PropsType {
@@ -64,7 +64,8 @@ const ReviewItem = ({ review, mypage }: PropsType) => {
             ></div>
           </div>
 
-          <div className="font-semibold text-gray-700">{user && encodingUserId(user)}</div>
+          <div className="font-semibold text-gray-700">{user.email}</div>
+          <div className="font-semibold text-gray-700">{user && encodingUserEmail(user)}</div>
 
           <div className="text-gray-500">
             {updatedAt ? dayjs(updatedAt).format('YY.MM.DD') : dayjs(createdAt).format('YY.MM.DD')}
