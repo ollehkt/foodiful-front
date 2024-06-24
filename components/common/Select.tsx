@@ -9,6 +9,8 @@ interface PropsType<T> {
   isSelectedModalOpen: boolean
   setIsSelectedModalOpen: Dispatch<SetStateAction<boolean>>
   toastMsg?: string
+  position?: string
+  size?: string
 }
 
 const Select = <T extends string | number>({
@@ -18,6 +20,8 @@ const Select = <T extends string | number>({
   isSelectedModalOpen,
   setIsSelectedModalOpen,
   toastMsg,
+  position,
+  size,
 }: PropsType<T>) => {
   const onSelectOption = (option: T) => {
     setSelected(option)
@@ -25,7 +29,7 @@ const Select = <T extends string | number>({
 
   const { fireToast } = useToast()
   return (
-    <div className={`w-[200px] h-[36px]  mt-[10px] border rounded-md z-[9999]`}>
+    <div className={`${size ? size : 'w-[200px]'} h-[36px]  mt-[10px] border rounded-md z-[9999]`}>
       <div
         className="h-full flex justify-between items-center mx-[10px] text-main font-bold cursor-pointer hover:text-active"
         onClick={() => {
@@ -51,7 +55,7 @@ const Select = <T extends string | number>({
       </div>
       {isSelectedModalOpen && options && (
         <ul
-          className={`absolute top-20 shadow-basic w-[240px] ${
+          className={`absolute ${position} shadow-basic ${size ? size : 'w-[240px]'} ${
             options.length < 2 ? 'h-[120px]' : 'h-[180px]'
           }  bg-white rounded-md z-[9999] overflow-y-scroll`}
         >
