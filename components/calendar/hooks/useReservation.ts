@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { queryKeys } from '../../../query-keys/queryKeys'
 import { api } from '../../axios/axiosInstance'
@@ -30,8 +30,10 @@ const postReservation = async (reservationData: PostReservationType) => {
   return data
 }
 
-export const useMutateReservation = () => {
+export const useMutateReservation = (userId?: number) => {
   const { fireToast } = useToast()
+  const queryClient = useQueryClient()
+  
   const router = useRouter()
   const { mutate } = useMutation({
     mutationFn: (reservationData: PostReservationType) => postReservation(reservationData),
@@ -43,7 +45,8 @@ export const useMutateReservation = () => {
         position: 'bottom',
         timer: 2000,
       })
-      router.push('/')
+      queryClient.invalidateQueries({ queryKey: [queryKeys.reservation, userId] })
+      // router.push('/')
     },
     onError: (error) => {
       if (isAxiosError(error))
@@ -131,9 +134,13 @@ const updateReservartion = async ({
 }
 
 export const useUpdateReservation = () => {
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: (updateReservationData: updateReservartionType) =>
       updateReservartion(updateReservationData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.reservation] })
+    },
   })
   return { mutate }
 }
