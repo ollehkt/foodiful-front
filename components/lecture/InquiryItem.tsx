@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { InquiryType } from './types/inquiryTypes'
 import { IoLockClosed } from 'react-icons/io5'
 import dayjs from 'dayjs'
@@ -13,8 +13,7 @@ import { getStoredUser } from '../util/userStorage'
 import { Button } from '../common/Button'
 import { useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
-import { encodingUserId } from '../util/encodingUserId'
-import { useUser } from '../auth/hooks/useUser'
+import { encodingUserEmail } from '../util/encodingUserEmail'
 
 interface PropsType {
   inquiry: InquiryType
@@ -82,7 +81,7 @@ function InquiryItem({ inquiry }: PropsType) {
         )}
 
         <div className="flex items-center gap-x-4">
-          <p>{user && encodingUserId(user)}</p>
+          <p>{user && encodingUserEmail(user)}</p>
           <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
           {user && (user.id === userId || user.role === 'ADMIN') && (
             <Button
@@ -141,7 +140,7 @@ function InquiryItem({ inquiry }: PropsType) {
                   )}
 
                   <div className="flex items-center gap-x-4">
-                    <p>{user && encodingUserId(user)}</p>
+                    <p>{user && encodingUserEmail(user)}</p>
                     <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
                     {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
                       <Button
