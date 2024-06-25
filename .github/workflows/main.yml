@@ -33,10 +33,13 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Docker image build
-      run : |
-          docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . --platform=linux/amd64
-    - name: Docker image push
-      run : |
-          docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
     
