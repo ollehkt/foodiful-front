@@ -7,6 +7,10 @@ on:
   push:
     branches: [ "main" ]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
 
@@ -25,6 +29,12 @@ jobs:
           ${{ runner.OS }}-node-
     - run: yarn install --frozen-lockfile
     - run: yarn 
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::536625195998:role/role_for_github_action    
+        aws-region: ap-northeast-2
     
     - name: DockerHub Login
       uses: docker/login-action@v2
@@ -39,4 +49,12 @@ jobs:
       run: |
         docker push  ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
 
+    - name: Application Run
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST_DEV }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          sh ./gitaction.sh
     
