@@ -33,10 +33,10 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-
-    - name: DockerHub build and push
-      run: |
-        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . platform=linux/amd64
-        docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
-    
+    - name: Docker image build
+      run : |
+          docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . --platform=linux/amd64
+    - name: Docker image push
+      run : |
+          docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
     
