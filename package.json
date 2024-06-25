@@ -24,7 +24,8 @@
     "react": "18.2.0",
     "react-awesome-reveal": "^4.2.3",
     "react-dom": "18.2.0",
-    "react-icons": "^4.12.0"
+    "react-icons": "^4.12.0",
+    "sharp": "^0.32"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "4",
