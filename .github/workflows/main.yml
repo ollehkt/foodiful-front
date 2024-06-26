@@ -21,14 +21,14 @@ jobs:
     
     - uses: actions/setup-node@v3
 
-    - uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-node-
-    - run: yarn install --frozen-lockfile
-    - run: yarn 
+    # - uses: actions/cache@v3
+    #   with:
+    #     path: ~/.npm
+    #     key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.OS }}-node-
+    # - run: yarn install --frozen-lockfile
+    # - run: yarn 
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v3
@@ -57,5 +57,5 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          docker login --help-credential-helpers && docker-compose pull
+          docker login && docker-compose pull
     
