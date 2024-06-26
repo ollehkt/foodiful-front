@@ -58,7 +58,6 @@ jobs:
         port: 22
         script_stop: true
         script: |
-          sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOKCERHUB_PASSWORD }}
           sudo docker-compose down
           sudo docker-compose pull
     
