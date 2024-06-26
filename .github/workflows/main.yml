@@ -17,7 +17,7 @@ jobs:
       contents: read
 
     steps:
-    # - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     
     # - uses: actions/setup-node@v3
 
@@ -44,10 +44,10 @@ jobs:
 
     # - name: build and push
     #   run: |
-    #     docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }} . --platform=linux/amd64
+    #     docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest . --platform=linux/amd64
     # - name: Docker image push
     #   run: |
-    #     docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}
+    #     docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
 
     - name: Application Run
       uses: appleboy/ssh-action@v0.1.6
@@ -57,5 +57,5 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          docker-compose down
+          docker-compose pull
     
