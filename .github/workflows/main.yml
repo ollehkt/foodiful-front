@@ -42,12 +42,12 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: build and push
-      run: |
-        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest . --platform=linux/amd64
-    - name: Docker image push
-      run: |
-        docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
+    # - name: build and push
+    #   run: |
+    #     docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest . --platform=linux/amd64
+    # - name: Docker image push
+    #   run: |
+    #     docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
 
     - name: Application Run
       uses: appleboy/ssh-action@v0.1.6
