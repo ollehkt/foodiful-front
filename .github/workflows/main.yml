@@ -33,7 +33,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: ${{ secret.AWS_IAM_OIDC }}
+        role-to-assume: ${{ secrets.AWS_IAM_OIDC }}
         aws-region: ap-northeast-2
     
     - name: DockerHub Login
