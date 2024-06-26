@@ -57,5 +57,7 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          docker login && docker-compose pull
+          sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOKCERHUB_PASSWORD }}
+          sudo docker-compose down
+          sudo docker-compose pull
     
