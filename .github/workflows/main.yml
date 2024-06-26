@@ -37,7 +37,7 @@ jobs:
         aws-region: ap-northeast-2
     
     - name: DockerHub Login
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -57,5 +57,5 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          docker login && docker-compose pull
+          docker login --help-credential-helpers && docker-compose pull
     
