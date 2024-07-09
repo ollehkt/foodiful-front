@@ -77,16 +77,13 @@ const Header = () => {
                 </div>
                 <button
                   onClick={onClickSignOut}
-                  className="text-xl no-underline text-[#666] hover:text-[#000]"
+                  className="text-xl no-underline text-[#666] hover:text-black"
                 >
                   로그아웃
                 </button>
               </>
             ) : (
-              <Link
-                className={` text-xl no-underline text-[#000] hover:text-[#E851EB]`}
-                href="/auth"
-              >
+              <Link className={`text-xl no-underline text-black hover:text-hover`} href="/auth">
                 로그인
               </Link>
             )}
