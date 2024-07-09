@@ -22,7 +22,7 @@ const DynamicEditor = dynamic(() => import('../common/editor/ToastEditor'), {
 interface PropsType {
   productForUpdate?: ProductReturnType
   onSubmitAdd?: UseMutateFunction<
-    AxiosResponse<any, any> | undefined,
+    AxiosResponse | undefined,
     unknown,
     {
       product: ProductType
@@ -103,6 +103,21 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
         .map((category) => category.title),
     })
   }, [category])
+
+  const onClickUploadBtn = async () => {
+    const urls = await getPresignedUrlByFiles(files, 'product')
+    if (urls) {
+      const updatedProduct = { ...product, descImg: [...product.descImg, ...urls] }
+      setProduct({ ...product, descImg: [...product.descImg, ...urls] })
+      if (productForUpdate?.id && onSubmitUpdate) {
+        onSubmitUpdate({ product: updatedProduct, id: productForUpdate.id })
+        router.push('/product')
+      } else {
+        onSubmitAdd && onSubmitAdd({ product: updatedProduct })
+        router.push('/product')
+      }
+    }
+  }
 
   return (
     <div className="mx-4">
@@ -280,18 +295,7 @@ const ProductForm = ({ productForUpdate, onSubmitAdd, onSubmitUpdate }: PropsTyp
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Button
-          onClick={async () => {
-            const urls = await getPresignedUrlByFiles(files, 'product')
-            if (urls) {
-              const updatedProduct = { ...product, descImg: [...product.descImg, ...urls] }
-              setProduct({ ...product, descImg: [...product.descImg, ...urls] })
-              if (productForUpdate?.id && onSubmitUpdate)
-                onSubmitUpdate({ product: updatedProduct, id: productForUpdate.id })
-              else {
-                onSubmitAdd && onSubmitAdd({ product: updatedProduct })
-              }
-            }
-          }}
+          onClick={onClickUploadBtn}
           style="text-sm font-semibold leading-6 shadow-sm"
           title="올리기"
         />
