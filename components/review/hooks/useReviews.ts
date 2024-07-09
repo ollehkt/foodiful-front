@@ -170,7 +170,14 @@ export const useDeleteReview = (productId: number) => {
   const { mutate } = useMutation({
     mutationFn: (reviewId: number) => deleteReview(reviewId),
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKeys.review])
+      fireToast({
+        id: '후기 삭제 성공',
+        type: 'success',
+        message: '후기 삭제가 완료됐습니다.',
+        timer: 1500,
+        position: 'bottom',
+      })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
     },
     onError: (err, context) => {
       fireToast({
