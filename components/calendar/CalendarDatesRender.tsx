@@ -31,7 +31,7 @@ const CalendarDatesRender = ({ currentDate, selectedDate, onClickSelectDate }: P
           <div
             key={day}
             className={`shadow-basic m-1 rounded-md  ${
-              dayjs(day).day() === 0
+              dayjs(day).day() === 0 // 일요일이라면
                 ? 'bg-[#ee2222] text-white'
                 : dayjs(day).isBefore(dayjs(), 'D') // 현재 실제 날짜보다 현재 for문의 날짜가 뒤라면
                 ? 'bg-disabled cursor-not-allowed'
@@ -73,9 +73,6 @@ const CalendarDatesRender = ({ currentDate, selectedDate, onClickSelectDate }: P
 
     setRows(rowsData)
   }, [currentDate])
-  /**
-   * TODO: 시간 선택 시 클래스 duration 에 따라서 몇 개 선택될지 만들어야함.
-   */
 
   return <div className="w-full px-4 my-4 justify-between items-center relative z-[99]">{rows}</div>
 }
