@@ -38,12 +38,13 @@ const ReviewForm = ({
         }
   )
 
-  const [files, setFiles] = useState<File[]>([])
-  const [imgSrc, setImgSrc] = useState<string[]>(
-    userReviewed?.reviewImg ? [userReviewed.reviewImg] : []
+  const [file, setFile] = useState<File | null>(null)
+  const [imgSrc, setImgSrc] = useState<string | null>(
+    userReviewed?.reviewImg ? userReviewed.reviewImg : null
   )
-  const { onChangeRenderImgs } = useRenderImages()
-  const { getPresignedUrlByFiles } = useGetPresignedUrl()
+
+  const { onChangeRenderImg } = useRenderImages()
+  const { getPresignedUrlByFile } = useGetPresignedUrl()
   const { fireToast } = useToast()
   const isMobile = useAtomValue(isMobileDisplay)
   const setModal = useSetAtom(modalState)
@@ -85,12 +86,12 @@ const ReviewForm = ({
      *  그렇다면 aws에서 현재 파일이 등록되어 있는 지 확인 후 업로드 시키기 or 그냥 계속 업로드 되게 만들기
      *  => 뭐가 리소스 낭비가 더 심할지 고민
      */
-    if (!!files.length) {
-      const urls = await getPresignedUrlByFiles(files, 'product-review')
-      if (urls) {
+    if (!!file) {
+      const url = await getPresignedUrlByFile(file, 'product-review')
+      if (url) {
         userReviewed
-          ? updateReview({ ...reviewState, reviewImg: urls[0], reviewId: userReviewed.id })
-          : postReview({ ...reviewState, reviewImg: urls[0] })
+          ? updateReview({ ...reviewState, reviewImg: url, reviewId: userReviewed.id })
+          : postReview({ ...reviewState, reviewImg: url })
       }
     } else
       userReviewed
@@ -168,7 +169,7 @@ const ReviewForm = ({
             <input
               id="file-upload"
               onChange={(e) => {
-                onChangeRenderImgs(e, setFiles, setImgSrc)
+                onChangeRenderImg(e, setFile, setImgSrc)
               }}
               name="fileUpload"
               type="file"
@@ -177,8 +178,7 @@ const ReviewForm = ({
             />
           </label>
           <div className="ml-[20px] h-[200px] flex items-center gap-x-2 overflow-y-hidden overflow-x-scroll">
-            {!!imgSrc.length &&
-              imgSrc.map((img) => <Image key={img} src={img} alt={img} width={200} height={200} />)}
+            {!!imgSrc && <Image key={imgSrc} src={imgSrc} alt={imgSrc} width={200} height={200} />}
           </div>
         </div>
       </div>
