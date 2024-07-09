@@ -26,13 +26,13 @@ export const useGetReviewByUserId = (userId?: number): { data: ProductReviewType
   return { data }
 }
 
-export const getReviews = async (id: string): Promise<ProductReviewTypes[]> => {
+export const getReviews = async (id: number): Promise<ProductReviewTypes[]> => {
   const { data } = await api(`/product-review/${id}`)
   return data
 }
 
 export const useGetReviews = (
-  productId: string
+  productId: number
 ): { data: ProductReviewTypes[]; isFetching: boolean } => {
   const { fireToast } = useToast()
   const { data = [], isFetching } = useQuery({
@@ -64,7 +64,6 @@ const postReview = async (
 export const usePostReview = (productId: number) => {
   const queryClient = useQueryClient()
   const { fireToast } = useToast()
-  const router = useRouter()
   const { mutate } = useMutation({
     mutationFn: ({ ...postReviewData }: PostReviewTypes & { productId: number; userId: number }) =>
       postReview(postReviewData),
@@ -76,7 +75,7 @@ export const usePostReview = (productId: number) => {
         timer: 1500,
         position: 'bottom',
       })
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
     },
     onError: () => {
       fireToast({
@@ -131,7 +130,7 @@ export const useUpdateReview = (productId: number) => {
         timer: 1500,
         position: 'bottom',
       })
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
     },
     onError: (error) => {
       if (isAxiosError(error))
@@ -177,7 +176,7 @@ export const useDeleteReview = (productId: number) => {
         timer: 1500,
         position: 'bottom',
       })
-      queryClient.invalidateQueries({ queryKey: [queryKeys.review] })
+      queryClient.invalidateQueries({ queryKey: [queryKeys.review, productId] })
     },
     onError: (err, context) => {
       fireToast({
