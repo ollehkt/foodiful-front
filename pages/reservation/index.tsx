@@ -1,35 +1,15 @@
-import { InferGetServerSidePropsType } from 'next'
 import React, { useEffect, useState } from 'react'
-import { api } from '../../components/axios/axiosInstance'
 import Calendar from '../../components/calendar/Calendar'
-import { ReservationType } from '../../components/calendar/types/reservationType'
-import { LectureType } from '../../components/lecture/types/lectureTypes'
 import Container from '../../components/common/Container'
 import Select from '../../components/common/Select'
 import StrongTitle from '../../components/common/StrongTitle'
+import { useGetLectures } from '../../components/lecture/hooks/useLecture'
+import { useGetAllReservedTimes } from '../../components/reserve/hooks/useReserve'
+import { getStoredUser } from '../../components/util/userStorage'
+import { useUser } from '../../components/auth/hooks/useUser'
+import { useRouter } from 'next/router'
 
-export const getServerSideProps = async (): Promise<{
-  props: { lectures: LectureType[]; reservedTimes: string[] }
-}> => {
-  const { data: lectures } = await api('/lecture/all')
-  const { data: reservations } = await api('/reservation/all')
-
-  if (!reservations.length) {
-    return { props: { lectures, reservedTimes: [] } }
-  }
-  const reservedTimes: string[] = reservations.flatMap(
-    (reserve: ReservationType) => reserve.reserveDate
-  )
-
-  return {
-    props: { lectures, reservedTimes },
-  }
-}
-
-const Reservation = ({
-  lectures,
-  reservedTimes,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Reservation = () => {
   const [isLectureSelectModalOpen, setIsLectureSelectModalOpen] = useState(false)
   const [isTimeTableModalOpen, setIsTimeTableModalOpen] = useState(false)
   const [selectedLectureName, setSelectedLectureName] = useState('')
@@ -42,7 +22,10 @@ const Reservation = ({
     name: '',
     lectureDuration: 0,
   })
-
+  const { getUser } = useUser()
+  const router = useRouter()
+  const { data: lectures } = useGetLectures()
+  const { data: reservedTimes } = useGetAllReservedTimes()
   useEffect(() => {
     if (selectedLectureName) {
       const filteredLecture = lectures
@@ -54,6 +37,19 @@ const Reservation = ({
     }
   }, [selectedLectureName])
 
+  useEffect(() => {
+    ;(async () => {
+      const storedUser = getStoredUser()
+      if (storedUser) {
+        const fetchedUser = await getUser(storedUser)
+        if (!fetchedUser) {
+          router.push('/auth')
+        }
+      } else {
+        router.push('/auth')
+      }
+    })()
+  }, [])
   return (
     <div
       className="w-full"

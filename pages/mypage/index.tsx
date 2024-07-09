@@ -34,15 +34,21 @@ function MyPage() {
   const isMobile = useAtomValue(isMobileDisplay)
   const router = useRouter()
 
-  console.log(myReviews)
-
   useEffect(() => {
     ;(async () => {
       const storedUser = getStoredUser()
       if (storedUser) {
         const fetchedUser = await getUser(storedUser)
-        if (fetchedUser) setUser(fetchedUser)
-      } else setUser(null)
+        if (fetchedUser) {
+          setUser(fetchedUser)
+        } else {
+          setUser(null)
+          router.push('/auth')
+        }
+      } else {
+        setUser(null)
+        router.push('/auth')
+      }
     })()
   }, [])
 
