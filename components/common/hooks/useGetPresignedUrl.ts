@@ -39,5 +39,31 @@ export const useGetPresignedUrl = () => {
     }
   }
 
-  return { getPresignedUrlByFiles }
+  const getPresignedUrlByFile = async (
+    file: File | Blob,
+    bucket: string
+  ): Promise<string | undefined> => {
+    try {
+      const { data: presignedData } = await api.post('/aws/presignedurl', {
+        types: [file.type],
+        bucket,
+      })
+  
+      const url = presignedData[0].split('?')[0]
+      await axios.put(url, file, {
+        headers: { 'Content-Type': file.type },
+      })
+      return url
+    } catch (error) {
+      fireToast({
+        id: 'presign url',
+        type: 'failed',
+        position: 'bottom',
+        message: '사진을 다시 업로드 해주세요.',
+        timer: 2000,
+      })
+    }
+  }
+
+  return { getPresignedUrlByFiles, getPresignedUrlByFile }
 }

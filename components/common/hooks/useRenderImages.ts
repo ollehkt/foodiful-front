@@ -25,6 +25,24 @@ export const useRenderImages = () => {
       setImagesSrc([])
     }
   }
+  const onChangeRenderImg = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFile: Dispatch<SetStateAction<File | null>>,
+    setImageSrc: Dispatch<SetStateAction<string | null>>
+  ) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setFile(file)
+      readAsDataURL(file).then((imageSrc: unknown) => {
+        if (typeof imageSrc === 'string' || imageSrc instanceof String) {
+          setImageSrc(imageSrc.toString())
+        }
+      })
+    } else {
+      setFile(null)
+      setImageSrc(null)
+    }
+  }
 
   function readAsDataURL(file: Blob) {
     return new Promise((resolve, reject) => {
@@ -35,5 +53,5 @@ export const useRenderImages = () => {
       reader.readAsDataURL(file)
     })
   }
-  return { onChangeRenderImgs }
+  return { onChangeRenderImgs, onChangeRenderImg }
 }
