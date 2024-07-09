@@ -17,9 +17,10 @@ import { encodingUserEmail } from '../util/encodingUserEmail'
 
 interface PropsType {
   inquiry: InquiryType
+  lectureId: string
 }
 
-function InquiryItem({ inquiry }: PropsType) {
+function InquiryItem({ inquiry, lectureId }: PropsType) {
   const { id: inquiryId, userId, comment, isSecret, updatedAt } = inquiry
   const [isDetailOpened, setIsDetailOpened] = useState(false)
   const [user, setUser] = useState<User | null>(
@@ -31,8 +32,8 @@ function InquiryItem({ inquiry }: PropsType) {
   }
   const setModal = useSetAtom(modalState)
   const { data: inquiryRecomments } = useGetInquiryRecomment(inquiry.id)
-  const { deleteInquiryMutate } = useDeleteInquiry()
-  const { deleteInquiryRecommentMutate } = useDeleteInquiryRecomment()
+  const { deleteInquiryMutate } = useDeleteInquiry(lectureId)
+  const { deleteInquiryRecommentMutate } = useDeleteInquiryRecomment(inquiryId)
   const onClickDelete = (e: React.MouseEvent<HTMLButtonElement>, type: string, id: number) => {
     e.stopPropagation()
     setModal({

@@ -23,7 +23,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
   })
   const isMobile = useAtomValue(isMobileDisplay)
 
-  const { postRecommentMutate } = usePostRecomment()
+  const { postRecommentMutate } = usePostRecomment(parentId)
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setRecommentState({ ...recommentState, comment: e.currentTarget.value })
@@ -34,6 +34,7 @@ function InquiryReComment({ parentId, placeholder }: PropsType) {
       return
     }
     postRecommentMutate({ recomment: recommentState })
+    setRecommentState({ ...recommentState, comment: '' })
   }
 
   return (

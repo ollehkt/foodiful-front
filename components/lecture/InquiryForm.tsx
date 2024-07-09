@@ -3,9 +3,10 @@ import { Button } from '../common/Button'
 import { usePostInquiry } from './hooks/useLecture'
 import { User } from '../auth/types/user'
 import { getStoredUser } from '../util/userStorage'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { isMobileDisplay } from '../../store/isMobileDisplay'
 import { useUser } from '../auth/hooks/useUser'
+import { modalState } from '../../store/modalState'
 
 interface PropsType {
   placeholder: string
@@ -17,6 +18,7 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
   const [user, setUser] = useState<User | null>(
     typeof window !== 'undefined' ? getStoredUser() : null
   )
+  const setModal = useSetAtom(modalState)
   const [inquiryState, setInquiryState] = useState({
     comment: '',
     isSecret: true,
@@ -24,14 +26,22 @@ function InquiryForm({ placeholder, lectureId, parentId }: PropsType) {
     lectureId,
   })
   const isMobile = useAtomValue(isMobileDisplay)
-  const { postInquiryMutate } = usePostInquiry()
+  const { postInquiryMutate } = usePostInquiry(lectureId)
 
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInquiryState({ ...inquiryState, comment: e.currentTarget.value })
   }
 
   const onClickPostBtn = () => {
-    postInquiryMutate({ lectureInquiry: inquiryState })
+    setModal({
+      isOpen: true,
+      title: '문의 추가',
+      content: '문의를 남기시겠습니까?',
+      confirmFunc: () => {
+        postInquiryMutate({ lectureInquiry: inquiryState })
+        setInquiryState({ ...inquiryState,  comment: '' })
+      },
+    })
   }
 
   return (
