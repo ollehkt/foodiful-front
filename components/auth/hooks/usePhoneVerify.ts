@@ -59,7 +59,7 @@ const usePhoneVerfiy = () => {
         await api.post('/auth/checkphone', {
           phoneNumber: phone,
         })
-        setTime(180)
+
         setVerifyExpiredTxt('')
       }
     } catch (error) {
@@ -72,7 +72,7 @@ const usePhoneVerfiy = () => {
           timer: 2000,
         })
       }
-      setTime(180)
+      setTime(0)
       setIsPhoneInputDisabled(false)
       setIsClickedVerifyPhone(false)
     }
