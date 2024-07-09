@@ -1,5 +1,5 @@
 import { InferGetServerSidePropsType, NextPageContext } from 'next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductDetail from '../../components/product/ProductDetail'
 import { Button } from '../../components/common/Button'
 import { useRouter } from 'next/router'
@@ -11,8 +11,9 @@ import { getProductById, useGetProductById } from '../../components/product/hook
 import { useGetOrder } from '../../components/order/hooks/useOrder'
 import DetailDesc from '../../components/common/DetailDescription'
 import Custom404 from '../404'
-import { getStoredUser } from '../../components/util/userStorage'
+import { getStoredUser, setStoreUser } from '../../components/util/userStorage'
 import { User } from '../../components/auth/types/user'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -43,15 +44,32 @@ const ProductDetailPage = ({
   productId,
   dehydratedState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [user, _] = useState<User | null>(typeof window !== 'undefined' ? getStoredUser() : null)
+  const [user, setUser] = useState<User | null>(
+    typeof window !== 'undefined' ? getStoredUser() : null
+  )
   const [isAdditionalSelectModalOpen, setIsAdditionalSelectModalOpen] = useState(false)
   const router = useRouter()
+  const { getUser } = useUser()
   const [viewDescTab, setViewDescTab] = useState(0)
-
   /**isFetching 사용 */
   const { data: reviewList, isFetching } = useGetReviews(productId)
   const { data: product } = useGetProductById(productId)
   const { data: orderLists } = useGetOrder(user?.id)
+
+  useEffect(() => {
+    ;(async () => {
+      const storedUser = getStoredUser()
+      if (storedUser) {
+        const fetchedUser = await getUser(storedUser)
+        if (fetchedUser) {
+          setUser(fetchedUser)
+          setStoreUser(fetchedUser)
+        }
+      } else {
+        setUser(null)
+      }
+    })()
+  }, [])
   return (
     <Hydrate state={dehydratedState}>
       {!!product ? (
@@ -61,13 +79,15 @@ const ProductDetailPage = ({
             isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
           }}
         >
-          <div className="flex justify-center">
-            <Button
-              title="update"
-              size="md"
-              onClick={() => router.push(`/product/update/${product.id}`)}
-            />
-          </div>
+          {user && user.role === 'ADMIN' && (
+            <div className="flex justify-center">
+              <Button
+                title="update"
+                size="md"
+                onClick={() => router.push(`/product/update/${product.id}`)}
+              />
+            </div>
+          )}
           <ProductDetail
             product={product}
             isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}

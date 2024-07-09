@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DehydratedState, Hydrate, QueryClient, dehydrate } from '@tanstack/react-query'
 import { queryKeys } from '../../query-keys/queryKeys'
 import {
@@ -14,6 +14,9 @@ import { Button } from '../../components/common/Button'
 import DetailDesc from '../../components/common/DetailDescription'
 import LectureInquiry from '../../components/lecture/LectureInquiry'
 import Custom404 from '../404'
+import { User } from '../../components/auth/types/user'
+import { getStoredUser, setStoreUser } from '../../components/util/userStorage'
+import { useUser } from '../../components/auth/hooks/useUser'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -42,15 +45,33 @@ const LectureDetailPage = ({
   lectureId,
   dehydratedState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [user, setUser] = useState<null | User>(null)
   const router = useRouter()
+  const { getUser } = useUser()
   const [viewDescTab, setViewDescTab] = useState(0)
   const { data: lecture } = useGetLectureByLectureId(lectureId)
   const { data: inquiry } = useGetLectureInquiry(lectureId)
+  useEffect(() => {
+    ;(async () => {
+      const storedUser = getStoredUser()
+      if (storedUser) {
+        const fetchedUser = await getUser(storedUser)
+        if (fetchedUser) {
+          setUser(fetchedUser)
+          setStoreUser(fetchedUser)
+        }
+      } else {
+        setUser(null)
+      }
+    })()
+  }, [])
   return (
     <Hydrate state={dehydratedState}>
       {!!lecture ? (
         <div className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto">
-          <Button title="업데이트" onClick={() => router.push(`/lecture/update/${lectureId}`)} />
+          {user && user.role === 'ADMIN' && (
+            <Button title="업데이트" onClick={() => router.push(`/lecture/update/${lectureId}`)} />
+          )}
           <LectureDetail lecture={lecture} />
 
           <div className="w-full h-[80px] flex justify-center items-center my-[40px]">
