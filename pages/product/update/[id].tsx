@@ -4,6 +4,7 @@ import { api } from '../../../components/axios/axiosInstance'
 import { useUpdateProductById } from '../../../components/product/hooks/useProduct'
 import ProductForm from '../../../components/product/ProductForm'
 import { ProductReturnType } from '../../../components/product/types/productTypes'
+import axios from 'axios'
 
 interface PropsType {
   product: ProductReturnType

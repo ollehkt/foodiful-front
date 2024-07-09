@@ -24,7 +24,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.review, productId],
-    queryFn: () => getReviews(productId),
+    queryFn: () => getReviews(Number(productId)),
   })
 
   await queryClient.prefetchQuery({
@@ -52,7 +52,7 @@ const ProductDetailPage = ({
   const { getUser } = useUser()
   const [viewDescTab, setViewDescTab] = useState(0)
   /**isFetching 사용 */
-  const { data: reviewList, isFetching } = useGetReviews(productId)
+  const { data: reviewList, isFetching } = useGetReviews(Number(productId))
   const { data: product } = useGetProductById(productId)
   const { data: orderLists } = useGetOrder(user?.id)
 
@@ -82,8 +82,9 @@ const ProductDetailPage = ({
           {user && user.role === 'ADMIN' && (
             <div className="flex justify-center">
               <Button
-                title="update"
+                title="상품 수정"
                 size="md"
+                style="border-2 border-main hover:bg-main hover:text-white"
                 onClick={() => router.push(`/product/update/${product.id}`)}
               />
             </div>
