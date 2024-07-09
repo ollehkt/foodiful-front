@@ -62,7 +62,7 @@ function PurchasedOrderItem({ order, viewArrow }: PropsType) {
   return (
     <>
       <div
-        className={`grid grid-cols-2 md:grid-cols-6 items-center  my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
+        className={`grid grid-cols-2 md:grid-cols-7 items-center  my-4 px-1 py-4 border-y-[#999] border-y-2 text-sm ${
           viewArrow && 'cursor-pointer'
         }`}
         onClick={onClickOrder}
