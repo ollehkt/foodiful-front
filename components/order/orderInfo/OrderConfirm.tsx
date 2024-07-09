@@ -9,6 +9,7 @@ import { PostOrderProductTypes } from '../types/postOrderProductTypes'
 import { useDeleteCart, useGetCartList } from '../../cart/hooks/useCart'
 import { useAtomValue } from 'jotai'
 import { isMobileDisplay } from '../../../store/isMobileDisplay'
+import dayjs from 'dayjs'
 
 interface PropsType {
   orderForm: OrderFormType
@@ -95,7 +96,9 @@ function OrderConfirm({ orderForm, orderProduct }: PropsType) {
       cartLists.forEach(({ id, productId }) => {
         if (orderProduct.map((list) => list.product.id).includes(productId)) deleteCartItem(id)
       })
-      router.push(`/order/confirm?id=${response.merchant_uid}`)
+      router.push(
+        `/order/confirm?id=${response.merchant_uid}&date=${dayjs().format('YYYY-MM-DD HH:mm')}`
+      )
     } else {
       alert(`결제 실패: ${error_msg}`)
     }
