@@ -57,8 +57,10 @@ const CalendarContent = ({
       isOpen: true,
       title: '예약 추가',
       content: '예약을 추가하시겠습니까?',
-      confirmFunc: () =>
-        postReservation({ lectureId: selectedLecture.id, reserveDate: selectedTimes }),
+      confirmFunc: () => {
+        postReservation({ lectureId: selectedLecture.id, reserveDate: selectedTimes })
+        router.push('/')
+      },
     })
   }
 
