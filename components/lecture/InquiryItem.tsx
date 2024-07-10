@@ -13,7 +13,7 @@ import { getStoredUser } from '../util/userStorage'
 import { Button } from '../common/Button'
 import { useSetAtom } from 'jotai'
 import { modalState } from '../../store/modalState'
-import { encodingUserEmail } from '../util/encodingUserEmail'
+import { encodingUserId } from '../util/encodingUserId'
 
 interface PropsType {
   inquiry: InquiryType
@@ -78,23 +78,22 @@ function InquiryItem({ inquiry, lectureId }: PropsType) {
               {inquiryRecomments &&
                 (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
             </p>{' '}
+            <div className="flex items-center gap-x-4">
+              <p>{user && user.role === 'ADMIN' ? userId : encodingUserId(userId)}</p>
+              <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
+              {user && (user.id === userId || user.role === 'ADMIN') && (
+                <Button
+                  title="삭제"
+                  size="sm"
+                  style="hover:bg-main hover:text-white py-[2px]"
+                  onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                    onClickDelete(e, '문의', inquiryId)
+                  }
+                />
+              )}
+            </div>
           </>
         )}
-
-        <div className="flex items-center gap-x-4">
-          <p>{user && encodingUserEmail(user)}</p>
-          <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
-          {user && (user.id === userId || user.role === 'ADMIN') && (
-            <Button
-              title="삭제"
-              size="sm"
-              style="hover:bg-main hover:text-white py-[2px]"
-              onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
-                onClickDelete(e, '문의', inquiryId)
-              }
-            />
-          )}
-        </div>
       </div>
       {isDetailOpened && (
         <div className="pb-4">
@@ -136,24 +135,31 @@ function InquiryItem({ inquiry, lectureId }: PropsType) {
                       ) : (
                         <div></div>
                       )}
-                      <p>{recomment}</p>
+                      <>
+                        <p>{recomment}</p>
+                        <div className="flex items-center gap-x-4">
+                          <p>
+                            {user && user.role === 'ADMIN'
+                              ? recommentUserId
+                              : encodingUserId(recommentUserId)}
+                          </p>
+                          <p className="text-gray-700">
+                            {dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}
+                          </p>
+                          {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
+                            <Button
+                              title="삭제"
+                              size="sm"
+                              style="hover:bg-main hover:text-white py-[2px]"
+                              onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                                onClickDelete(e, '댓글', recommentId)
+                              }
+                            />
+                          )}
+                        </div>
+                      </>
                     </>
                   )}
-
-                  <div className="flex items-center gap-x-4">
-                    <p>{user && encodingUserEmail(user)}</p>
-                    <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
-                    {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
-                      <Button
-                        title="삭제"
-                        size="sm"
-                        style="hover:bg-main hover:text-white py-[2px]"
-                        onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
-                          onClickDelete(e, '댓글', recommentId)
-                        }
-                      />
-                    )}
-                  </div>
                 </div>
               )
             )}
