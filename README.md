@@ -61,11 +61,11 @@
 
 ### 상품 주문
 
-![상품 주문](https://github.com/davidktlee/foodiful-front/assets/97086762/b643ef3d-f1f4-4c54-a4bb-0ace372c4c0d)
+![상품 주문](https://github.com/davidktlee/foodiful-front/assets/97086762/48bd4198-5a8d-46e0-b539-5cd9321d898b)
 
 ### 상품 후기 등록 / 수정 / 삭제
 
-![상품 후기](https://github.com/davidktlee/foodiful-front/assets/97086762/88ae107d-8efa-496c-bc12-ce1902782c16)
+![상품 후기](https://github.com/davidktlee/foodiful-front/assets/97086762/de137560-067d-471e-9293-2a7deab515b3)
 
 ### 클래스 추가
 
@@ -73,7 +73,7 @@
 
 ### 클래스 추가 상세
 
-![클래스 추가 상세](https://github.com/davidktlee/foodiful-front/assets/97086762/8b2ebfb4-45b4-49d6-95a2-3d09d5cb9427)
+![클래스 추가 상세](https://github.com/davidktlee/foodiful-front/assets/97086762/c5000418-0677-49d0-a07b-fe1c4078f9e1)
 
 ### 클래스 상세 페이지
 
