@@ -78,22 +78,22 @@ function InquiryItem({ inquiry, lectureId }: PropsType) {
               {inquiryRecomments &&
                 (!inquiryRecomments.length ? '(0)' : `(${inquiryRecomments.length})`)}
             </p>{' '}
-            <div className="flex items-center gap-x-4">
-              <p>{user && user.role === 'ADMIN' ? userId : encodingUserId(userId)}</p>
-              <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
-              {user && (user.id === userId || user.role === 'ADMIN') && (
-                <Button
-                  title="삭제"
-                  size="sm"
-                  style="hover:bg-main hover:text-white py-[2px]"
-                  onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
-                    onClickDelete(e, '문의', inquiryId)
-                  }
-                />
-              )}
-            </div>
           </>
         )}
+        <div className="flex items-center gap-x-4">
+          <p>{user && user.role === 'ADMIN' ? userId : encodingUserId(userId)}</p>
+          <p className="text-gray-700">{dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}</p>
+          {user && (user.id === userId || user.role === 'ADMIN') && (
+            <Button
+              title="삭제"
+              size="sm"
+              style="hover:bg-main hover:text-white py-[2px]"
+              onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                onClickDelete(e, '문의', inquiryId)
+              }
+            />
+          )}
+        </div>
       </div>
       {isDetailOpened && (
         <div className="pb-4">
@@ -121,6 +121,26 @@ function InquiryItem({ inquiry, lectureId }: PropsType) {
                       <>
                         <span className="text-sm">나의 글</span>
                         <p>{recomment}</p>
+                        <div className="flex items-center gap-x-4">
+                          <p>
+                            {user && user.role === 'ADMIN'
+                              ? recommentUserId
+                              : encodingUserId(recommentUserId)}
+                          </p>
+                          <p className="text-gray-700">
+                            {dayjs(updatedAt).format('YYYY-MM-DD HH:mm')}
+                          </p>
+                          {user && (user.id === recommentUserId || user.role === 'ADMIN') && (
+                            <Button
+                              title="삭제"
+                              size="sm"
+                              style="hover:bg-main hover:text-white py-[2px]"
+                              onClickWithEvent={(e: MouseEvent<HTMLButtonElement>) =>
+                                onClickDelete(e, '댓글', recommentId)
+                              }
+                            />
+                          )}
+                        </div>
                       </>
                     ) : (
                       <>
