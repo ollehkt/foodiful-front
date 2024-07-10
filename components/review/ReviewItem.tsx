@@ -66,7 +66,7 @@ const ReviewItem = ({ review, mypage }: PropsType) => {
 
           <div className="font-semibold text-gray-700">{user?.email}</div>
           <div className="font-semibold text-gray-700">
-            {user && user.role === 'ADMIN' ? user?.id : encodingUserId(user?.id)}
+            {user && user.role === 'ADMIN' ? userId : encodingUserId(userId)}
           </div>
 
           <div className="text-gray-500">
