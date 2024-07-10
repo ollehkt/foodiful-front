@@ -44,6 +44,8 @@ const CalendarTimeRender = ({
     }
   }
 
+  useEffect(() => {}, [])
+
   return (
     <>
       {isTimeTableModalOpen && times.length > 0 && (

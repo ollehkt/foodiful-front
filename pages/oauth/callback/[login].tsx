@@ -14,7 +14,6 @@ export default function Kakao() {
       .then((result) => console.log(result))
   }, [])
 
-  console.log()
   // 로딩 스피너
   return <>loading</>
 }

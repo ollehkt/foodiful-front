@@ -84,30 +84,31 @@ export const useGetOrder = (userId?: number): { data: GetOrderType[] } => {
   return { data }
 }
 
-const updateOrder = async (orderId: string, updateOrderData: any) => {
-  const user = getStoredUser()
-  const { data } = await api.patch(
-    `/order/${orderId}`,
-    {
-      ...updateOrderData,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${user?.token}`,
-      },
-    }
-  )
-  return data
-}
+// const updateOrder = async (orderId: string, updateOrderData) => {
+//   const user = getStoredUser()
+//   const { data } = await api.patch(
+//     `/order/${orderId}`,
+//     {
+//       ...updateOrderData,
+//     },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${user?.token}`,
+//       },
+//     }
+//   )
+//   return data
+// }
 
-export const useUpdateOrder = () => {
-  const { mutate } = useMutation({
-    mutationFn: ({ orderId, updateOrderData }: any) => updateOrder(orderId, updateOrderData),
-    onSuccess: () => {},
-    onError: () => {},
-  })
-  return { mutate }
-}
+// export const useUpdateOrder = () => {
+//   const { mutate } = useMutation({
+//     mutationFn: ({ orderId, updateOrderData }: { orderId: string }) =>
+//       updateOrder(orderId, updateOrderData),
+//     onSuccess: () => {},
+//     onError: () => {},
+//   })
+//   return { mutate }
+// }
 
 const cancelOrder = async (orderId: string, refundReason: string) => {
   const user = getStoredUser()

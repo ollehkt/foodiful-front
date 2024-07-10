@@ -33,7 +33,7 @@ const postReservation = async (reservationData: PostReservationType) => {
 export const useMutateReservation = (userId?: number) => {
   const { fireToast } = useToast()
   const queryClient = useQueryClient()
-  
+
   const router = useRouter()
   const { mutate } = useMutation({
     mutationFn: (reservationData: PostReservationType) => postReservation(reservationData),
@@ -97,12 +97,14 @@ export const useGetReservations = () => {
 
 const getReservationsByUserId = async (): Promise<FetchReservationType[]> => {
   const user = getStoredUser()
-  const { data } = await api(`/user/reservation`, {
-    headers: {
-      Authorization: user ? `Bearer ${user.token}` : undefined,
-    },
-  })
-  return data
+  if (user) {
+    const { data } = await api(`/user/reservation`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    return data
+  } else return []
 }
 
 export const useGetReservationByUserId = (
@@ -111,7 +113,6 @@ export const useGetReservationByUserId = (
   const { data = [], isFetching } = useQuery({
     queryKey: [queryKeys.reservation, userId],
     queryFn: getReservationsByUserId,
-    enabled: !!userId,
   })
   return { data, isFetching }
 }

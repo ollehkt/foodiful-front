@@ -34,19 +34,13 @@ const MainSlider = ({ imgs }: { imgs: StaticImageData[] }) => {
   }
 
   const [index, setIndex] = useState(0)
-  const timeoutRef = useRef<any>(null) // 타입 찾기
-
-  const resetTimeout = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-  }
 
   useEffect(() => {
-    resetTimeout()
-    timeoutRef.current = setTimeout(() => {
+    const timer = setTimeout(() => {
       setIndex((prevIdx) => (prevIdx === total ? 0 : prevIdx + 1))
     }, 2500)
 
-    return () => resetTimeout()
+    return () => clearTimeout(timer)
   }, [index, total])
 
   return (

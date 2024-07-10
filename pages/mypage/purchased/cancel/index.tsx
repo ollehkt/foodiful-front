@@ -26,8 +26,7 @@ function OrderCancelForm() {
       title: '주문 취소',
       content: '정말 주문을 취소하시겠습니까?',
       confirmFunc: async () => {
-        const res  =await 
-        cancelOrder({ orderId: orderId as string, refundReason })
+        const res = await cancelOrder({ orderId: orderId as string, refundReason })
         push('/mypage/refund')
       },
     })

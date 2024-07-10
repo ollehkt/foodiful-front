@@ -19,11 +19,11 @@ export const headerTitle = [
     url: '/product',
     subTitle: [
       { title: '전체보기', url: '/product' },
-      { title: '다식', url: '/product/dasik' },
-      { title: '바람떡', url: '/product/windtteok' },
-      { title: '쌀강정', url: '/product/ricegangjeong' },
-      { title: '곶감단지', url: '/product/gotgam' },
-      { title: '호두정과', url: '/product/hodu' },
+      // { title: '다식', url: '/product/dasik' },
+      // { title: '바람떡', url: '/product/windtteok' },
+      // { title: '쌀강정', url: '/product/ricegangjeong' },
+      // { title: '곶감단지', url: '/product/gotgam' },
+      // { title: '호두정과', url: '/product/hodu' },
     ],
   },
   {
@@ -31,10 +31,10 @@ export const headerTitle = [
     url: '/lecture',
     subTitle: [
       { title: '전체보기', url: '/lecture' },
-      { title: '쌀강정 클래스', url: '/lecture/ricegangjeong' },
-      { title: '다식 클래스', url: '/lecture/dasik' },
-      { title: '호두 클래스', url: '/lecture/hodu' },
-      { title: '곶감단지 클래스', url: '/lecture/gotgam' },
+      // { title: '쌀강정 클래스', url: '/lecture/ricegangjeong' },
+      // { title: '다식 클래스', url: '/lecture/dasik' },
+      // { title: '호두 클래스', url: '/lecture/hodu' },
+      // { title: '곶감단지 클래스', url: '/lecture/gotgam' },
     ],
   },
   {

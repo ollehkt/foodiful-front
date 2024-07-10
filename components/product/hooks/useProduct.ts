@@ -128,7 +128,7 @@ export const useGetProducts = (): {
 }
 
 export const getProductById = async (
-  id: QueryFunctionContext<string[], any> | string
+  id: QueryFunctionContext<string[]> | string
 ): Promise<ProductReturnType> => {
   const { data } = await api.get(`/product/${id}`)
   return data

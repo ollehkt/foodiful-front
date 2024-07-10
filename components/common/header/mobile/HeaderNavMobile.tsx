@@ -1,7 +1,6 @@
 import { useAtom } from 'jotai'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { mobileNavState } from '../../../../store/mobileNavState'
 import { headerTitle } from '../../../constants/headerTitle'
 import { User } from '../../../auth/types/user'
 import { getStoredUser } from '../../../util/userStorage'
@@ -10,13 +9,13 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { FaShoppingCart } from 'react-icons/fa'
+import { mobileNavState } from '../../../../store/mobileNavState'
 
 const HeaderNavMobile = () => {
   const [isMenuOpened, setIsMenuOpened] = useAtom(mobileNavState)
   const [subMenuIdx, setSubmenuIdx] = useState(-1)
-  const [user, setUser] = useState<User | null>(
-    typeof window !== 'undefined' ? getStoredUser() : null
-  )
+  const [user, setUser] = useState<User | null>(null)
+
   const router = useRouter()
   const { signOut } = useAuth()
 
@@ -46,6 +45,12 @@ const HeaderNavMobile = () => {
   const keyBoardArrowPrevent = (e: KeyboardEvent) => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') e.preventDefault()
   }
+
+  useEffect(() => {
+    const storedUser = getStoredUser()
+    if (storedUser) setUser(storedUser)
+    else setUser(null)
+  }, [router])
 
   useEffect(() => {
     if (isMenuOpened) {

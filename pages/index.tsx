@@ -21,6 +21,7 @@ import { api } from '../components/axios/axiosInstance'
 
 const Home = () => {
   // const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
   const [user, setUser] = useState<User | null>(
     typeof window !== 'undefined' ? getStoredUser() : null
   )
