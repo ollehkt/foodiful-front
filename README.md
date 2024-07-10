@@ -89,4 +89,4 @@
 
 ### 소개 페이지
 
-![소개](https://github.com/davidktlee/foodiful-front/assets/97086762/dfdeeda2-bee3-429b-8276-dba0db0e69da)
+![소개](https://github.com/davidktlee/foodiful-front/assets/97086762/6d669d89-03a5-4d9d-a6a7-fe16435eec11)
