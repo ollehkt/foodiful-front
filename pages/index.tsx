@@ -10,18 +10,16 @@ import { ProductReturnType } from '../components/product/types/productTypes'
 import { LectureType } from '../components/lecture/types/lectureTypes'
 import { api } from '../components/axios/axiosInstance'
 
-// export const getServerSideProps = async (): Promise<{
-//   props: { products: ProductReturnType[]; lectures: LectureType[] }
-// }> => {
-//   const { data: products } = await api('/product/all')
-//   const { data: lectures } = await api('/lecture/all')
+export const getServerSideProps = async (): Promise<{
+  props: { products: ProductReturnType[]; lectures: LectureType[] }
+}> => {
+  const { data: products } = await api('/product/all')
+  const { data: lectures } = await api('/lecture/all')
 
-//   return { props: { products, lectures } }
-// }
+  return { props: { products, lectures } }
+}
 
-const Home = () => {
-  // const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
+const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [user, setUser] = useState<User | null>(
     typeof window !== 'undefined' ? getStoredUser() : null
   )
@@ -33,15 +31,12 @@ const Home = () => {
     <>
       <div className="relative w-full">
         <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          <ProductList products={productsUserLiked} />
+          <ProductList products={user ? productsUserLiked : products} />
         </div>
 
         <div className="w-[80%] mx-auto px-4 sm:px-6 py-8 lg:px-8">
-          <LectureList lectureList={lectureUserLiked} />
+          <LectureList lectureList={user ? lectureUserLiked : lectures} />
         </div>
-
-        {/* <Channel /> */}
-        {/**<div className="sticky w-full bottom-10 pr-[2%] z-[99999] flex justify-end "> */}
       </div>
     </>
   )
