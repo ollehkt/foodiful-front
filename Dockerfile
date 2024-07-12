@@ -16,6 +16,8 @@ RUN yarn --frozen-lockfile
 # 2단계: next.js 빌드 단계
 FROM node:18-alpine AS builder
 
+ARG NEXT_PUBLIC_PROD_URL
+ENV NEXT_PUBLIC_PROD_URL ${NEXT_PUBLIC_PROD_URL}
 # 명령어를 실행할 디렉터리 지정
 WORKDIR /usr/src/app
 
