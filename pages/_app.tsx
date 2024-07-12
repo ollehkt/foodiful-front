@@ -10,7 +10,6 @@ import HeaderNavMobile from '../components/common/header/mobile/HeaderNavMobile'
 import { getStoredUser, removeStoredUser, setStoreUser } from '../components/util/userStorage'
 import { useUser } from '../components/auth/hooks/useUser'
 import { useRouter } from 'next/router'
-
 import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
 
@@ -51,7 +50,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             </Layout>
           </Provider>
         </Hydrate>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
       </RQProvider>
     ))
 
