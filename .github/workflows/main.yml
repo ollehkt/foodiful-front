@@ -42,12 +42,18 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: build and push
-      run: |
-        docker build . -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest --progress=plain --platform linux/amd64
-    - name: Docker image push
-      run: |
-        docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        build-args: |
+          "NEXT_PUBLIC_PROD_URL=${{ secrets.PROD_URL }}"
+      
+    #   run: |
+    #     docker build . -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest --progress=plain --platform linux/amd64
+    # - name: Docker image push
+    #   run: |
+    #     docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
 
     - name: Application Run
       uses: appleboy/ssh-action@v0.1.6
