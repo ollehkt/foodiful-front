@@ -44,7 +44,7 @@ jobs:
 
     - name: build and push
       run: |
-        docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest --progress=plain --platform linux/amd64
+        docker build . -t ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest --progress=plain --platform linux/amd64
     - name: Docker image push
       run: |
         docker push ${{ secrets.DOCKER_ID }}/${{ secrets.FOODIFUL_FRONT }}:latest
