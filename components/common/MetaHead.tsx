@@ -18,7 +18,7 @@ const MetaHead = ({ title, description, url, img }: PropsType) => {
       <meta property="og:title" content={title || '푸디풀 FOODIFUL'} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url || 'https://www.foodiful.shop'} />
-      <meta property="og:image" content={img || '/public/foodiful.jpeg"'} />
+      <meta property="og:image" content={img || '/public/foodiful.jpeg'} />
       <meta property="og:article:author" content="푸디풀 FOODIFUL" />
     </Head>
   )
