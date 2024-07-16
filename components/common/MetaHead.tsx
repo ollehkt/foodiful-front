@@ -12,6 +12,10 @@ const MetaHead = ({ title, description, url, img }: PropsType) => {
   return (
     <Head>
       <title>{title || '푸디풀 FOODIFUL'}</title>
+      <meta name="Keywords" content="한식 디저트" />
+      <meta name="Keywords" content="푸디풀" />
+      <meta name="Keywords" content="한식" />
+      <meta name="Keywords" content="디저트" />
       <meta name="description" content={description || '한식 디저트의 모든 것, 푸디풀'} />
       <meta property="og:title" content={title || '푸디풀 FOODIFUL'} />
       <meta property="og:type" content="website" />
