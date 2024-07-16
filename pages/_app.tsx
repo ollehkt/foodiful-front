@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
 import { Hydrate } from '@tanstack/react-query'
-import { Provider } from 'jotai'
+import { Provider, useSetAtom } from 'jotai'
 import ToastList from '../components/common/toast/ToastList'
 import React, { ReactElement, ReactNode, useEffect } from 'react'
 import { NextPage } from 'next'
@@ -14,6 +14,7 @@ import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
 import Head from 'next/head'
 import MetaHead from '../components/common/MetaHead'
+import { isMobileDisplay } from '../store/isMobileDisplay'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -25,6 +26,25 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
   const { getUser } = useUser()
+
+  const setIsMobile = useSetAtom(isMobileDisplay)
+
+  const handleResize = () => {
+    if (window.innerWidth < 950) {
+      window.localStorage.setItem('isMobile', 'true')
+      setIsMobile(true)
+    } else {
+      window.localStorage.setItem('isMobile', 'false')
+      setIsMobile(false)
+    }
+  }
+
+  useEffect(() => {
+    const isMobile = window.localStorage.getItem('isMobile')
+    setIsMobile(isMobile === 'true' ? true : false)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const storedUser = getStoredUser()
