@@ -11,8 +11,6 @@ import { getStoredUser, removeStoredUser, setStoreUser } from '../components/uti
 import { useUser } from '../components/auth/hooks/useUser'
 import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
-import Head from 'next/head'
-import MetaHead from '../components/common/MetaHead'
 import { isMobileDisplay } from '../store/isMobileDisplay'
 
 export type NextPageWithLayout = NextPage & {

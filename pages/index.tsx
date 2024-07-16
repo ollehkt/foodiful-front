@@ -9,6 +9,7 @@ import LectureList from '../components/lecture/LectureList'
 import { ProductReturnType } from '../components/product/types/productTypes'
 import { LectureType } from '../components/lecture/types/lectureTypes'
 import { api } from '../components/axios/axiosInstance'
+import MetaHead from '../components/common/MetaHead'
 
 export const getServerSideProps = async (): Promise<{
   props: { products: ProductReturnType[]; lectures: LectureType[] }
@@ -29,6 +30,7 @@ const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServ
 
   return (
     <>
+      <MetaHead />
       <div className="relative w-full">
         <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
           <ProductList products={user ? productsUserLiked : products} />
