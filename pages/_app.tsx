@@ -12,6 +12,8 @@ import { useUser } from '../components/auth/hooks/useUser'
 import { useRouter } from 'next/router'
 import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
+import Head from 'next/head'
+import MetaHead from '../components/common/MetaHead'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -39,18 +41,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
     Component.getLayout ||
     ((page: React.ReactElement) => (
-      <RQProvider>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Provider>
-            <ToastList />
-            <HeaderNavMobile />
-            <ModalContainer />
-            <Layout>
-              <div className="w-full mx-auto">{page}</div>
-            </Layout>
-          </Provider>
-        </Hydrate>
-      </RQProvider>
+      <>
+        <MetaHead
+          title="푸디풀 FOODIFUL"
+          description="한식 디저트 구매와 한식 디저트 수업을 예약할 수 있는 사이트입니다."
+        />
+        <RQProvider>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Provider>
+              <ToastList />
+              <HeaderNavMobile />
+              <ModalContainer />
+              <Layout>
+                <div className="w-full mx-auto">{page}</div>
+              </Layout>
+            </Provider>
+          </Hydrate>
+        </RQProvider>
+      </>
     ))
 
   return getLayout(<Component {...pageProps} />)

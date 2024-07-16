@@ -14,6 +14,7 @@ import Custom404 from '../404'
 import { getStoredUser, setStoreUser } from '../../components/util/userStorage'
 import { User } from '../../components/auth/types/user'
 import { useUser } from '../../components/auth/hooks/useUser'
+import MetaHead from '../../components/common/MetaHead'
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const {
@@ -72,6 +73,12 @@ const ProductDetailPage = ({
   }, [])
   return (
     <Hydrate state={dehydratedState}>
+      <MetaHead
+        title={product?.name}
+        description={product?.subTitle}
+        img={product?.descImg[0]}
+        url={`/product/${productId}`}
+      />
       {!!product ? (
         <div
           className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"

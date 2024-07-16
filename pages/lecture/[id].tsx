@@ -17,6 +17,7 @@ import Custom404 from '../404'
 import { User } from '../../components/auth/types/user'
 import { getStoredUser, setStoreUser } from '../../components/util/userStorage'
 import { useUser } from '../../components/auth/hooks/useUser'
+import MetaHead from '../../components/common/MetaHead'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -67,6 +68,12 @@ const LectureDetailPage = ({
   }, [])
   return (
     <Hydrate state={dehydratedState}>
+      <MetaHead
+        title={lecture?.name}
+        description={lecture?.subTitle}
+        img={lecture?.descImg[0]}
+        url={`/lecture/${lectureId}`}
+      />
       {!!lecture ? (
         <div className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto">
           {user && user.role === 'ADMIN' && (
