@@ -73,71 +73,73 @@ const ProductDetailPage = ({
   }, [])
   return (
     <Hydrate state={dehydratedState}>
-      <MetaHead
-        title={product?.name}
-        description={product?.subTitle}
-        img={product?.descImg[0]}
-        url={`/product/${productId}`}
-      />
       {!!product ? (
-        <div
-          className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
-          onClick={() => {
-            isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
-          }}
-        >
-          {user && user.role === 'ADMIN' && (
-            <div className="flex justify-center">
-              <Button
-                title="상품 수정"
-                size="md"
-                style="border-2 border-main hover:bg-main hover:text-white"
-                onClick={() => router.push(`/product/update/${product.id}`)}
-              />
-            </div>
-          )}
-          <ProductDetail
-            product={product}
-            isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}
-            setIsAdditionalSelectModalOpen={setIsAdditionalSelectModalOpen}
+        <>
+          <MetaHead
+            title={product.name}
+            description={product.subTitle}
+            img={product.descImg[0]}
+            url={`https://www.foodiful.shop/product/${productId}`}
           />
-
-          <div className="w-full h-[80px] flex justify-center items-center my-[40px]">
-            <div
-              className={`w-[50%] flex justify-center cursor-pointer ${
-                viewDescTab === 0
-                  ? 'border-b-main border-b-2 text-main font-bold'
-                  : 'border-b-disabled border-b-[1px] text-textDisabled'
-              }`}
-              onClick={() => setViewDescTab(0)}
-            >
-              <span className="text-xl py-2">상품 상세 설명</span>
-            </div>
-            <div
-              className={`w-[50%] flex justify-center cursor-pointer ${
-                viewDescTab === 1
-                  ? 'border-b-main border-b-2 text-main font-bold'
-                  : 'border-b-disabled border-b-[1px] text-textDisabled'
-              }`}
-              onClick={() => setViewDescTab(1)}
-            >
-              <span className="text-xl py-2"> 상품 후기</span>
-            </div>
-          </div>
-
-          {!!viewDescTab ? (
-            <ProductDetailReview
-              reviewList={reviewList}
-              productName={product.name}
-              productId={product.id}
-              orderLists={orderLists}
+          <div
+            className="mt-8 flex-col items-center xl:w-[1080px] w-[80%] mx-auto"
+            onClick={() => {
+              isAdditionalSelectModalOpen && setIsAdditionalSelectModalOpen(false)
+            }}
+          >
+            {user && user.role === 'ADMIN' && (
+              <div className="flex justify-center">
+                <Button
+                  title="상품 수정"
+                  size="md"
+                  style="border-2 border-main hover:bg-main hover:text-white"
+                  onClick={() => router.push(`/product/update/${product.id}`)}
+                />
+              </div>
+            )}
+            <ProductDetail
+              product={product}
+              isAdditionalSelectModalOpen={isAdditionalSelectModalOpen}
+              setIsAdditionalSelectModalOpen={setIsAdditionalSelectModalOpen}
             />
-          ) : (
-            <div className="flex justify-center">
-              <DetailDesc description={product.description} />
+
+            <div className="w-full h-[80px] flex justify-center items-center my-[40px]">
+              <div
+                className={`w-[50%] flex justify-center cursor-pointer ${
+                  viewDescTab === 0
+                    ? 'border-b-main border-b-2 text-main font-bold'
+                    : 'border-b-disabled border-b-[1px] text-textDisabled'
+                }`}
+                onClick={() => setViewDescTab(0)}
+              >
+                <span className="text-xl py-2">상품 상세 설명</span>
+              </div>
+              <div
+                className={`w-[50%] flex justify-center cursor-pointer ${
+                  viewDescTab === 1
+                    ? 'border-b-main border-b-2 text-main font-bold'
+                    : 'border-b-disabled border-b-[1px] text-textDisabled'
+                }`}
+                onClick={() => setViewDescTab(1)}
+              >
+                <span className="text-xl py-2"> 상품 후기</span>
+              </div>
             </div>
-          )}
-        </div>
+
+            {!!viewDescTab ? (
+              <ProductDetailReview
+                reviewList={reviewList}
+                productName={product.name}
+                productId={product.id}
+                orderLists={orderLists}
+              />
+            ) : (
+              <div className="flex justify-center">
+                <DetailDesc description={product.description} />
+              </div>
+            )}
+          </div>
+        </>
       ) : (
         <Custom404 />
       )}
