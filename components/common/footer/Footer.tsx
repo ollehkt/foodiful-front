@@ -7,15 +7,15 @@ const Footer = () => {
     <section className="w-full mt-12 pb-10 bg-[#eee]">
       <div className="w-[80%] mx-auto flex flex-col items-center">
         <h1 className="text-3xl font-bold my-4 text-gray-700">Foodiful</h1>
-        <div className="flex justify-start gap-x-2 w-[200px] my-1">
+        <div className="flex justify-start gap-x-2 w-[220px] my-1">
           <p className="text-gray-400">주식회사</p>
           <p className="text-gray-500 font-semibold"> 푸디풀</p>
         </div>
-        <div className="flex justify-start gap-x-2 w-[200px] my-1">
+        <div className="flex justify-start gap-x-2 w-[220px] my-1">
           <p className="text-gray-400">전화번호</p>
           <p className="text-gray-500 font-semibold"> 010-5471-0182</p>
         </div>
-        <div className="flex justify-start gap-x-2 w-[200px] my-1">
+        <div className="flex justify-start gap-x-2 w-[220px] my-1">
           <p className="text-gray-400">문의시간</p>
           <p className="text-gray-500 font-semibold">평일 10:00 ~ 18:00</p>
         </div>

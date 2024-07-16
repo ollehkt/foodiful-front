@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import App, { AppContext, AppProps } from 'next/app'
 import Layout from '../components/layout/Layout'
 import { Hydrate } from '@tanstack/react-query'
 import { Provider, useSetAtom } from 'jotai'
@@ -9,7 +9,6 @@ import { NextPage } from 'next'
 import HeaderNavMobile from '../components/common/header/mobile/HeaderNavMobile'
 import { getStoredUser, removeStoredUser, setStoreUser } from '../components/util/userStorage'
 import { useUser } from '../components/auth/hooks/useUser'
-import { useRouter } from 'next/router'
 import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
 import Head from 'next/head'
@@ -24,10 +23,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 } // 기존 AppProps타입에 Layout을 추가한 것.
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const router = useRouter()
   const { getUser } = useUser()
 
   const setIsMobile = useSetAtom(isMobileDisplay)
+  setIsMobile(pageProps.isMobile)
 
   const handleResize = () => {
     if (window.innerWidth < 950) {
@@ -82,6 +81,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     ))
 
   return getLayout(<Component {...pageProps} />)
+}
+
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext)
+
+  //userAgent
+  const userAgent = appContext.ctx.req
+    ? appContext.ctx.req?.headers['user-agent']
+    : navigator.userAgent
+
+  //Mobile
+  const mobile = userAgent?.indexOf('Mobi')
+
+  //Mobile in pageProps
+  appProps.pageProps.isMobile = mobile !== -1 ? true : false
+
+  return { ...appProps }
 }
 
 export default MyApp
