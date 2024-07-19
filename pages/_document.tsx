@@ -1,6 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
-import MetaHead from '../components/common/MetaHead'
 
 export default function Document() {
   return (
@@ -12,7 +11,11 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto+Condensed&display=swap"
           rel="stylesheet"
         />
-        <title>{'푸디풀 FOODIFUL'}</title>
+        <meta
+          name="google-site-verification"
+          content="YT3qpGDBggwidVw7Qwpg2udlItGiwy9uU4rDibNySK4"
+        />
+        <title>푸디풀 FOODIFUL</title>
         <meta name="Keywords" content="한식 디저트" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={'한식 디저트의 모든 것, 푸디풀'} />
@@ -21,7 +24,6 @@ export default function Document() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={'https://www.foodiful.shop'} />
         <meta property="og:image" content={'https://www.foodiful.shop/foodiful.jpeg'} />
-
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="foodiful.shop" />
         <meta property="twitter:url" content="https://www.foodiful.shop" />
