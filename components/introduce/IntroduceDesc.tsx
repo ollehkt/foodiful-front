@@ -27,14 +27,20 @@ const IntroduceDesc = () => {
           >
             <div
               className={`${
-                !isMobile ? ((idx + 1) % 2 === 0 ? 'order-last w-[30%]' : 'w-[30%]') : 'break-keep'
+                !isMobile ? ((idx + 1) % 2 === 0 ? 'order-last w-[30%]' : 'w-[30%]') : ''
               }`}
               key={`${title}-${img}-${idx}`}
             >
               <StrongTitle title={title} style="my-[20px]" />
-              <div className="font-semibold text-xl leading-10">{desc}</div>
+              <div className="font-semibold text-xl leading-10 break-keep break-word">{desc}</div>
             </div>
-            <div className={`mt-5 ${isMobile ? 'flex justify-center' : 'relative w-[30%]'}`}>
+            <div
+              className={`mt-5 ${
+                isMobile
+                  ? 'flex justify-center'
+                  : `relative w-[30%] ${idx === 0 ? 'flex justify-end' : ''}`
+              }`}
+            >
               <Image
                 src={img}
                 alt="main-image"
