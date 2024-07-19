@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
+import MetaHead from '../components/common/MetaHead'
 
 export default function Document() {
   return (
@@ -12,6 +13,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
+      <MetaHead />
       <body className="font-roboto">
         <Main />
         <NextScript />

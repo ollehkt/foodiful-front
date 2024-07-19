@@ -75,12 +75,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </>
     ))
 
-  return getLayout(
-    <>
-      <MetaHead />
-      <Component {...pageProps} />
-    </>
-  )
+  return getLayout(<Component {...pageProps} />)
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
