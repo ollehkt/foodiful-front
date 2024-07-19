@@ -12,8 +12,23 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto+Condensed&display=swap"
           rel="stylesheet"
         />
+        <title>{'푸디풀 FOODIFUL'}</title>
+        <meta name="Keywords" content="한식 디저트" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={'한식 디저트의 모든 것, 푸디풀'} />
+        <meta property="og:title" content={'푸디풀 FOODIFUL'} />
+        <meta name="og:description" content={'한식 디저트의 모든 것, 푸디풀'} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={'https://www.foodiful.shop'} />
+        <meta property="og:image" content={'https://www.foodiful.shop/foodiful.jpeg'} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="foodiful.shop" />
+        <meta property="twitter:url" content="https://www.foodiful.shop" />
+        <meta name="twitter:title" content="푸디풀 FOODIFUL" />
+        <meta name="twitter:description" content="한식 디저트의 모든 것, 푸디풀" />
+        <meta name="twitter:image" content="https://www.foodiful.shop/foodiful.jpeg" />
       </Head>
-      <MetaHead />
       <body className="font-roboto">
         <Main />
         <NextScript />

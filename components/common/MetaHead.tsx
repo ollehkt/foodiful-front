@@ -16,10 +16,11 @@ const MetaHead = ({ title, description, url, img }: PropsType) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content={description || '한식 디저트의 모든 것, 푸디풀'} />
       <meta property="og:title" content={title || '푸디풀 FOODIFUL'} />
+      <meta name="og:description" content={description || '한식 디저트의 모든 것, 푸디풀'} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url || 'https://www.foodiful.shop'} />
       <meta property="og:image" content={img || 'https://www.foodiful.shop/foodiful.jpeg'} />
-      <meta property="og:article:author" content="푸디풀 FOODIFUL" />
+
       <meta name="twitter:card" content="summary_large_image" />
       <meta property="twitter:domain" content="foodiful.shop" />
       <meta property="twitter:url" content="https://www.foodiful.shop" />
