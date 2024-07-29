@@ -31,7 +31,6 @@ const Home = ({ products, lectures }: InferGetServerSidePropsType<typeof getServ
   return (
     <>
       <div className="relative w-full">
-        <p className="text-3xl text-center mt-4">현재 개발중인 웹 사이트 입니다.</p>
         <div className="w-[80%] mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
           <ProductList products={user ? productsUserLiked : products} />
         </div>

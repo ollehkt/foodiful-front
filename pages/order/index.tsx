@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useGetPrice } from '../../components/cart/hooks/useGetPrice'
 import Container from '../../components/common/Container'
 import useToast from '../../components/common/hooks/useToast'
@@ -47,6 +47,7 @@ const OrderPage = () => {
           router.push('/cart')
         }
         setOrderForm({ ...orderForm, totalPrice: getTotalPrice(orderProduct) + 3000 })
+
         if (!fetchedUser) {
           router.push('/auth')
         }
@@ -58,6 +59,7 @@ const OrderPage = () => {
 
   return (
     <Container style="mt-[40px]">
+      <p className="text-3xl text-center mt-4">현재 개발중인 웹 사이트 입니다.</p>
       <StrongTitle title="주문 / 결제" style="border-b-2 border-main pb-2" />
       <OrderProduct orderProduct={orderProduct} />
       <OrdererInfo orderForm={orderForm} setOrderForm={setOrderForm} />
