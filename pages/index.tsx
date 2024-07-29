@@ -9,7 +9,6 @@ import LectureList from '../components/lecture/LectureList'
 import { ProductReturnType } from '../components/product/types/productTypes'
 import { LectureType } from '../components/lecture/types/lectureTypes'
 import { api } from '../components/axios/axiosInstance'
-import MetaHead from '../components/common/MetaHead'
 
 export const getServerSideProps = async (): Promise<{
   props: { products: ProductReturnType[]; lectures: LectureType[] }

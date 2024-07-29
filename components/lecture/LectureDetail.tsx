@@ -9,8 +9,7 @@ import { useRouter } from 'next/router'
 
 function LectureDetail({ lecture }: { lecture: LectureType }) {
   const { push } = useRouter()
-  const { id, name, descImg, subTitle, description, isLiked, lectureDuration, price, regular } =
-    lecture
+  const { name, descImg, subTitle, lectureDuration, price, regular } = lecture
   const isMobile = useAtomValue(isMobileDisplay)
   const [thumbnail, setThumbnail] = useState(descImg[0])
   return (
