@@ -28,10 +28,12 @@ function LectureDetail({ lecture }: { lecture: LectureType }) {
                 </div>
               )}
               <div className="flex items-center justify-between mt-2 text-3xl font-semibold tracking-tight text-gray-900  pb-4 border-b-2 border-main">
-                <span>{name} 클래스</span>
+                <span className="break-keep">{name} 클래스</span>
               </div>
 
-              <p className="mt-6 text-lg leading-8 text-gray-600 break-keep">{subTitle}</p>
+              <p className="mt-6 text-lg leading-8 text-gray-600 break-keep leading-0">
+                {subTitle}
+              </p>
 
               <div className="text-lg border-t border-disabled mt-[20px] pt-[10px] font-bold">
                 수업 시간

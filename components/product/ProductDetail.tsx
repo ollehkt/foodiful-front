@@ -178,9 +178,9 @@ const ProductDetail = ({
             <div className="text-main text-xl font-bold">{limitQuantity} 개</div>
           </div>
 
-          <div className="relative border-t border-disabled mt-[20px] pt-[10px]">
+          <div className="relative md:block flex flex-col border-t border-disabled mt-[20px] pt-[10px]">
             <span className="text-lg font-bold">추가 상품</span>
-            <span className="text-textDisabled text-sm font-semibold ml-[20px]">
+            <span className="text-textDisabled text-sm font-semibold md:ml-[20px] ml-0">
               상품 수량만큼만 주문하실 수 있습니다.
             </span>
             <Select<string>
