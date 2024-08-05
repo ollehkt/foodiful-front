@@ -5,23 +5,21 @@ import ProductList from '../../components/product/ProductList'
 import { useEffect, useState } from 'react'
 import { User } from '../../components/auth/types/user'
 import { getProducts, useGetProducts } from '../../components/product/hooks/useProduct'
-import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
-import { DehydratedState, Hydrate, QueryClient, dehydrate } from '@tanstack/react-query'
-import { queryKeys } from '../../query-keys/queryKeys'
 import { InferGetServerSidePropsType } from 'next'
 import { api } from '../../components/axios/axiosInstance'
 import { ProductReturnType } from '../../components/product/types/productTypes'
-import axios from 'axios'
+
 import { useUser } from '../../components/auth/hooks/useUser'
 
-export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-  const { data = [] } = await api('/product/all')
+export const getServerSideProps = async (): Promise<{
+  props: { products: ProductReturnType[] }
+}> => {
+  const { data: products = [] } = await api('/product/all')
 
-  return { props: { data } }
+  return { props: { products } }
 }
 
-// function ProductPage() {
-function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function ProductPage({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
   const { getUser } = useUser()
