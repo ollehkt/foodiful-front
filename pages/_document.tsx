@@ -15,9 +15,7 @@ export default function Document() {
           name="google-site-verification"
           content="YT3qpGDBggwidVw7Qwpg2udlItGiwy9uU4rDibNySK4"
         />
-        <title>푸디풀 FOODIFUL</title>
         <meta name="Keywords" content="한식 디저트" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={'한식 디저트의 모든 것, 푸디풀'} />
         <meta property="og:title" content={'푸디풀 FOODIFUL'} />
         <meta name="og:description" content={'한식 디저트의 모든 것, 푸디풀'} />

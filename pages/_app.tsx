@@ -12,7 +12,7 @@ import { useUser } from '../components/auth/hooks/useUser'
 import ModalContainer from '../components/common/modal/ModalContainer'
 import RQProvider from '../components/util/RQProvider'
 import { isMobileDisplay } from '../store/isMobileDisplay'
-import MetaHead from '../components/common/MetaHead'
+import Head from 'next/head'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -75,7 +75,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </>
     ))
 
-  return getLayout(<Component {...pageProps} />)
+  return getLayout(
+    <>
+      <Head>
+        <title>푸디풀 FOODIFUL</title>
+      </Head>
+      <Component {...pageProps} />
+    </>
+  )
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
