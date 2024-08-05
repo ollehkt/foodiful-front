@@ -14,14 +14,14 @@ import { ProductReturnType } from '../../components/product/types/productTypes'
 import axios from 'axios'
 import { useUser } from '../../components/auth/hooks/useUser'
 
-// export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
-//   const { data = [] } = await api('/product/all')
+export const getServerSideProps = async (): Promise<{ props: { data: ProductReturnType[] } }> => {
+  const { data = [] } = await api('/product/all')
 
-//   return { props: { data } }
-// }
+  return { props: { data } }
+}
 
-function ProductPage() {
-  // function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+// function ProductPage() {
+function ProductPage({ data: products }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
   const { getUser } = useUser()
@@ -60,7 +60,7 @@ function ProductPage() {
         </div>
       )}
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <ProductList products={productsUserLiked} />
+        <ProductList products={user ? productsUserLiked : products} />
       </div>
     </>
   )
