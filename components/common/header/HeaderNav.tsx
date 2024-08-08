@@ -31,7 +31,7 @@ const HeaderNav = () => {
   return (
     <ul className="mx-auto flex justify-between">
       {headerTitle.map(({ title, url, subTitle }, idx) => (
-        <div
+        <li
           className={`relative h-full px-[30px] flex justify-center items-center text-lg font-normal  cursor-pointer`}
           key={`${title}-${url}`}
           onMouseEnter={() => handleActiveIdxOnMouseOver(idx)}
@@ -52,7 +52,7 @@ const HeaderNav = () => {
               pathName={pathName}
             />
           )}
-        </div>
+        </li>
       ))}
     </ul>
   )
