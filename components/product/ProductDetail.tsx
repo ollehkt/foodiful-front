@@ -118,6 +118,7 @@ const ProductDetail = ({
                       key={img}
                       src={img}
                       alt="슬라이더 이미지"
+                      priority
                       width={100}
                       height={100}
                       onClick={() => setThumbnail(img)}
@@ -134,8 +135,9 @@ const ProductDetail = ({
             className="w-[450px] h-[400px] object-contain mx-auto rounded-md my-4"
             src={thumbnail ? thumbnail : '/foodiful.jpeg'}
             alt="대표 이미지"
-            width={300}
-            height={300}
+            width={450}
+            height={400}
+            priority
           />
         )}
 

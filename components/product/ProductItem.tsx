@@ -22,6 +22,7 @@ const ProductItem = ({ product, mini }: PropsType) => {
         alt="상품 설명 사진"
         width={200}
         height={200}
+        priority
         className={`rounded-md  ${
           mini ? 'w-[200px] h-[200px]' : 'w-[250px] h-[250px]'
         } border-2 border-[gray] cursor-pointer`}

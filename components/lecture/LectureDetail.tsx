@@ -57,6 +57,7 @@ function LectureDetail({ lecture }: { lecture: LectureType }) {
                     alt="대표 이미지"
                     width={300}
                     height={300}
+                    priority
                   />
                   {!!descImg.length && (
                     <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
@@ -81,8 +82,8 @@ function LectureDetail({ lecture }: { lecture: LectureType }) {
                 className="w-[450px] h-[400px] object-contain mx-auto rounded-md my-4"
                 src={thumbnail ? thumbnail : '/foodiful.jpeg'}
                 alt="대표 이미지"
-                width={300}
-                height={300}
+                width={450}
+                height={400}
               />
             )}
           </section>
