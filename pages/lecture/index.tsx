@@ -45,7 +45,6 @@ const LecturePage = ({ lectures }: InferGetServerSidePropsType<typeof getServerS
         <StrongTitle title="클래스" style="border-b-2 border-main pb-2" />
         <LectureList lectureList={user ? lectureUserLiked : lectures} />
       </div>
-      </div>
     </>
   )
 }
