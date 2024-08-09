@@ -9,6 +9,7 @@ import { Button } from '../../components/common/Button'
 import { useRouter } from 'next/router'
 import { api } from '../../components/axios/axiosInstance'
 import { useUser } from '../../components/auth/hooks/useUser'
+import StrongTitle from '../../components/common/StrongTitle'
 
 export const getServerSideProps = async (): Promise<{ props: { lectures: LectureType[] } }> => {
   const { data: lectures = [] } = await api('/lecture/all')
@@ -41,7 +42,9 @@ const LecturePage = ({ lectures }: InferGetServerSidePropsType<typeof getServerS
         </div>
       )}
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <StrongTitle title="클래스" style="border-b-2 border-main pb-2" />
         <LectureList lectureList={user ? lectureUserLiked : lectures} />
+      </div>
       </div>
     </>
   )

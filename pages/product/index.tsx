@@ -10,6 +10,8 @@ import { api } from '../../components/axios/axiosInstance'
 import { ProductReturnType } from '../../components/product/types/productTypes'
 
 import { useUser } from '../../components/auth/hooks/useUser'
+import StrongTitle from '../../components/common/StrongTitle'
+import { ProductSkeleton } from '../../components/common/skeleton/Skeleton'
 
 export const getServerSideProps = async (): Promise<{
   props: { products: ProductReturnType[] }
@@ -39,7 +41,7 @@ function ProductPage({ products }: InferGetServerSidePropsType<typeof getServerS
     })()
   }, [])
 
-  const { data: productsUserLiked } = useGetProducts()
+  const { data: productsUserLiked, isFetching } = useGetProducts()
 
   const onClickAddBtn = () => {
     router.push('/product/add')
@@ -58,7 +60,12 @@ function ProductPage({ products }: InferGetServerSidePropsType<typeof getServerS
         </div>
       )}
       <div className="mx-auto w-[80%] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <ProductList products={user ? productsUserLiked : products} />
+        <StrongTitle title="상품" style="border-b-2 border-main pb-2" />
+        {isFetching ? (
+          <ProductSkeleton count={3} />
+        ) : (
+          <ProductList products={user ? productsUserLiked : products} />
+        )}
       </div>
     </>
   )
