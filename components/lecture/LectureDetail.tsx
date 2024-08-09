@@ -50,36 +50,35 @@ function LectureDetail({ lecture }: { lecture: LectureType }) {
           <section>
             {isMobile ? (
               <>
-                <div>
-                  <Image
-                    className="w-full h-[300px] object-contain mx-auto rounded-md my-4"
-                    src={thumbnail ? thumbnail : '/foodiful.jpeg'}
-                    alt="대표 이미지"
-                    width={300}
-                    height={300}
-                    priority
-                  />
-                  {!!descImg.length && (
-                    <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
-                      {descImg.map((img) => (
-                        <Image
-                          key={img}
-                          src={img}
-                          alt="슬라이더 이미지"
-                          width={100}
-                          height={100}
-                          onClick={() => setThumbnail(img)}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <Image
+                  className="w-full h-[300px] mx-auto rounded-md my-4"
+                  src={thumbnail ? thumbnail : '/foodiful.jpeg'}
+                  alt="대표 이미지"
+                  width={300}
+                  height={300}
+                  priority
+                />
+                {!!descImg.length && (
+                  <div className="flex items-center gap-2 overflow-x-scroll rounded-md">
+                    {descImg.map((img) => (
+                      <Image
+                        key={img}
+                        src={img}
+                        alt="슬라이더 이미지"
+                        width={100}
+                        height={100}
+                        priority
+                        onClick={() => setThumbnail(img)}
+                      />
+                    ))}
+                  </div>
+                )}
               </>
             ) : !!descImg.length ? (
               <SubSlider items={descImg} btn slidePx={110} btnSize={24} />
             ) : (
               <Image
-                className="w-[450px] h-[400px] object-contain mx-auto rounded-md my-4"
+                className="w-[450px] h-[400px] mx-auto rounded-md my-4"
                 src={thumbnail ? thumbnail : '/foodiful.jpeg'}
                 alt="대표 이미지"
                 width={450}

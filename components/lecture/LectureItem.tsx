@@ -10,8 +10,7 @@ interface PropsType {
 }
 
 const LectureItem = ({ lecture, mini }: PropsType) => {
-  const { id, name, descImg, description, discount, lectureDuration, price, regular, isLiked } =
-    lecture
+  const { id, name, descImg, price, isLiked } = lecture
   const router = useRouter()
   return (
     <div key={`${name}-${id}`} className={`flex flex-col ${mini ? 'w-[200px]' : 'w-[250px]'}`}>

@@ -9,11 +9,6 @@ interface PropsType {
   slidePx: number
 }
 
-/**
- *
- * @Todo: 큰 사진 하나 보여주고 작은 사진들 버튼으로 이동 가능하게(이동 했을 때 현재 사진이라면 큰 사진으로 보이게), 터치 누르면 큰 사진으로 보이게,
- */
-
 const DetailSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const ulRef = useRef<HTMLUListElement | null>(null)
@@ -45,6 +40,7 @@ const DetailSlider = ({ items, btn, btnSize, slidePx }: PropsType) => {
           width={450}
           height={400}
           className="w-[450px] h-[400px] rounded-md"
+          priority
         />
         <div className="w-[450px] h-[120px] mt-2">
           <ul ref={ulRef} className="flex absolute overflow-hidden gap-[10px]">
