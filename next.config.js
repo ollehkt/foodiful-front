@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['foodiful.shop'],
-    formats: ['image/avif', 'image/webp'],
+    formats: ['image/webp','image/avif' ],
     remotePatterns: [
       {
         protocol: 'https',
