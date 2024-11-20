@@ -13,7 +13,7 @@
 
 ## 배포 주소
 
-### [www.foodiful.shop](https://www.foodiful.shop)
+### [www.foodiful.shop](https://www.foodiful.shop) (현재 서버 다운)
 
 ## 주요 기능
 
